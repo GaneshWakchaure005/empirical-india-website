@@ -98,25 +98,27 @@ export default function ApproachSection({
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="inline-block text-[11px] font-semibold tracking-[0.18em] uppercase text-navy-700">
-                About Empirical India
+            {/* Header badges: About heading, location, est. year */}
+            <div className="flex flex-wrap items-center gap-3 sm:gap-3.5 mb-7">
+              <span className="inline-flex items-center gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-navy-50/90 border border-navy-300 text-navy-950 text-sm sm:text-base font-extrabold tracking-wide uppercase shadow-sm">
+                <span className="w-2.5 h-2.5 rounded-full bg-navy-700 animate-pulse" />
+                <span>About Empirical India</span>
               </span>
-              <span className="text-steel-300">•</span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-steel-500">
-                <MapPin className="w-3 h-3 text-navy-700" />
-                <span>Nashik Plant</span>
+
+              <span className="inline-flex items-center gap-2 px-4.5 py-2.5 sm:px-5 sm:py-3 rounded-full bg-steel-100/90 border border-steel-300/80 text-steel-800 text-sm sm:text-base font-semibold shadow-2xs">
+                <MapPin className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-navy-700 shrink-0" />
+                <span>Nashik Plant, Maharashtra</span>
               </span>
-              <span className="text-steel-300">•</span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-steel-500">
-                <Calendar className="w-3 h-3 text-navy-700" />
+
+              <span className="inline-flex items-center gap-2 px-4.5 py-2.5 sm:px-5 sm:py-3 rounded-full bg-steel-100/90 border border-steel-300/80 text-steel-800 text-sm sm:text-base font-semibold shadow-2xs">
+                <Calendar className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-navy-700 shrink-0" />
                 <span>Est. 2016</span>
               </span>
             </div>
 
             <h2
               id="approach-heading"
-              className="text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight mb-6 leading-tight"
+              className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-steel-900 tracking-tight mb-6 leading-tight"
             >
               Engineering clarity from the first conversation.
             </h2>
