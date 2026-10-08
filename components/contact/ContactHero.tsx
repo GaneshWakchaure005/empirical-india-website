@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Mail, MapPin, Clock, ShieldCheck, FileText } from "lucide-react";
 
 interface ContactHeroProps {
@@ -15,10 +16,26 @@ export default function ContactHero({
   plantHours,
 }: ContactHeroProps) {
   return (
-    <section className="relative bg-gradient-to-b from-[#f8fafc] via-white to-[#f4f6f9] pt-28 pb-14 sm:pt-36 sm:pb-16 overflow-hidden border-b border-steel-200/60">
+    <section className="relative bg-[#f8fafc] pt-28 pb-14 sm:pt-36 sm:pb-16 overflow-hidden border-b border-steel-200/60">
+      {/* Background Hero Image */}
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <Image
+          src="/images/contact-page-bg.png"
+          alt="Empirical India direct technical discussion and RFQ support"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center pointer-events-none"
+        />
+        {/* Soft translucent gradient overlays for optimal readability & depth */}
+        <div className="absolute inset-0 bg-white/40 sm:bg-white/25 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f4f6f9] to-transparent pointer-events-none" />
+      </div>
+
       {/* Background blueprint watermark */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
           backgroundImage: `radial-gradient(var(--navy-900) 1px, transparent 1px)`,
           backgroundSize: "28px 28px",

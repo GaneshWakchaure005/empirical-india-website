@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, CheckCircle2, Shield } from "lucide-react";
 
 interface AboutHeroProps {
@@ -10,10 +11,26 @@ interface AboutHeroProps {
 
 export default function AboutHero({ introduction }: AboutHeroProps) {
   return (
-    <section className="relative bg-gradient-to-b from-[#f8fafc] via-white to-[#f4f6f9] pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden border-b border-steel-200/60">
-      {/* Background blueprint grid watermark */}
+    <section className="relative bg-[#f8fafc] pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden border-b border-steel-200/60">
+      {/* Background Hero Image */}
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <Image
+          src="/images/about-page-bg.png"
+          alt="Empirical India manufacturing facility and global engineering reach"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center pointer-events-none"
+        />
+        {/* Soft translucent gradient overlays for optimal readability & depth */}
+        <div className="absolute inset-0 bg-white/35 sm:bg-white/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f4f6f9] to-transparent pointer-events-none" />
+      </div>
+
+      {/* Blueprint grid watermark */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
           backgroundImage: `radial-gradient(var(--navy-900) 1px, transparent 1px)`,
           backgroundSize: "28px 28px",
