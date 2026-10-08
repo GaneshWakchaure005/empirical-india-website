@@ -3,10 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   {
     label: "Products",
@@ -24,6 +26,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -61,9 +64,11 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-0.5" aria-label="Main navigation">
-            {navLinks.map((link) =>
-              link.children ? (
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5" aria-label="Main navigation">
+            {navLinks.map((link) => {
+              const isActive = link.href === "/" ? pathname === "/" : pathname?.startsWith(link.href);
+
+              return link.children ? (
                 <div
                   key={link.label}
                   className="relative"
@@ -71,16 +76,27 @@ export default function Navbar() {
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
                   <button
-                    className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-steel-700 hover:text-navy-700 rounded-lg hover:bg-steel-50 transition-colors"
+                    className={cn(
+                      "group relative flex items-center gap-1.5 px-3 py-2 text-[15px] xl:text-[16.5px] font-semibold transition-colors duration-200 cursor-pointer",
+                      isActive ? "text-navy-900" : "text-steel-700 hover:text-navy-900"
+                    )}
                     aria-expanded={activeDropdown === link.label}
                     aria-haspopup="true"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
                     <ChevronDown
-                      size={13}
+                      size={14}
                       className={cn(
-                        "text-steel-400 transition-transform duration-200",
+                        "transition-transform duration-200",
+                        isActive ? "text-navy-900" : "text-steel-400 group-hover:text-navy-900",
                         activeDropdown === link.label ? "rotate-180" : ""
+                      )}
+                    />
+                    {/* Underline expanding from left to right */}
+                    <span
+                      className={cn(
+                        "absolute bottom-0.5 left-0 w-full h-[2.5px] bg-gradient-to-r from-navy-800 to-blue-600 origin-left transition-transform duration-300 ease-out",
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                       )}
                     />
                   </button>
@@ -90,7 +106,7 @@ export default function Navbar() {
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block px-4 py-2.5 text-sm text-steel-600 hover:text-navy-700 hover:bg-steel-50 transition-colors"
+                          className="block px-4 py-2.5 text-sm font-medium text-steel-600 hover:text-navy-900 hover:bg-steel-50 transition-colors"
                         >
                           {child.label}
                         </Link>
@@ -102,12 +118,22 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="px-3.5 py-2 text-sm font-medium text-steel-700 hover:text-navy-700 rounded-lg hover:bg-steel-50 transition-colors"
+                  className={cn(
+                    "group relative flex items-center px-3 py-2 text-[15px] xl:text-[16.5px] font-semibold transition-colors duration-200",
+                    isActive ? "text-navy-900" : "text-steel-700 hover:text-navy-900"
+                  )}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {/* Underline expanding from left to right */}
+                  <span
+                    className={cn(
+                      "absolute bottom-0.5 left-0 w-full h-[2.5px] bg-gradient-to-r from-navy-800 to-blue-600 origin-left transition-transform duration-300 ease-out",
+                      isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    )}
+                  />
                 </Link>
-              )
-            )}
+              );
+            })}
           </nav>
 
           {/* Desktop CTA */}
@@ -140,7 +166,7 @@ export default function Navbar() {
               <div key={link.label}>
                 <Link
                   href={link.href}
-                  className="block px-3 py-2.5 text-sm font-medium text-steel-700 hover:text-navy-700 hover:bg-steel-50 rounded-lg transition-colors"
+                  className="block px-3 py-2.5 text-base font-semibold text-steel-700 hover:text-navy-900 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -151,7 +177,7 @@ export default function Navbar() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-3 py-2 text-sm text-steel-500 hover:text-navy-700 hover:bg-steel-50 rounded-lg transition-colors"
+                        className="block px-3 py-2 text-sm font-medium text-steel-600 hover:text-navy-900 transition-colors"
                         onClick={() => setMobileOpen(false)}
                       >
                         {child.label}
