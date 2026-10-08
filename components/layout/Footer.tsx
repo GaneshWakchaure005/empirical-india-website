@@ -24,8 +24,14 @@ const footerLegal = [
   { label: "Cookie Policy", href: "/cookies" },
 ];
 
+import { useState, useEffect } from "react";
+
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState(2026);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
 
   return (
     <footer className="bg-steel-900 text-steel-300">
