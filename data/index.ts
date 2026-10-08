@@ -11,4 +11,5 @@ export { default as Industries } from './08-industries';
 export { default as Projects } from './09-projects';
 export { default as NewsAndEvents } from './10-news-and-events';
 export { default as Careers } from './11-careers';
+export { default as ContactRFQ } from './12-contact-rfq';
 export { default as ContentAndLaunchChecklist } from './14-content-and-launch-checklist';
