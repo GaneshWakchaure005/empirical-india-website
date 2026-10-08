@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens — Light Industrial Theme ───────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Navy (used sparingly for text, accents, CTAs) */
+  --navy-900: #0f2044;
+  --navy-800: #152d6e;
+  --navy-700: #1a3a8f;
+  --navy-600: #1e4bba;
+
+  /* Brand Red (logo tagline accent) */
+  --red-brand: #dc2626;
+
+  /* Neutral greys — light palette */
+  --steel-50:  #f8fafc;
+  --steel-100: #f1f5f9;
+  --steel-200: #e2e8f0;
+  --steel-300: #cbd5e1;
+  --steel-400: #94a3b8;
+  --steel-500: #64748b;
+  --steel-600: #475569;
+  --steel-700: #334155;
+  --steel-800: #1e293b;
+  --steel-900: #0f172a;
+
+  /* Surface tokens */
+  --surface-white:     #ffffff;
+  --surface-light:     #f8fafc;
+  --surface-off-white: #f4f6f9;
+  --surface-card:      #ffffff;
+  --surface-border:    #e2e8f0;
+
+  /* Text tokens */
+  --text-primary:   #0f172a;
+  --text-secondary: #334155;
+  --text-muted:     #64748b;
+  --text-faint:     #94a3b8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-navy-600: var(--navy-600);
+  --color-red-brand: var(--red-brand);
+  --color-steel-50:  var(--steel-50);
+  --color-steel-100: var(--steel-100);
+  --color-steel-200: var(--steel-200);
+  --color-steel-300: var(--steel-300);
+  --color-steel-400: var(--steel-400);
+  --color-steel-500: var(--steel-500);
+  --color-steel-600: var(--steel-600);
+  --color-steel-700: var(--steel-700);
+  --color-steel-800: var(--steel-800);
+  --color-steel-900: var(--steel-900);
+  --color-surface-white:     var(--surface-white);
+  --color-surface-light:     var(--surface-light);
+  --color-surface-off-white: var(--surface-off-white);
+  --color-surface-card:      var(--surface-card);
+  --color-surface-border:    var(--surface-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base Reset & Typography ───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface-white);
+  color: var(--text-primary);
+  font-family: var(--font-sans), 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* ─── Custom Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--steel-100); }
+::-webkit-scrollbar-thumb { background: var(--steel-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--steel-400); }
+
+/* ─── Focus Styles ──────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--navy-700);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Section Divider ───────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--steel-200), transparent);
+}
+
+/* ─── Card Hover Lift ───────────────────────────────────────────────── */
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
+}
+
+/* ─── Animated Underline ────────────────────────────────────────────── */
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--navy-700);
+  transition: width 0.3s ease;
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* ─── Nav Glass (light) ─────────────────────────────────────────────── */
+.nav-glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
