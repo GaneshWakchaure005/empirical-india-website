@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
+import { ArrowRight, FileText, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Home from "@/data/01-home";
@@ -63,17 +63,105 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
   const autoplayInterval = activeHero?.autoplay_interval || 4000;
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reliable 4-second auto-slide interval
+  // Touch tracking for swipe gestures
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  // Pauses autosliding immediately and starts a 10s inactivity countdown to resume
+  const handleManualInteraction = useCallback(() => {
+    setIsAutoPlaying(false);
+
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+
+    inactivityTimerRef.current = setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 10000); // 10 seconds of inactivity
+  }, []);
+
+  // Cleanup inactivity timeout on component unmount
   useEffect(() => {
-    if (slideCount <= 1) return;
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Manual navigation handlers — immediately stop auto-slider and reset 10s inactivity timer
+  const handlePrev = useCallback(() => {
+    handleManualInteraction();
+    setCurrentIndex((prev) => (prev - 1 + slideCount) % slideCount);
+  }, [slideCount, handleManualInteraction]);
+
+  const handleNext = useCallback(() => {
+    handleManualInteraction();
+    setCurrentIndex((prev) => (prev + 1) % slideCount);
+  }, [slideCount, handleManualInteraction]);
+
+  const handleSelectSlide = useCallback((index: number) => {
+    handleManualInteraction();
+    setCurrentIndex(index);
+  }, [handleManualInteraction]);
+
+  // Reliable auto-slide interval (only runs when isAutoPlaying is true)
+  useEffect(() => {
+    if (slideCount <= 1 || !isAutoPlaying) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slideCount);
     }, autoplayInterval);
 
     return () => clearInterval(timer);
-  }, [slideCount, autoplayInterval]);
+  }, [slideCount, autoplayInterval, isAutoPlaying]);
+
+  // Keyboard navigation (Left / Right arrow keys)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        handlePrev();
+      } else if (e.key === "ArrowRight") {
+        handleNext();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePrev, handleNext]);
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const deltaX = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 45; // 45px threshold
+
+    if (deltaX > minSwipeDistance) {
+      handleNext(); // swiped left -> next
+    } else if (deltaX < -minSwipeDistance) {
+      handlePrev(); // swiped right -> prev
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   if (slideCount === 0) return null;
 
@@ -86,10 +174,35 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
 
   return (
     <section
-      className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center overflow-hidden text-white"
+      className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center overflow-hidden text-white select-none"
       style={{ backgroundColor: "#030712" }}
       aria-label="Empirical India Hero Showcase"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
+      {/* ── Left / Right Manual Floating Navigation Chevrons ── */}
+      {slideCount > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous slide"
+            className="hidden sm:flex absolute left-4 md:left-8 lg:left-10 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full items-center justify-center bg-slate-950/45 hover:bg-slate-900/85 border border-white/20 hover:border-white/50 text-white/80 hover:text-white backdrop-blur-md shadow-xl shadow-black/50 transition-all duration-300 hover:scale-105 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer"
+          >
+            <ChevronLeft size={22} className="group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next slide"
+            className="hidden sm:flex absolute right-4 md:right-8 lg:right-10 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full items-center justify-center bg-slate-950/45 hover:bg-slate-900/85 border border-white/20 hover:border-white/50 text-white/80 hover:text-white backdrop-blur-md shadow-xl shadow-black/50 transition-all duration-300 hover:scale-105 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer"
+          >
+            <ChevronRight size={22} className="group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </>
+      )}
       {/* ── Layer 1: Background Carousel Images (z-0) ── */}
       <motion.div
         initial={{ opacity: 0, scale: 1.06 }}
@@ -260,7 +373,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
                   )}
                   aria-hidden={!isActive}
                 >
-                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold tracking-wide text-slate-200 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
+                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold tracking-wide text-yellow-400/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
                     {specsText}
                   </span>
                 </div>
@@ -286,27 +399,48 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
             >
               <FileText size={15} className="text-slate-300" />
               <span>{activeSlide.secondary_button}</span>
-              <span className="text-xs text-emerald-400 font-mono tracking-tight bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 rounded">
-                RFQ
-              </span>
             </Link>
           </div>
 
-          {/* Minimal Slide Indicator Dots */}
-          <div className="mt-14 flex items-center justify-center gap-2">
-            {slides.map((s, idx) => (
-              <button
-                key={s.id}
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`Jump to slide ${idx + 1}`}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-500 cursor-pointer focus:outline-none",
-                  idx === currentIndex
-                    ? "w-8 bg-sky-400 shadow-[0_0_8px_#38bdf8]"
-                    : "w-2 bg-white/25 hover:bg-white/50"
-                )}
-              />
-            ))}
+          {/* Manual Slider Navigation & Indicators */}
+          <div className="mt-12 sm:mt-14 flex items-center justify-center gap-2 sm:gap-3 select-none">
+            {/* Mobile Previous Button */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous slide"
+              className="sm:hidden w-8 h-8 rounded-full flex items-center justify-center bg-slate-950/60 hover:bg-slate-900 border border-white/20 text-white/90 backdrop-blur-md transition-all active:scale-90 cursor-pointer"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {/* Indicator Dots */}
+            <div className="flex items-center gap-2 px-1">
+              {slides.map((s, idx) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleSelectSlide(idx)}
+                  aria-label={`Jump to slide ${idx + 1}`}
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-500 cursor-pointer focus:outline-none focus:ring-1 focus:ring-sky-400",
+                    idx === currentIndex
+                      ? "w-8 bg-sky-400 shadow-[0_0_10px_#38bdf8]"
+                      : "w-2.5 bg-white/30 hover:bg-white/60"
+                  )}
+                />
+              ))}
+            </div>
+
+            {/* Mobile Next Button */}
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next slide"
+              className="sm:hidden w-8 h-8 rounded-full flex items-center justify-center bg-slate-950/60 hover:bg-slate-900 border border-white/20 text-white/90 backdrop-blur-md transition-all active:scale-90 cursor-pointer"
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
       </motion.div>

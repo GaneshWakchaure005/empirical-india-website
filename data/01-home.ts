@@ -13,7 +13,7 @@ export const Home = {
       {
         id: "roll-forming",
         eyebrow: "ROLL FORMING SOLUTIONS",
-        headline: "Engineered to transform with precision.",
+        headline: "''Engineered to transform with precision.''",
         supporting_copy:
           "Custom automated roll-forming lines engineered around your profile, material, production speed, and process requirements — from coil entry to finished section.",
         specs: "Custom Profiles • Automated Lines • High Repeatability",
@@ -24,13 +24,13 @@ export const Home = {
         },
 
         primary_button: "Explore Products",
-        secondary_button: "Get in Touch",
+        secondary_button: "Contact Us",
       },
 
       {
         id: "metal-pallets",
-        eyebrow: "HEAVY-DUTY LOGISTICS",
-        headline: "Built for demanding loads with modular strength.",
+        eyebrow: "HEAVY-DUTY METAL PALLETS",
+        headline: "''Built for demanding loads with modular strength.''",
         supporting_copy:
           "Heavy-duty modular metal pallets engineered around your product, load case, handling method, and storage requirements — combining strength, repeatability, and practical design.",
         specs: "High Load Capacity • Modular Design • C-Channel Strength",
@@ -41,13 +41,13 @@ export const Home = {
         },
 
         primary_button: "Explore Products",
-        secondary_button: "Get in Touch",
+        secondary_button: "Contact Us",
       },
 
       {
         id: "trolley-bag-tubes",
         eyebrow: "TUBE MANUFACTURING",
-        headline: "Precision tubes for products that move with you.",
+        headline: "''Precision tubes for products that move with you.''",
         supporting_copy:
           "Manufactured to your approved section, material, length, finish, and dimensional requirements for trolley-bag applications.",
         specs: "Lightweight • Strong • Precise",
@@ -58,7 +58,7 @@ export const Home = {
         },
 
         primary_button: "Explore Products",
-        secondary_button: "Get in Touch",
+        secondary_button: "Contact Us",
       },
     ],
 
