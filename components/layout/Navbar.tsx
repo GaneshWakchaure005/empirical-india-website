@@ -39,14 +39,14 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-glass",
         scrolled
-          ? "bg-white/95 shadow-[0_1px_0_#e2e8f0,0_4px_16px_rgba(15,23,42,0.07)] py-1"
-          : "bg-white py-2"
+          ? "bg-white/95 shadow-[0_1px_0_#e2e8f0,0_4px_16px_rgba(15,23,42,0.07)]"
+          : "bg-white shadow-[0_1px_0_#e2e8f0]"
       )}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="flex items-center justify-between h-20 md:h-[84px] transition-all duration-300">
+        <div className="flex items-center justify-between h-[56px] sm:h-[66px] md:h-[76px] lg:h-[80px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0" aria-label="Empirical India Home">
+          <Link href="/" className="flex items-center shrink-0 h-full" aria-label="Empirical India Home">
             <div className="relative w-[230px] sm:w-[275px] md:w-[315px] lg:w-[335px] h-[56px] sm:h-[66px] md:h-[76px] lg:h-[80px]">
               <Image
                 src="/images/company logo.webp"
