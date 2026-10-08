@@ -18,16 +18,16 @@ export const About = {
   our_approach:
     "We bring practical roll-forming knowledge into product development and manufacturing. That experience helps us discuss not only the finished profile or component, but also the forming sequence, tooling, material, operations, and repeatability needed to make it. For every enquiry, the final scope and measurable acceptance criteria are agreed against the customer's approved requirements.",
 
-  // Video showcase configuration — easily updated whenever a new video or short is available
+  // Video showcase configuration — easily updated whenever a new video is available
   video_highlight: {
     title: "Precision Roll-Forming & Manufacturing in Action",
     subtitle:
       "Observe our cold roll forming stations, tooling setups, and metal manufacturing workflow at our Nashik plant.",
-    video_url: "https://youtube.com/shorts/nWcMKPUfsuk?si=gdUpSUYY5X2QnCZQ",
-    embed_id: "nWcMKPUfsuk",
+    video_url:
+      "https://res.cloudinary.com/did8mktr3/video/upload/v1791479763/output_poignu.mp4",
     caption:
       "Real-time production sequence demonstrating continuous profile forming, straightness, and tooling stability.",
-    note: "Change this video_url or embed_id anytime to feature a new manufacturing clip or machine showcase.",
+    note: "Update video_url anytime to feature a new manufacturing clip or machine showcase.",
   },
 
   suggested_values: [

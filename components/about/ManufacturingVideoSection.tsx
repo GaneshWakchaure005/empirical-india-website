@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Play, ExternalLink, Factory, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
+import { Play, Pause, Factory, ShieldCheck, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VideoHighlightProps {
@@ -10,37 +10,36 @@ interface VideoHighlightProps {
     title: string;
     subtitle: string;
     video_url: string;
-    embed_id: string;
     caption: string;
     note?: string;
   };
 }
 
-/**
- * Extracts YouTube video ID from various formats:
- * - https://youtube.com/shorts/nWcMKPUfsuk?si=...
- * - https://www.youtube.com/watch?v=...
- * - https://youtu.be/...
- */
-function extractYouTubeId(url: string, defaultId: string): string {
-  if (!url) return defaultId;
-  const shortsMatch = url.match(/\/shorts\/([a-zA-Z0-9_-]+)/);
-  if (shortsMatch && shortsMatch[1]) return shortsMatch[1];
-
-  const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
-  if (watchMatch && watchMatch[1]) return watchMatch[1];
-
-  const youtuBeMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
-  if (youtuBeMatch && youtuBeMatch[1]) return youtuBeMatch[1];
-
-  return defaultId;
-}
-
 export default function ManufacturingVideoSection({ videoConfig }: VideoHighlightProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const videoId = extractYouTubeId(videoConfig.video_url, videoConfig.embed_id || "nWcMKPUfsuk");
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&rel=0&modestbranding=1`;
+  const handleTogglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        // Handle playback permissions
+      });
+    }
+  };
+
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
 
   return (
     <section className="relative bg-white py-20 sm:py-28 overflow-hidden border-b border-steel-200/60">
@@ -78,48 +77,68 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
             transition={{ duration: 0.55 }}
           >
             <div className="w-full max-w-md sm:max-w-lg lg:max-w-full rounded-3xl border border-steel-200/90 bg-steel-950 p-2 sm:p-3 shadow-[0_16px_50px_rgba(15,23,42,0.12)] relative overflow-hidden">
-              {/* Aspect ratio frame (supports 9:16 Shorts or 16:9 responsive embed) */}
-              <div className="relative w-full aspect-[9/16] max-h-[580px] sm:max-h-[620px] rounded-2xl overflow-hidden bg-steel-900">
-                {isPlaying ? (
-                  <iframe
-                    src={embedUrl}
-                    title="Empirical India Manufacturing & Machinery Demonstration"
-                    className="w-full h-full border-0 rounded-2xl"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-steel-900 to-navy-950 text-white p-6 text-center">
+              {/* Video wrapper frame */}
+              <div
+                onClick={handleTogglePlay}
+                className="relative w-full aspect-[9/16] max-h-[580px] sm:max-h-[620px] rounded-2xl overflow-hidden bg-black flex items-center justify-center cursor-pointer group"
+              >
+                <video
+                  ref={videoRef}
+                  src={videoConfig.video_url}
+                  className="w-full h-full object-contain bg-black"
+                  playsInline
+                  preload="metadata"
+                  controls={isPlaying}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                />
+
+                {/* Interactive Play Overlay when video is paused */}
+                {!isPlaying && (
+                  <div className="absolute inset-0 bg-steel-950/40 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center transition-all group-hover:bg-steel-950/30">
                     <button
                       type="button"
-                      onClick={() => setIsPlaying(true)}
-                      className="w-16 h-16 rounded-full bg-navy-600 hover:bg-navy-500 text-white flex items-center justify-center transition-all shadow-lg hover:scale-105 mb-4 group"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTogglePlay();
+                      }}
+                      className="w-20 h-20 rounded-full bg-navy-600/95 hover:bg-navy-600 text-white flex items-center justify-center transition-all shadow-[0_8px_30px_rgba(26,58,143,0.5)] hover:scale-110 active:scale-95 border-2 border-white/20 backdrop-blur-md mb-4 cursor-pointer"
                       aria-label="Play manufacturing video"
                     >
-                      <Play className="w-7 h-7 translate-x-0.5 group-hover:scale-110 transition-transform" />
+                      <Play className="w-8 h-8 translate-x-0.5" />
                     </button>
-                    <p className="text-sm font-medium text-steel-200">
-                      Click to watch live machinery in action
+
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 border border-white/10 text-white text-xs font-medium mb-1">
+                      <span>Click to watch machine trial</span>
+                    </div>
+                    <p className="text-[11px] text-steel-300 font-normal">
+                      High-definition footage from our Nashik facility
                     </p>
                   </div>
                 )}
+
+                {/* Floating Quick Controls when playing */}
+                {isPlaying && (
+                  <button
+                    type="button"
+                    onClick={handleToggleMute}
+                    aria-label={isMuted ? "Unmute video" : "Mute video"}
+                    className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm transition-colors"
+                  >
+                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  </button>
+                )}
               </div>
 
-              {/* Caption & Source Note */}
+              {/* Caption */}
               <div className="p-3 sm:p-4 text-center">
                 <p className="text-xs text-steel-300 font-normal leading-relaxed">
                   {videoConfig.caption}
                 </p>
-                <div className="mt-2.5 flex items-center justify-center gap-3">
-                  <a
-                    href={videoConfig.video_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-navy-300 hover:text-white transition-colors"
-                  >
-                    <span>Open directly on YouTube</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                <div className="mt-2 flex items-center justify-center gap-2 text-[11px] text-steel-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <span>Nashik Plant Recording • Cold Roll Forming Sequence</span>
                 </div>
               </div>
             </div>
@@ -195,13 +214,13 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
               </div>
             </div>
 
-            {/* Note on how to update video URL */}
+            {/* Note on video configuration */}
             <div className="rounded-xl p-3.5 bg-steel-50 border border-steel-200/70 text-[11px] text-steel-500">
-              <span className="font-semibold text-steel-700">Video Source:</span> Centralized in{" "}
+              <span className="font-semibold text-steel-700">Video Source:</span> Hosted on Cloudinary and configured in{" "}
               <code className="text-navy-800 bg-white px-1.5 py-0.5 rounded border border-steel-200 font-mono text-[10px]">
-                data/02-about.ts → video_highlight
+                data/02-about.ts → video_highlight.video_url
               </code>
-              . Update the link anytime to showcase updated machinery.
+              . Update the link anytime.
             </div>
           </motion.div>
         </div>
