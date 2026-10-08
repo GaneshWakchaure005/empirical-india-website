@@ -90,17 +90,22 @@ export const Home = {
     {
       capability: "Custom roll-forming lines",
       copy:
-        "Automated production lines configured around the profile, material, operations, and output required. From coil handling and forming to optional punching, cut-off, and outfeed equipment, the line scope is defined for each project.",
+        "Automated production lines configured around your specific profile, material, operations, and required output. Equipment scope is tailored for each project.",
     },
     {
       capability: "Modular metal pallets",
       copy:
-        "Heavy-duty, configurable pallets made with cold roll-formed C-channel or other approved modular profiles. Designed around the product, handling method, storage pattern, and load case.",
+        "Heavy-duty, configurable pallets made with cold roll-formed modular profiles. Designed specifically around your product, handling method, and load case.",
     },
     {
       capability: "Tubes for trolley bags",
       copy:
         "Tubes made to the approved section, material, length, finish, and dimensional requirements of trolley-bag manufacturers.",
+    },
+    {
+      capability: "Solar Structure",
+      copy:
+        "High-strength, durable structural profiles, clamps, and hardware designed specifically for solar panel mounting and installation.",
     },
   ],
 
