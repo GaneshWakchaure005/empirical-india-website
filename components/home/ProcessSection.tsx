@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Target,
@@ -11,7 +11,6 @@ import {
   Truck,
   ChevronRight,
   ChevronLeft,
-  ArrowDown,
   Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -69,26 +68,8 @@ export default function ProcessSection({
   // Desktop active hovered/selected step
   const [activeDesktopStep, setActiveDesktopStep] = useState<number>(0);
 
-  // Mobile scroll-driven step index
+  // Mobile step index
   const [activeMobileStep, setActiveMobileStep] = useState<number>(0);
-  const mobileContainerRef = useRef<HTMLDivElement>(null);
-
-  // Framer Motion scroll tracking for the mobile step sequence
-  const { scrollYProgress } = useScroll({
-    target: mobileContainerRef,
-    offset: ["start start", "end end"],
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (stages.length === 0) return;
-    // Map scroll progress (0.0 to 1.0) across the stages
-    const stepCount = stages.length;
-    const computedIndex = Math.min(
-      stepCount - 1,
-      Math.max(0, Math.floor(latest * stepCount))
-    );
-    setActiveMobileStep(computedIndex);
-  });
 
   // Allow touch swipe navigation on mobile
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -114,7 +95,7 @@ export default function ProcessSection({
 
   return (
     <section
-      className="relative bg-[#f8fafc] py-20 sm:py-28 overflow-hidden select-text"
+      className="relative bg-[#f8fafc] py-14 sm:py-20 lg:py-28 overflow-hidden select-text"
       aria-labelledby="process-heading"
     >
       {/* Subtle blueprint grid watermark background */}
@@ -324,162 +305,149 @@ export default function ProcessSection({
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            2. MOBILE VIEW (Scroll-driven: One Step at a Time with Animation)
+            2. MOBILE VIEW (Interactive Stepper: One Step at a Time with Slide Buttons)
             ───────────────────────────────────────────────────────────── */}
         <div className="block lg:hidden">
-          {/* Scroll track container: provides vertical travel for the scroll-driven step sequence */}
+          {/* Master Rounded Box Container (NO cards) */}
           <div
-            ref={mobileContainerRef}
-            className="relative"
-            style={{ minHeight: `${stages.length * 52}vh` }}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="relative rounded-3xl border border-steel-200/90 bg-white/95 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.08)] overflow-hidden transition-shadow"
           >
-            {/* Sticky viewport: holds the rounded box in view as the user scrolls up in vertical */}
-            <div className="sticky top-20 sm:top-24 z-20 pt-2 pb-6">
-              {/* Master Rounded Box Container (NO cards) */}
-              <div
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-                className="relative rounded-3xl border border-steel-200/90 bg-white/95 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_12px_40px_-8px_rgba(15,23,42,0.08)] overflow-hidden transition-shadow"
-              >
-                {/* Huge semi-visible bolder step number embedded inside the rounded box */}
-                <div
-                  className="absolute -top-1 right-2 select-none pointer-events-none font-mono font-black text-8xl sm:text-9xl tracking-tighter text-navy-900/[0.08] leading-none z-0"
-                  aria-hidden="true"
-                >
-                  {stages[activeMobileStep]?.stage.split(" ")[0] || "01"}
-                </div>
-
-                {/* Animated Step Content (One step at a time with smooth vertical animation) */}
-                <AnimatePresence mode="wait">
-                  {(() => {
-                    const currentStage = stages[activeMobileStep];
-                    if (!currentStage) return null;
-
-                    const parts = currentStage.stage.split(" ");
-                    const stageNum = parts[0];
-                    const stageName = parts.slice(1).join(" ");
-                    const config =
-                      STAGE_CONFIG[activeMobileStep] || STAGE_CONFIG[0];
-                    const Icon = config.icon;
-
-                    return (
-                      <motion.div
-                        key={`mobile-step-${stageNum}`}
-                        initial={{ opacity: 0, y: 26, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -22, scale: 0.97 }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="relative z-10 flex flex-col justify-between min-h-[290px]"
-                      >
-                        {/* Top Meta row */}
-                        <div>
-                          <div className="flex items-center justify-between mb-4">
-                            {/* Phase pill */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-50 border border-navy-200/70 text-navy-800 text-xs font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse" />
-                              <span>
-                                PHASE {stageNum} OF 0{stages.length}
-                              </span>
-                            </div>
-
-                          </div>
-
-                          {/* Stage Name */}
-                          <span className="text-xs font-bold text-navy-700 tracking-wider uppercase block">
-                            {config.subtitle}
-                          </span>
-                          <h3 className="text-2xl sm:text-3xl font-extrabold text-steel-900 tracking-tight mt-1">
-                            {stageName}
-                          </h3>
-
-                          {/* Stage Description */}
-                          <p className="mt-3.5 text-sm sm:text-base text-steel-600 leading-relaxed font-normal">
-                            {currentStage.description}
-                          </p>
-
-                          {/* Deliverable / Focus item */}
-                          <div className="mt-4 p-3 rounded-xl bg-steel-50/80 border border-steel-200/60 flex items-center gap-2.5 text-xs text-steel-700">
-                            <span className="w-2 h-2 rounded-full bg-navy-600 shrink-0" />
-                            <span className="font-medium">
-                              Focus: {config.deliverable}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Interactive Controls & Progress Bar inside the rounded box */}
-                        <div className="mt-6 pt-4 border-t border-steel-100">
-                          {/* Segmented Progress Tracker */}
-                          <div className="grid grid-cols-6 gap-1.5 mb-4">
-                            {stages.map((_, i) => (
-                              <button
-                                key={`seg-${i}`}
-                                type="button"
-                                onClick={() => setActiveMobileStep(i)}
-                                aria-label={`Jump to stage ${i + 1}`}
-                                className={cn(
-                                  "h-1.5 rounded-full transition-all duration-300",
-                                  i === activeMobileStep
-                                    ? "bg-navy-800 shadow-2xs"
-                                    : i < activeMobileStep
-                                    ? "bg-navy-600/70"
-                                    : "bg-steel-200"
-                                )}
-                              />
-                            ))}
-                          </div>
-
-                          {/* Navigation Buttons + Step Counter */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setActiveMobileStep((prev) =>
-                                    Math.max(0, prev - 1)
-                                  )
-                                }
-                                disabled={activeMobileStep === 0}
-                                aria-label="Previous stage"
-                                className="w-8 h-8 rounded-lg border border-steel-200 flex items-center justify-center text-steel-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-steel-50 active:scale-95 transition-all"
-                              >
-                                <ChevronLeft className="w-4 h-4" />
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setActiveMobileStep((prev) =>
-                                    Math.min(stages.length - 1, prev + 1)
-                                  )
-                                }
-                                disabled={activeMobileStep === stages.length - 1}
-                                aria-label="Next stage"
-                                className="w-8 h-8 rounded-lg border border-steel-200 flex items-center justify-center text-steel-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-steel-50 active:scale-95 transition-all"
-                              >
-                                <ChevronRight className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })()}
-                </AnimatePresence>
-              </div>
+            {/* Huge semi-visible bolder step number embedded inside the rounded box */}
+            <div
+              className="absolute -top-1 right-2 select-none pointer-events-none font-mono font-black text-8xl sm:text-9xl tracking-tighter text-navy-900/[0.08] leading-none z-0"
+              aria-hidden="true"
+            >
+              {stages[activeMobileStep]?.stage.split(" ")[0] || "01"}
             </div>
+
+            {/* Animated Step Content (One step at a time with smooth animation) */}
+            <AnimatePresence mode="wait">
+              {(() => {
+                const currentStage = stages[activeMobileStep];
+                if (!currentStage) return null;
+
+                const parts = currentStage.stage.split(" ");
+                const stageNum = parts[0];
+                const stageName = parts.slice(1).join(" ");
+                const config =
+                  STAGE_CONFIG[activeMobileStep] || STAGE_CONFIG[0];
+                const Icon = config.icon;
+
+                return (
+                  <motion.div
+                    key={`mobile-step-${stageNum}`}
+                    initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
+                    className="relative z-10 flex flex-col justify-between"
+                  >
+                    {/* Top Meta row */}
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        {/* Phase pill */}
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-50 border border-navy-200/70 text-navy-800 text-xs font-semibold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse" />
+                          <span>
+                            PHASE {stageNum} OF 0{stages.length}
+                          </span>
+                        </div>
+
+                        {/* Stage Icon Node */}
+                        <div className="w-10 h-10 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-sm">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                      </div>
+
+                      {/* Stage Name */}
+                      <span className="text-xs font-bold text-navy-700 tracking-wider uppercase block">
+                        {config.subtitle}
+                      </span>
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-steel-900 tracking-tight mt-1">
+                        {stageName}
+                      </h3>
+
+                      {/* Stage Description */}
+                      <p className="mt-3.5 text-sm sm:text-base text-steel-600 leading-relaxed font-normal">
+                        {currentStage.description}
+                      </p>
+
+                      {/* Deliverable / Focus item */}
+                      <div className="mt-4 p-3 rounded-xl bg-steel-50/80 border border-steel-200/60 flex items-center gap-2.5 text-xs text-steel-700">
+                        <span className="w-2 h-2 rounded-full bg-navy-600 shrink-0" />
+                        <span className="font-medium">
+                          Focus: {config.deliverable}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Interactive Controls & Progress Bar inside the rounded box */}
+                    <div className="mt-6 pt-4 border-t border-steel-100">
+                      {/* Segmented Progress Tracker */}
+                      <div className="grid grid-cols-6 gap-1.5 mb-4">
+                        {stages.map((_, i) => (
+                          <button
+                            key={`seg-${i}`}
+                            type="button"
+                            onClick={() => setActiveMobileStep(i)}
+                            aria-label={`Jump to stage ${i + 1}`}
+                            className={cn(
+                              "h-1.5 rounded-full transition-all duration-300",
+                              i === activeMobileStep
+                                ? "bg-navy-800 shadow-2xs"
+                                : i < activeMobileStep
+                                ? "bg-navy-600/70"
+                                : "bg-steel-200"
+                            )}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Navigation Buttons + Step Counter */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setActiveMobileStep((prev) =>
+                                Math.max(0, prev - 1)
+                              )
+                            }
+                            disabled={activeMobileStep === 0}
+                            aria-label="Previous stage"
+                            className="w-9 h-9 rounded-xl border border-steel-200 flex items-center justify-center text-steel-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-steel-50 active:scale-95 transition-all shadow-2xs"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setActiveMobileStep((prev) =>
+                                Math.min(stages.length - 1, prev + 1)
+                              )
+                            }
+                            disabled={activeMobileStep === stages.length - 1}
+                            aria-label="Next stage"
+                            className="w-9 h-9 rounded-xl border border-steel-200 flex items-center justify-center text-steel-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-steel-50 active:scale-95 transition-all shadow-2xs"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-steel-400">
+                          <span>Stage {activeMobileStep + 1} of {stages.length}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
           </div>
         </div>
-
-        {/* Process Footnote — Preserving verified client content rule */}
-        <motion.p
-          className="mt-12 text-center text-xs text-steel-400 italic max-w-lg mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          The exact workflow is validated against Empirical India&apos;s actual process before being described as standard.
-        </motion.p>
       </div>
 
       <div className="section-divider absolute inset-x-0 bottom-0" aria-hidden="true" />
