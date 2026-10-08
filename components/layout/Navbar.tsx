@@ -43,16 +43,16 @@ export default function Navbar() {
           : "bg-white py-2"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-20 md:h-[84px] transition-all duration-300">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0" aria-label="Empirical India Home">
-            <div className="relative w-[190px] h-[50px]">
+            <div className="relative w-[230px] sm:w-[275px] md:w-[315px] lg:w-[335px] h-[56px] sm:h-[66px] md:h-[76px] lg:h-[80px]">
               <Image
                 src="/images/company logo.webp"
                 alt="Empirical India - Roll Forming Experts"
                 fill
-                sizes="190px"
+                sizes="(max-width: 640px) 230px, (max-width: 768px) 275px, 335px"
                 className="object-contain object-left"
                 priority
                 loading="eager"
