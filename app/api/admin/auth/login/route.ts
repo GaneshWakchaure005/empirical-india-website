@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
 
     const response = successResponse(
       {
+        token,
         admin: {
           id: admin._id.toString(),
           name: admin.name,

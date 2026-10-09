@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
+import "@/models/Category";
+import "@/models/Admin";
 import { successResponse, errorResponse, handleApiError } from "@/lib/api-response";
 
 

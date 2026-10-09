@@ -13,6 +13,7 @@ export async function middleware(request: NextRequest) {
   // 1. Allow public auth endpoints
   if (
     pathname === "/api/admin/auth/login" ||
+    pathname === "/api/admin/auth/logout" ||
     pathname === "/admin/login"
   ) {
     return NextResponse.next();

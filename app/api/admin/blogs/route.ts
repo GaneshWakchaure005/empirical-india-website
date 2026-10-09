@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import Category from "@/models/Category";
+import "@/models/Admin";
 import { requireEditorOrAdmin } from "@/lib/auth";
 import { blogCreateSchema } from "@/lib/validation";
 import {

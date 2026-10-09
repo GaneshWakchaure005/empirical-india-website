@@ -59,12 +59,19 @@ export const blogCreateSchema = z.object({
     .default([]),
 });
 
+export const featuredImageSchema = z.object({
+  url: z.string().url("Invalid image URL"),
+  publicId: z.string().min(1, "publicId is required"),
+  alt: z.string().optional().default(""),
+});
+
 export const blogUpdateSchema = z.object({
   title: z.string().min(3).max(200).optional(),
   slug: z.string().optional(),
   excerpt: z.string().min(10).max(600).optional(),
   content: z.string().min(10).optional(),
   category: objectIdSchema.optional(),
+  featuredImage: featuredImageSchema.optional(),
   tags: z
     .union([z.array(z.string()), z.string()])
     .transform((val) => {
@@ -150,6 +157,7 @@ export const newsEventUpdateSchema = z.object({
   excerpt: z.string().min(10).max(600).optional(),
   content: z.string().min(10).optional(),
   category: objectIdSchema.optional(),
+  featuredImage: featuredImageSchema.optional(),
   tags: z
     .union([z.array(z.string()), z.string()])
     .transform((val) => {
@@ -163,8 +171,18 @@ export const newsEventUpdateSchema = z.object({
   status: z.enum(["draft", "published"]).optional(),
   featured: z.boolean().optional(),
   alt: z.string().optional(),
-  eventStartDate: z.string().optional(),
-  eventEndDate: z.string().optional(),
+  eventStartDate: z
+    .string()
+    .refine((val) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid event start date format",
+    })
+    .optional(),
+  eventEndDate: z
+    .string()
+    .refine((val) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid event end date format",
+    })
+    .optional(),
   eventLocation: z.string().optional(),
   eventRegistrationUrl: z.string().url("Invalid URL").or(z.literal("")).optional(),
   metaTitle: z.string().max(100).optional(),

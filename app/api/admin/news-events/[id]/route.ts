@@ -17,6 +17,8 @@ import {
 } from "@/lib/api-response";
 
 
+import "@/models/Admin";
+
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
@@ -146,6 +148,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const oldPublicId = item.featuredImage?.publicId;
+    const existingImage = rawData.featuredImage || rawData.image;
 
     if (imageFile) {
       const validation = validateImageFile(imageFile);
@@ -163,6 +166,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         url: uploadResult.secureUrl,
         publicId: uploadResult.publicId,
         alt: validated.alt || item.featuredImage?.alt || item.title,
+      };
+    } else if (existingImage && existingImage.url && existingImage.publicId) {
+      item.featuredImage = {
+        url: existingImage.url,
+        publicId: existingImage.publicId,
+        alt: existingImage.alt || validated.alt || item.featuredImage?.alt || item.title,
       };
     }
 
