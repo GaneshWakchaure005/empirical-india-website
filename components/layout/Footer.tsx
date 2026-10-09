@@ -16,6 +16,7 @@ const footerCompany = [
   { label: "Projects", href: "/projects" },
   { label: "Quality & Manufacturing", href: "/quality-manufacturing" },
   { label: "News & Events", href: "/news" },
+  { label: "Blogs & Insights", href: "/blogs" },
   { label: "Careers", href: "/careers" },
 ];
 

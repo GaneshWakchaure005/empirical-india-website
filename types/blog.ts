@@ -42,11 +42,20 @@ export interface BlogPublic {
   category: CategoryPublic | null;
   tags: string[];
   author?: {
-    id: string;
+    id?: string;
     name: string;
   };
   featured: boolean;
   seo: IBlogSEO;
   publishedAt?: string | Date;
   createdAt: string | Date;
+}
+
+export interface BlogQueryParams {
+  page?: number;
+  limit?: number;
+  category?: string;
+  tag?: string;
+  featured?: boolean;
+  search?: string;
 }
