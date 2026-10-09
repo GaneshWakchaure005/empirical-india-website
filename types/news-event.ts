@@ -62,3 +62,15 @@ export interface NewsEventPublic {
   publishedAt?: string | Date;
   createdAt: string | Date;
 }
+
+export interface NewsEventsQueryParams {
+  page?: number;
+  limit?: number;
+  type?: NewsEventType;
+  category?: string;
+  tag?: string;
+  featured?: boolean;
+  upcoming?: boolean;
+  past?: boolean;
+  search?: string;
+}

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
 import NewsEvent from "@/models/NewsEvent";
 import Category from "@/models/Category";
+import "@/models/Admin";
 import { paginatedResponse, handleApiError } from "@/lib/api-response";
 
 
