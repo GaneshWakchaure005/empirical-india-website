@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BlogsContent } from "@/data/10-blogs";
-import { ChevronRight, Layers, Cog, Box, Sparkles } from "lucide-react";
+import { ChevronRight, Layers, Cog, Box, Sparkles,SolarPanel } from "lucide-react";
 
 export default function BlogsHero() {
   const { hero } = BlogsContent;
@@ -21,10 +21,7 @@ export default function BlogsHero() {
           className="object-cover object-center transform scale-105 transition-transform duration-1000"
         />
 
-        {/* ── Light Scrim & Gradient Overlay for Contrast & Readability ── */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/75 via-white/85 to-white backdrop-blur-[2px]" />
-        {/* Subtle radial glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent pointer-events-none" />
+      
       </div>
 
       {/* ── Foreground Content ── */}
@@ -92,6 +89,14 @@ export default function BlogsHero() {
           >
             <Layers size={13} className="text-blue-600 shrink-0" />
             <span>Trolley-Bag Tubes</span>
+          </Link>
+
+          <Link
+            href="/products/solar-structures"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/95 border border-steel-200 text-steel-800 font-medium hover:border-navy-600 hover:text-navy-900 backdrop-blur-md shadow-xs transition-all hover:-translate-y-0.5"
+          >
+            <SolarPanel size={13} className="text-blue-600 shrink-0" />
+            <span>Solar Structures</span>
           </Link>
         </div>
       </div>
