@@ -1,6 +1,15 @@
 "use client";
 
-import { Search, X, Filter, Calendar, Newspaper, Clock, Sparkles, LucideIcon } from "lucide-react";
+import {
+  Search,
+  X,
+  Filter,
+  Calendar,
+  Newspaper,
+  Clock,
+  Sparkles,
+  LucideIcon,
+} from "lucide-react";
 import { CategoryPublic } from "@/types/category";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +41,9 @@ export default function NewsFilters({
   filteredCount,
 }: NewsFiltersProps) {
   const hasActiveFilters =
-    currentTab !== "all" || selectedCategory !== "" || searchQuery.trim() !== "";
+    currentTab !== "all" ||
+    selectedCategory !== "" ||
+    searchQuery.trim() !== "";
 
   const tabs: { id: FilterTab; label: string; icon: LucideIcon }[] = [
     { id: "all", label: "All Updates", icon: Sparkles },
@@ -41,69 +52,90 @@ export default function NewsFilters({
     { id: "upcoming", label: "Upcoming", icon: Clock },
   ];
 
+  const tabBase =
+    "relative inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-transparent px-3.5 py-1.5 text-xs sm:text-sm font-semibold whitespace-nowrap cursor-pointer transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600 focus-visible:ring-offset-1";
+
+  const categoryBase =
+    "inline-flex shrink-0 items-center justify-center rounded-md border border-transparent px-2.5 py-1 text-xs font-medium whitespace-nowrap cursor-pointer transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600 focus-visible:ring-offset-1";
+
   return (
     <div className="mb-8 space-y-3.5">
-      {/* Top Controls: Type Tabs & Search */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      {/* Type Tabs & Search */}
+      <div className="flex flex-col items-stretch justify-between gap-3 md:flex-row md:items-center">
         {/* Type Tabs */}
         <div
           role="tablist"
           aria-label="Filter updates by type"
-          className="inline-flex items-center p-1 bg-steel-100/90 rounded-xl border border-steel-200/80 overflow-x-auto no-scrollbar shrink-0"
+          className="flex min-w-0 max-w-full items-center gap-0.5 overflow-x-auto rounded-xl border border-steel-200/80 bg-steel-100/90 p-1 no-scrollbar"
         >
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = currentTab === tab.id;
+
             return (
               <button
                 key={tab.id}
+                id={`news-tab-${tab.id}`}
+                type="button"
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => onTabChange(tab.id)}
                 className={cn(
-                  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer",
+                  tabBase,
                   isActive
-                    ? "bg-white text-navy-900 shadow-xs border border-steel-200/60 font-bold"
-                    : "text-steel-600 hover:text-navy-900 hover:bg-white/50"
+                    ? "bg-white text-navy-900 shadow-sm ring-1 ring-inset ring-steel-200/70"
+                    : "text-steel-600 hover:bg-white/60 hover:text-navy-900"
                 )}
               >
                 <Icon
                   size={14}
+                  aria-hidden="true"
                   className={cn(
-                    "transition-colors",
+                    "shrink-0",
                     isActive ? "text-navy-700" : "text-steel-400"
                   )}
                 />
+
                 <span>{tab.label}</span>
+
                 {tab.id === "upcoming" && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span
+                    aria-label="Upcoming updates"
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500"
+                  />
                 )}
               </button>
             );
           })}
         </div>
 
-        {/* Search Bar */}
-        <div className="relative flex-1 md:max-w-xs lg:max-w-sm">
+        {/* Search */}
+        <div className="relative w-full min-w-0 md:max-w-xs md:flex-1 lg:max-w-sm">
           <label htmlFor="news-search" className="sr-only">
             Search news and events
           </label>
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-steel-400">
-            <Search size={15} />
-          </div>
+
+          <Search
+            size={15}
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-steel-400"
+          />
+
           <input
             id="news-search"
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search updates, machinery, expos..."
-            className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl border border-steel-200 bg-white placeholder:text-steel-400 text-steel-900 focus:outline-none focus:ring-2 focus:ring-navy-600/30 focus:border-navy-600 transition-all shadow-xs"
+            className="w-full rounded-xl border border-steel-200 bg-white py-2 pl-9 pr-9 text-xs text-steel-900 shadow-xs placeholder:text-steel-400 transition-colors duration-150 focus:border-navy-600 focus:outline-none focus:ring-2 focus:ring-navy-600/20 sm:text-sm"
           />
+
           {searchQuery && (
             <button
+              type="button"
               onClick={() => onSearchChange("")}
               aria-label="Clear search"
-              className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-steel-400 hover:text-steel-700 cursor-pointer"
+              className="absolute right-0 top-0 flex h-full items-center px-2.5 text-steel-400 transition-colors hover:text-steel-700"
             >
               <X size={14} />
             </button>
@@ -111,37 +143,43 @@ export default function NewsFilters({
         </div>
       </div>
 
-      {/* Category Filter Chips & Counter */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 border-t border-steel-100">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] font-bold text-steel-400 uppercase tracking-wider flex items-center gap-1 mr-1">
-            <Filter size={11} />
+      {/* Category Filters */}
+      <div className="space-y-3 border-t border-steel-100 pt-3">
+        {/* Category Chips */}
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <span className="mr-1 inline-flex shrink-0 items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-steel-400">
+            <Filter size={11} aria-hidden="true" />
             Category:
           </span>
 
           <button
+            type="button"
+            aria-pressed={selectedCategory === ""}
             onClick={() => onCategoryChange("")}
             className={cn(
-              "px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer",
+              categoryBase,
               selectedCategory === ""
-                ? "bg-navy-900 text-white font-semibold shadow-xs"
-                : "bg-steel-50 text-steel-600 hover:bg-steel-100 border border-steel-200/80"
+                ? "bg-navy-900 font-semibold text-white shadow-sm ring-1 ring-inset ring-navy-900"
+                : "bg-steel-50 text-steel-600 hover:bg-steel-100 hover:text-navy-900"
             )}
           >
             All
           </button>
 
           {categories.map((cat) => {
-            const isCatActive = selectedCategory === cat.slug;
+            const isActive = selectedCategory === cat.slug;
+
             return (
               <button
                 key={cat.id}
+                type="button"
+                aria-pressed={isActive}
                 onClick={() => onCategoryChange(cat.slug)}
                 className={cn(
-                  "px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer",
-                  isCatActive
-                    ? "bg-navy-900 text-white font-semibold shadow-xs"
-                    : "bg-steel-50 text-steel-600 hover:bg-steel-100 border border-steel-200/80"
+                  categoryBase,
+                  isActive
+                    ? "bg-navy-900 font-semibold text-white shadow-sm ring-1 ring-inset ring-navy-900"
+                    : "bg-steel-50 text-steel-600 hover:bg-steel-100 hover:text-navy-900"
                 )}
               >
                 {cat.name}
@@ -150,19 +188,26 @@ export default function NewsFilters({
           })}
         </div>
 
-        {/* Counter & Clear Active Filters */}
-        <div className="flex items-center gap-3 text-xs text-steel-500 ml-auto">
-          <span>
-            Showing <strong className="text-steel-800 font-semibold">{filteredCount}</strong> of{" "}
-            <strong className="text-steel-800 font-semibold">{totalCount}</strong>
-          </span>
+        {/* Result Count & Reset */}
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-steel-500">
+          <p>
+            Showing{" "}
+            <strong className="font-semibold text-steel-800">
+              {filteredCount}
+            </strong>{" "}
+            of{" "}
+            <strong className="font-semibold text-steel-800">
+              {totalCount}
+            </strong>
+          </p>
 
           {hasActiveFilters && (
             <button
+              type="button"
               onClick={onResetFilters}
-              className="font-semibold text-red-brand hover:underline cursor-pointer flex items-center gap-1"
+              className="inline-flex shrink-0 items-center gap-1 font-semibold text-red-brand transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600"
             >
-              <X size={12} />
+              <X size={12} aria-hidden="true" />
               Reset
             </button>
           )}
