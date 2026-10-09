@@ -23,7 +23,7 @@ export const Home = {
           alt: "Empirical India custom automated roll-forming machine line",
         },
 
-        primary_button: "Explore Products",
+        primary_button: "Explore Roll Forming Lines",
         secondary_button: "Contact Us",
       },
 
@@ -40,7 +40,7 @@ export const Home = {
           alt: "Empirical India modular metal pallets for industrial material handling",
         },
 
-        primary_button: "Explore Products",
+        primary_button: "Explore Metal Pallets",
         secondary_button: "Contact Us",
       },
 
@@ -57,7 +57,7 @@ export const Home = {
           alt: "Precision metal tubes manufactured for trolley-bag applications",
         },
 
-        primary_button: "Explore Products",
+        primary_button: "Explore Tubes",
         secondary_button: "Contact Us",
       },
       {
@@ -73,7 +73,7 @@ export const Home = {
           alt: "Strong metal rooftop solar mounting structures supporting solar panels",
         },
 
-        primary_button: "Explore Products",
+        primary_button: "Explore solar structures",
         secondary_button: "Contact Us",
       },
     ],

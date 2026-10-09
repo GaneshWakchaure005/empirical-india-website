@@ -54,6 +54,11 @@ const productRouteMap: Record<string, { productHref: string; contactHref: string
     contactHref: "/contact?product=trolley-bag-tubes",
     tags: ["Approved Section & Finish", "Precision Lengths", "Trolley-Bag Application"],
   },
+  "solar-structures": {
+    productHref: "/products/solar-structures",
+    contactHref: "/contact?product=solar-structures",
+    tags: ["Custom Profiles", "Load Calculations", "Global Standards"],
+  },
 };
 
 export default function HeroSection({ hero }: { hero?: HeroData }) {
