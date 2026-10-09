@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,13 +20,44 @@ const COMPANY_LOGO_URL =
 
 function LoginForm() {
   const router = useRouter();
-  const from = searchParams.get("from") || "/admin";
+  const searchParams = useSearchParams();
+  const from = searchParams?.get("from") || "/admin";
 
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Check if user is already logged in via localStorage
+  useEffect(() => {
+    try {
+      const storedToken = localStorage.getItem("admin_token");
+      const storedUser = localStorage.getItem("admin_user");
+      if (storedToken || storedUser) {
+        const destination =
+          from && from !== "/admin/login" && from !== "/admin/dashboard"
+            ? from
+            : "/admin";
+        router.replace(destination);
+        return;
+      }
+    } catch {
+      // Ignore localStorage exceptions in private browsing mode
+    }
+    setIsCheckingAuth(false);
+  }, [router, from]);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-slate-400 gap-3">
+        <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
+        <span className="text-xs font-medium">Verifying active session...</span>
+      </div>
+    );
+  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,11 +76,12 @@ function LoginForm() {
         }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Invalid credentials. Please try again.");
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.message || "Invalid credentials. Please try again.");
       }
+
 
       // Store token if returned in JSON (for fallback Bearer auth if needed)
       if (data.data?.token) {
@@ -59,9 +91,14 @@ function LoginForm() {
         localStorage.setItem("admin_user", JSON.stringify(data.data.admin));
       }
 
-      // Navigate to dashboard
-      router.push(from);
+      // Navigate to destination (default /admin) without keeping login in history
+      const destination =
+        from && from !== "/admin/login" && from !== "/admin/dashboard"
+          ? from
+          : "/admin";
+      router.replace(destination);
       router.refresh();
+
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during login.");
     } finally {

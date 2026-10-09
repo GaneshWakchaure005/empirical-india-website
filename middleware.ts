@@ -10,16 +10,12 @@ const SECRET_KEY = new TextEncoder().encode(AUTH_SECRET);
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Allow public auth endpoints
-  if (
-    pathname === "/api/admin/auth/login" ||
-    pathname === "/api/admin/auth/logout" ||
-    pathname === "/admin/login"
-  ) {
-    return NextResponse.next();
+  // 0. Redirect legacy /admin/dashboard alias directly to /admin
+  if (pathname === "/admin/dashboard") {
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
 
-  // 2. Check for admin token in cookie or Authorization header
+  // 1. Check for admin token in cookie or Authorization header
   let token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
 
   if (!token) {
@@ -29,17 +25,32 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 3. Verify token
+  // 2. Verify token
   let payload: any = null;
   if (token) {
     try {
       const verified = await jwtVerify(token, SECRET_KEY);
       payload = verified.payload;
-    } catch (err) {
+    } catch {
       // Invalid or expired token
       payload = null;
     }
   }
+
+  // 3. If authenticated user attempts to visit /admin/login, redirect to /admin
+  if (payload && pathname === "/admin/login") {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
+  // 4. Allow public auth endpoints for unauthenticated users
+  if (
+    pathname === "/api/admin/auth/login" ||
+    pathname === "/api/admin/auth/logout" ||
+    pathname === "/admin/login"
+  ) {
+    return NextResponse.next();
+  }
+
 
   // 4. Handle unauthenticated requests
   if (!payload) {
