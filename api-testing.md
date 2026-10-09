@@ -655,6 +655,74 @@ All public routes return **only published** content (`status: "published"`). Dra
 
 ---
 
+### H. Enquiries & RFQ APIs
+
+#### 26. Submit Public Enquiry / RFQ
+- **Method:** `POST`
+- **URL:** `{{baseUrl}}/api/enquiries`
+- **Headers:** `Content-Type: application/json`
+- **Body (raw JSON):**
+  ```json
+  {
+    "businessLine": "roll-forming-lines",
+    "fullName": "Rajesh Sharma",
+    "companyName": "Apex Infrastructure Ltd",
+    "workEmail": "rajesh@apexinfra.com",
+    "phone": "+91 98220 12345",
+    "location": "Pune, Maharashtra, India",
+    "requirement": "Require a high-precision custom roll-forming line for solar C-channel structural profiles with thickness 2.0mm to 3.5mm."
+  }
+  ```
+- **Expected Status:** `201 Created`
+- **Response Structure:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "referenceId": "EI-RFQ-582914",
+      "id": "675841029384756201928601",
+      "message": "Enquiry submitted successfully"
+    }
+  }
+  ```
+
+#### 27. List Enquiries (Admin)
+- **Method:** `GET`
+- **URL:** `{{baseUrl}}/api/admin/enquiries?page=1&limit=15&status=new`
+- **Query Params:**
+  - `page` *(default 1)*
+  - `limit` *(default 15)*
+  - `status` (`new` | `in-review` | `responded` | `archived`)
+  - `businessLine` (`roll-forming-lines` | `modular-metal-pallets` | `trolley-bag-tubes` | `general`)
+  - `search` *(keyword search across name, company, email, ref ID)*
+- **Headers:**
+  - `Authorization: Bearer {{token}}`
+- **Expected Status:** `200 OK`
+
+#### 28. Update Enquiry Status & Notes (Admin)
+- **Method:** `PATCH`
+- **URL:** `{{baseUrl}}/api/admin/enquiries/{{enquiryId}}`
+- **Headers:**
+  - `Authorization: Bearer {{token}}`
+  - `Content-Type: application/json`
+- **Body (raw JSON):**
+  ```json
+  {
+    "status": "in-review",
+    "notes": "Reviewed with Nashik engineering team; technical feasibility confirmed."
+  }
+  ```
+- **Expected Status:** `200 OK`
+
+#### 29. Delete Enquiry (Admin)
+- **Method:** `DELETE`
+- **URL:** `{{baseUrl}}/api/admin/enquiries/{{enquiryId}}`
+- **Headers:**
+  - `Authorization: Bearer {{token}}`
+- **Expected Status:** `200 OK`
+
+---
+
 ## 6. Negative & Edge Case Testing Guide
 
 Test these negative scenarios to confirm the backend's resilience and correct HTTP status codes:

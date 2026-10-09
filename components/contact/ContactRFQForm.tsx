@@ -170,14 +170,37 @@ export default function ContactRFQForm({
 
     setIsSubmitting(true);
 
-    // Simulate reliable submission process
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    try {
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          businessLine: selectedVertical,
+          fullName: formData.fullName,
+          companyName: formData.companyName,
+          workEmail: formData.workEmail,
+          phone: formData.phone,
+          location: formData.location,
+          requirement: formData.requirement,
+          attachmentName: attachedFile?.name || undefined,
+        }),
+      });
 
-    // Generate RFQ tracking reference ID
-    const generatedRef = `EI-RFQ-${Math.floor(100000 + Math.random() * 900000)}`;
-    setReferenceId(generatedRef);
-    setIsSubmitting(false);
-    setIsSuccess(true);
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.message || "Failed to submit enquiry");
+      }
+
+      setReferenceId(data.data.referenceId);
+      setIsSuccess(true);
+    } catch (err: any) {
+      setErrors({ form: err.message || "Submission failed. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {

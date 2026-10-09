@@ -17,12 +17,30 @@ export async function GET(request: NextRequest) {
     const activeOnly = searchParams.get("active") === "true";
 
     const query: any = {};
-    if (type) query.type = type;
+    if (type) {
+      const types = type.split(",").map((t) => t.trim()).filter(Boolean);
+      if (types.length === 1) {
+        query.type = types[0];
+      } else if (types.length > 1) {
+        query.type = { $in: types };
+      }
+    }
     if (activeOnly) query.isActive = true;
 
-    const categories = await Category.find(query).sort({ name: 1 }).lean();
+    const categories = await Category.find(query).sort({ name: 1, createdAt: -1 }).lean();
 
-    return successResponse(categories);
+    // Deduplicate by normalized name (case-insensitive)
+    const seen = new Set<string>();
+    const uniqueCategories = [];
+    for (const cat of categories) {
+      const norm = (cat.name || "").trim().toLowerCase();
+      if (norm && !seen.has(norm)) {
+        seen.add(norm);
+        uniqueCategories.push(cat);
+      }
+    }
+
+    return successResponse(uniqueCategories);
   } catch (error) {
     return handleApiError(error);
   }
@@ -36,6 +54,14 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
+    // Check if category with this name already exists (case-insensitive)
+    const existing = await Category.findOne({
+      name: { $regex: new RegExp(`^${validated.name.trim()}$`, "i") },
+    });
+    if (existing) {
+      return successResponse(existing, 200);
+    }
+
     const slug = await generateUniqueSlug(
       Category,
       validated.slug || validated.name
@@ -43,6 +69,7 @@ export async function POST(request: NextRequest) {
 
     const category = await Category.create({
       ...validated,
+      name: validated.name.trim(),
       slug,
     });
 

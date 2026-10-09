@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import NewsEvent from "@/models/NewsEvent";
+import Enquiry from "@/models/Enquiry";
 import { requireEditorOrAdmin } from "@/lib/auth";
 import { successResponse, handleApiError } from "@/lib/api-response";
 
@@ -23,6 +24,8 @@ export async function GET(request: NextRequest) {
       upcomingEvents,
       featuredBlogs,
       featuredNewsEvents,
+      totalEnquiries,
+      newEnquiries,
     ] = await Promise.all([
       Blog.countDocuments(),
       Blog.countDocuments({ status: "published" }),
@@ -37,6 +40,8 @@ export async function GET(request: NextRequest) {
       }),
       Blog.countDocuments({ featured: true }),
       NewsEvent.countDocuments({ featured: true }),
+      Enquiry.countDocuments(),
+      Enquiry.countDocuments({ status: "new" }),
     ]);
 
     const stats = {
@@ -48,6 +53,8 @@ export async function GET(request: NextRequest) {
       publishedNews,
       upcomingEvents,
       featuredPosts: featuredBlogs + featuredNewsEvents,
+      totalEnquiries,
+      newEnquiries,
     };
 
     return successResponse(stats);

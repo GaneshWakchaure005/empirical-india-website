@@ -18,16 +18,24 @@ export async function GET(request: NextRequest) {
 
     const categories = await Category.find(query)
       .select("name slug type description")
-      .sort({ name: 1 })
+      .sort({ name: 1, createdAt: -1 })
       .lean();
 
-    const formatted = categories.map((c: any) => ({
-      id: c._id.toString(),
-      name: c.name,
-      slug: c.slug,
-      type: c.type,
-      description: c.description || "",
-    }));
+    const seen = new Set<string>();
+    const formatted = [];
+    for (const c of categories as any[]) {
+      const norm = (c.name || "").trim().toLowerCase();
+      if (norm && !seen.has(norm)) {
+        seen.add(norm);
+        formatted.push({
+          id: c._id.toString(),
+          name: c.name,
+          slug: c.slug,
+          type: c.type,
+          description: c.description || "",
+        });
+      }
+    }
 
     return successResponse(formatted);
   } catch (error) {
