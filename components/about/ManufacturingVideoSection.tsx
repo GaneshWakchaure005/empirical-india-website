@@ -133,12 +133,12 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
 
               {/* Caption */}
               <div className="p-3 sm:p-4 text-center">
-                <p className="text-xs text-steel-300 font-normal leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 font-semibold leading-relaxed">
                   {videoConfig.caption}
                 </p>
-                <div className="mt-2 flex items-center justify-center gap-2 text-[11px] text-steel-400">
+                <div className="mt-2 flex items-center justify-center gap-2 text-[11px] text-gray-500">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span>Nashik Plant Recording • Cold Roll Forming Sequence</span>
+                  <span>Empirical India</span>
                 </div>
               </div>
             </div>

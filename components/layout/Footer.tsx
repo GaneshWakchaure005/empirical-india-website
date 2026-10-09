@@ -44,11 +44,12 @@ export default function Footer() {
             <Link href="/" aria-label="Empirical India Home" className="inline-block mb-5">
               <div className="relative w-[160px] h-[40px]">
                 <Image
-                  src="/images/company logo.webp"
+                  src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791531151/company-logo.webp"
                   alt="Empirical India"
                   fill
                   sizes="160px"
-                  className="object-contain object-left brightness-0 invert"
+                  className="object-contain object-center"
+                  loading="eager"
                 />
               </div>
             </Link>
@@ -61,7 +62,7 @@ export default function Footer() {
                 className="flex items-center gap-2.5 text-sm text-steel-400 hover:text-white transition-colors group"
               >
                 <Mail size={14} className="text-steel-500 shrink-0 group-hover:text-steel-300 transition-colors" />
-                <span>info@empiricalindia.com</span>
+                <span>sales@empiricalindia.com</span>
               </a>
               <div className="flex items-start gap-2.5 text-sm text-steel-400">
                 <MapPin size={14} className="text-steel-500 shrink-0 mt-0.5" />

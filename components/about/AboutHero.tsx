@@ -15,10 +15,10 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <Image
-          src="/images/about-page-bg.png"
+          src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535648/about-page-bg-compressed.webp"
           alt="Empirical India manufacturing facility and global engineering reach"
           fill
-          priority
+          loading="eager"
           sizes="100vw"
           className="object-cover object-center pointer-events-none"
         />

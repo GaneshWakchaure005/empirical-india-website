@@ -101,7 +101,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center shrink-0 h-full" aria-label="Empirical India Home">
             <div className="relative w-[210px] sm:w-[250px] md:w-[270px] lg:w-[280px] xl:w-[310px] h-[64px] sm:h-[62px] md:h-[68px] lg:h-[72px] xl:h-[76px]">
               <Image
-                src="/images/company logo.webp"
+                src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791531151/company-logo.webp"
                 alt="Empirical India - Roll Forming Experts"
                 fill
                 sizes="(max-width: 640px) 210px, (max-width: 1024px) 270px, 310px"

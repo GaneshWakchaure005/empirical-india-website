@@ -19,7 +19,7 @@ export const Home = {
         specs: "Custom Profiles • Automated Lines • High Repeatability",
         productline: "Custom Roll Forming",
         image: {
-          src: "/images/bg2.png",
+          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535657/roll_forming_bg-compressed.webp",
           alt: "Empirical India custom automated roll-forming machine line",
         },
 
@@ -36,7 +36,7 @@ export const Home = {
         specs: "High Load Capacity • Modular Design • C-Channel Strength",
         productline: "Modular Metal Pallets",
         image: {
-          src: "/images/bg3.png",
+          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535656/metal_pallets_bg-compressed.webp",
           alt: "Empirical India modular metal pallets for industrial material handling",
         },
 
@@ -53,8 +53,24 @@ export const Home = {
         specs: "Lightweight • Strong • Precise",
         productline: "Trolley Bag Tubes",
         image: {
-          src: "/images/bg4.png",
+          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535658/tubes_bg-compressed.webp",
           alt: "Precision metal tubes manufactured for trolley-bag applications",
+        },
+
+        primary_button: "Explore Products",
+        secondary_button: "Contact Us",
+      },
+      {
+        id: "solar-structures",
+        eyebrow: "SOLAR STRUCTURES",
+        headline: "''Built strong for power and durability.''",
+        supporting_copy:
+          "Precision-engineered metal rooftop solar mounting structures designed to provide dependable panel support, structural strength, and long-term performance.",
+        specs: "Structural Strength • Weather Resistance • Reliable Support",
+        productline: "Rooftop Solar Mounting Structures",
+        image: {
+          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535657/solar_structures_bg-compressed.webp",
+          alt: "Strong metal rooftop solar mounting structures supporting solar panels",
         },
 
         primary_button: "Explore Products",

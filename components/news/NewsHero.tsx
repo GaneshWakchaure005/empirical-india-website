@@ -10,7 +10,7 @@ export default function NewsHero() {
       {/* ── Background Photograph ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
-          src="/images/newsandevents.jpeg"
+          src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535656/news-page-bg-compressed.webp"
           alt="Empirical India News and Events"
           fill
           priority

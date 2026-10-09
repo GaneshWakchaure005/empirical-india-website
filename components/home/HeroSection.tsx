@@ -233,6 +233,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
                   fill
                   priority={idx === 0}
                   sizes="100vw"
+                  loading={idx === 0 ? "eager" : "lazy"}
                   className="object-cover object-center"
                 />
               </div>

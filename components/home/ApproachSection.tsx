@@ -39,9 +39,9 @@ interface ApproachSectionProps {
 const valueIcons = [ClipboardList, Cog, Shield, Handshake];
 
 const DEFAULT_VIDEO_URL =
-  "https://res.cloudinary.com/did8mktr3/video/upload/v1791479763/output_poignu.mp4";
+  "https://res.cloudinary.com/f4j2yhrc/video/upload/v1791530951/roll_forming_video.mp4";
 const DEFAULT_CAPTION =
-  "Real-time production sequence demonstrating continuous profile forming, straightness, and tooling stability.";
+  "Real-time production sequence of roll forming line at Empirical India.";
 
 export default function ApproachSection({
   intro,
@@ -53,8 +53,8 @@ export default function ApproachSection({
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const videoUrl = videoConfig?.video_url || DEFAULT_VIDEO_URL;
-  const caption = videoConfig?.caption || DEFAULT_CAPTION;
+  const videoUrl = DEFAULT_VIDEO_URL;
+  const caption =  DEFAULT_CAPTION;
 
   const handleTogglePlay = () => {
     if (!videoRef.current) return;
@@ -217,12 +217,12 @@ export default function ApproachSection({
 
               {/* Caption */}
               <div className="p-2.5 sm:p-3 text-center">
-                <p className="text-[11px] text-steel-300 font-normal leading-relaxed line-clamp-2">
+                <p className="text-[11px] sm:text-sm text-gray-600 font-semibold leading-relaxed line-clamp-2">
                   {caption}
                 </p>
-                <div className="mt-1.5 flex items-center justify-center gap-1.5 text-[10px] text-steel-400">
+                <div className="mt-1.5 flex items-center justify-center gap-1.5 text-[11px] sm:text-xs text-gray-500">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span>Empirical India • Factory Trial Recording</span>
+                  <span>Empirical India</span>
                 </div>
               </div>
             </div>

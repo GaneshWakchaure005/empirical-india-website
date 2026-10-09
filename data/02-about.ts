@@ -24,7 +24,7 @@ export const About = {
     subtitle:
       "Observe our cold roll forming stations, tooling setups, and metal manufacturing workflow at our Nashik plant.",
     video_url:
-      "https://res.cloudinary.com/did8mktr3/video/upload/v1791479763/output_poignu.mp4",
+      "https://res.cloudinary.com/f4j2yhrc/video/upload/v1791530951/roll_forming_video.mp4",
     caption:
       "Real-time production sequence demonstrating continuous profile forming, straightness, and tooling stability.",
     note: "Update video_url anytime to feature a new manufacturing clip or machine showcase.",

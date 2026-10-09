@@ -20,7 +20,7 @@ export default function ContactHero({
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <Image
-          src="/images/contact-page-bg.png"
+          src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535655/contact-page-bg-compressed.webp"
           alt="Empirical India direct technical discussion and RFQ support"
           fill
           priority
