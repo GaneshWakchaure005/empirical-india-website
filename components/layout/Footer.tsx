@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MapPin, ArrowRight } from "lucide-react";
+import { Mail, MapPin, ArrowRight, ExternalLink } from "lucide-react";
 
 const footerProducts = [
   { label: "Roll-Forming Lines", href: "/products/roll-forming-lines" },
@@ -123,6 +123,49 @@ export default function Footer() {
               Request a Quote
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Google Maps Location Box in Footer Bottom */}
+      <div className="border-t border-white/[0.08] bg-steel-950/70 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-400 uppercase tracking-wider mb-1">
+                <MapPin size={14} className="text-navy-400" />
+                <span>Manufacturing Plant Location</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                Empirical India — Roll Forming Machine Manufacturer
+              </h3>
+              <p className="text-xs text-steel-400 mt-0.5">
+                Nashik, Maharashtra, India • Industrial Machinery & Engineering Facility
+              </p>
+            </div>
+            <a
+              href="https://maps.google.com/?q=Empirical+India+Roll+Forming+Machine+Manufacturer+Nashik"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-steel-800/90 hover:bg-steel-700 text-steel-200 text-xs font-medium transition-colors border border-steel-700/80 shrink-0"
+            >
+              <span>Open in Google Maps</span>
+              <ExternalLink size={13} />
+            </a>
+          </div>
+
+          <div className="w-full h-[280px] sm:h-[340px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative bg-steel-900">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d551.3262335011021!2d73.72461784299102!3d19.965087499705678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdded1969be5401%3A0xef43b713a1b067b6!2sEmpirical%20India%2CRoll%20Forming%20Machine%20Manufacturer!5e1!3m2!1sen!2sin!4v1791480573816!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Empirical India Manufacturing Plant Location"
+              className="w-full h-full"
+            />
           </div>
         </div>
       </div>

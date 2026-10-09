@@ -29,8 +29,8 @@ export default function HomePage() {
       {/* 1. Hero — auto-sliding dynamic hero showcasing three business lines */}
       <HeroSection hero={Home.hero} />
 
-      {/* 2. Three Business Lines — the core product/machinery verticals */}
-      <BusinessLinesSection cards={Home.three_business_line_cards} />
+      {/* 2. Products and Solutions — the core product/machinery verticals */}
+      <BusinessLinesSection />
 
       {/* 3. From Requirement to Production — quality process overview */}
       <ProcessSection
@@ -44,6 +44,7 @@ export default function HomePage() {
         intro={About.page_introduction}
         approach={About.our_approach}
         values={About.suggested_values}
+        videoConfig={About.video_highlight}
       />
 
       {/* 5. Customer Names — text only, per content governance rules.

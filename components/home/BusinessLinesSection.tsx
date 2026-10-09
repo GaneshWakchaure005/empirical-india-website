@@ -2,61 +2,25 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Settings, Package, Cylinder, Sun } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import ProductsAndSolutions from "@/data/03-products-and-solutions";
 
-interface BusinessLineCard {
-  capability: string;
-  copy: string;
+interface ProductItem {
+  readonly name: string;
+  readonly slug: string;
+  readonly short_description: string;
+  readonly image: string;
+  readonly href: string;
 }
 
 interface BusinessLinesSectionProps {
-  cards: readonly BusinessLineCard[];
+  products?: readonly ProductItem[];
 }
-
-const cardMeta = [
-  {
-    icon: Settings,
-    href: "/products/roll-forming-lines",
-    cta: "Explore roll-forming",
-    iconBg: "bg-navy-700/8 border-navy-700/15",
-    iconColor: "text-navy-700",
-    accentBar: "bg-navy-700",
-    image: "/images/product_lines/roll-forming.png",
-  },
-  {
-    icon: Package,
-    href: "/products/modular-metal-pallets",
-    cta: "Explore metal pallets",
-    iconBg: "bg-red-brand/8 border-red-brand/15",
-    iconColor: "text-red-brand",
-    accentBar: "bg-red-brand",
-    image: "/images/product_lines/metal-pallets.png",
-  },
-  {
-    icon: Cylinder,
-    href: "/products/trolley-bag-tubes",
-    cta: "Explore tube products",
-    iconBg: "bg-steel-700/8 border-steel-200",
-    iconColor: "text-steel-600",
-    accentBar: "bg-steel-400",
-    image: "/images/product_lines/tubes.png",
-  },
-  {
-    icon: Sun,
-    href: "/products/solar-structures",
-    cta: "Explore solar structures",
-    iconBg: "bg-amber-500/8 border-amber-500/20",
-    iconColor: "text-amber-500",
-    accentBar: "bg-amber-500",
-    image: "/images/product_lines/solar-structure.png",
-  },
-];
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const cardVariants = {
@@ -65,7 +29,7 @@ const cardVariants = {
 };
 
 export default function BusinessLinesSection({
-  cards,
+  products = ProductsAndSolutions.products,
 }: BusinessLinesSectionProps) {
   return (
     <section
@@ -86,34 +50,41 @@ export default function BusinessLinesSection({
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.55, ease: "easeOut" }}
         >
+          <span className="inline-block text-[11px] font-semibold tracking-[0.18em] uppercase text-navy-700 mb-3">
+            Manufacturing Verticals
+          </span>
           <h2
             id="business-lines-heading"
-            className="text-3xl sm:text-4xl font-bold text-steel-900 tracking-tight max-w-2xl mx-auto"
+            className="text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight max-w-2xl mx-auto"
           >
             Our Products And Solutions
           </h2>
-          <p className="mt-4 text-steel-500 text-base max-w-xl mx-auto leading-relaxed">
-            Three distinct product and machinery businesses, each configured
-            around specific customer requirements.
+          <p className="mt-3.5 text-steel-500 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            Engineering-led machinery and metal products, each configured around customer-defined profiles, load cases, and production requirements.
           </p>
         </motion.div>
 
         {/* Cards Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
         >
-          {cards.map((card, index) => {
-            const meta = cardMeta[index];
-            const Icon = meta.icon;
-            return (
-              <motion.div
-                key={card.capability}
-                variants={cardVariants}
-                className="h-full"
+          {products.map((product) => (
+            <motion.div
+              key={product.slug}
+              variants={cardVariants}
+              className="h-full"
+            >
+              <Link
+                href={product.href}
+                className="group relative flex flex-col h-full rounded-2xl p-[2.5px] sm:p-[2px] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10 focus:outline-none focus:ring-2 focus:ring-navy-600 focus:ring-offset-2
+                  bg-[linear-gradient(135deg,#dc2626,#f59e0b,#38bdf8,#1a3a8f)]
+                  sm:bg-[linear-gradient(135deg,#cbd5e1,#e2e8f0)]
+                  sm:hover:bg-[linear-gradient(135deg,#dc2626,#f59e0b,#38bdf8,#1a3a8f)]"
+                aria-label={`Learn more about ${product.name}`}
               >
                 <Link
                   href={meta.href}
@@ -134,52 +105,35 @@ export default function BusinessLinesSection({
                       <div className="absolute inset-0 bg-gradient-to-t from-steel-900/5 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
                     </div>
 
-                    <div className="flex flex-col flex-1 p-6">
-                      {/* Header row */}
-                      <div className="flex flex-col mb-3">
-                        {/* Accent top bar */}
-                        <div
-                          className={cn(
-                            "w-10 h-[3px] rounded-full mb-3 transition-all duration-500",
-                            meta.accentBar,
-                          )}
-                          aria-hidden="true"
-                        />
-                        {/* Title */}
-                        <h3 className="text-lg font-bold text-steel-900 leading-snug group-hover:text-navy-700 transition-colors duration-300">
-                          {card.capability}
-                        </h3>
-                      </div>
+                  {/* Content Container */}
+                  <div className="flex flex-col flex-1 p-5 sm:p-6 justify-between">
+                    <div>
+                      {/* Title */}
+                      <h3 className="text-base sm:text-lg font-bold text-steel-900 leading-snug group-hover:text-navy-700 transition-colors duration-300">
+                        {product.name}
+                      </h3>
 
-                      {/* Body */}
-                      <p className="text-sm text-justify text-steel-500 leading-relaxed flex-1 group-hover:text-steel-600 transition-colors duration-300">
-                        {card.copy}
+                      {/* Body Description */}
+                      <p className="mt-2.5 text-xs sm:text-sm text-left text-steel-500 leading-relaxed group-hover:text-steel-600 transition-colors duration-300 line-clamp-4">
+                        {product.short_description}
                       </p>
+                    </div>
 
-                      {/* CTA */}
-                      <div className="mt-5 flex items-center justify-between text-xs font-semibold text-navy-700 group-hover:text-teal-600 transition-colors duration-300">
-                        <span>{meta.cta}</span>
+                    {/* CTA Footer */}
+                    <div className="mt-5 pt-4 border-t border-steel-100 flex items-center text-xs font-semibold text-navy-700 group-hover:text-red-600 transition-colors duration-300">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span>View Products</span>
                         <ArrowRight
                           size={14}
                           className="group-hover:translate-x-1 transition-transform duration-300"
                         />
-                      </div>
+                      </span>
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Bottom link */}
-        <motion.div
-          className="mt-10 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
 
