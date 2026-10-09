@@ -202,10 +202,7 @@ export default function Navbar() {
     <header
       ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-glass",
-        scrolled
-          ? "bg-white/95 shadow-[0_1px_0_#e2e8f0,0_4px_16px_rgba(15,23,42,0.07)]"
-          : "bg-white shadow-[0_1px_0_#e2e8f0]"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-glass bg-white shadow-[0_3px_0_#e2e8f0]"
       )}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
