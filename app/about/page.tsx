@@ -3,11 +3,10 @@ import About from "@/data/02-about";
 import AboutHero from "@/components/about/AboutHero";
 import ManufacturingVideoSection from "@/components/about/ManufacturingVideoSection";
 import ThreeBusinessLinesSection from "@/components/about/ThreeBusinessLinesSection";
-import EngineeringPhilosophySection from "@/components/about/EngineeringPhilosophySection";
+import CompanyOverviewSection from "@/components/about/CompanyOverviewSection";
 import FacilityInfrastructureSection from "@/components/about/FacilityInfrastructureSection";
 import TimelineSection from "@/components/about/TimelineSection";
 import LeadershipSection from "@/components/about/LeadershipSection";
-import QualityAssuranceCallout from "@/components/about/QualityAssuranceCallout";
 import AboutCTASection from "@/components/about/AboutCTASection";
 
 export const metadata: Metadata = {
@@ -38,9 +37,9 @@ export default function AboutPage() {
       <ThreeBusinessLinesSection />
 
       {/* 4. Engineering Approach & Core Methodology */}
-      <EngineeringPhilosophySection
+      <CompanyOverviewSection
         approach={About.our_approach}
-        values={About.suggested_values}
+        stats={About.company_stats}
       />
 
       {/* 5. Nashik Facility Layout & Production Bays */}
@@ -60,10 +59,7 @@ export default function AboutPage() {
         members={About.leadership.members}
       />
 
-      {/* 8. Quality Assurance & Measurable Verification Protocol */}
-      <QualityAssuranceCallout />
-
-      {/* 9. Final Engineering Enquiry CTA */}
+      {/* 8. Final Engineering Enquiry CTA */}
       <AboutCTASection />
     </div>
   );

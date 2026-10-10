@@ -43,7 +43,10 @@ export default function ContactPage() {
         plantHours={ContactRFQ.company_info.plant_hours}
       />
 
-      {/* 2. Main Enquiry & Location Section */}
+      {/* 2. Enquiry Checklist Guidance */}
+      <EnquiryChecklistSection />
+
+      {/* 3. Main Enquiry & Location Section */}
       <section className="relative bg-white py-14 sm:py-20 border-b border-steel-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
@@ -77,9 +80,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      {/* 3. Enquiry Checklist Guidance */}
-      <EnquiryChecklistSection />
     </div>
   );
 }
