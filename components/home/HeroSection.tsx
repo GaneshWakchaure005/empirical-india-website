@@ -297,12 +297,12 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
         initial={{ opacity: 0, y: 22 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-24 w-full"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-18 sm:pt-28 lg:pt-40 pb-24 w-full"
       >
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
 
           {/* 1. Eyebrow Badge — Locked Grid Row */}
-          <div className="grid grid-cols-1 grid-rows-1 items-center justify-center mb-6">
+          <div className="grid grid-cols-1 grid-rows-1 items-center justify-center mb-4 sm:mb-6">
             {slides.map((slide, idx) => {
               const isActive = idx === currentIndex;
               return (
@@ -345,7 +345,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
           </div>
 
           {/* 3. Supporting Copy — Locked Grid Row (Bigger on larger screens, height locked to tallest copy) */}
-          <div className="grid grid-cols-1 grid-rows-1 items-center justify-center w-full mb-8">
+          <div className="grid grid-cols-1 grid-rows-1 items-center justify-center w-full mb-6 md:mb-8">
             {slides.map((slide, idx) => {
               const isActive = idx === currentIndex;
               return (

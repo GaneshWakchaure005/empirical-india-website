@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -103,8 +102,6 @@ function BusinessLineCard({
   index: number;
   stickyTop: number;
 }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-
   return (
     <div
       className="sticky"
@@ -171,20 +168,18 @@ function BusinessLineCard({
                   duration-500
                 "
               >
-                {/* Blank placeholder image box while image loads */}
-                {!imageLoaded && (
-                  <div
-                    className="absolute inset-0 bg-white/5 animate-pulse flex flex-col items-center justify-center pointer-events-none"
-                    aria-hidden="true"
-                  >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white/40 mb-2">
-                      <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </div>
-                    <span className="text-[10px] sm:text-xs text-white/40 font-mono tracking-wider">
-                      Empirical India
-                    </span>
+                {/* Blank skeleton placeholder - always rendered underneath image without hydration mismatch */}
+                <div
+                  className="absolute inset-0 bg-white/5 animate-pulse flex flex-col items-center justify-center pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white/40 mb-2">
+                    <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                )}
+                  <span className="text-[10px] sm:text-xs text-white/40 font-mono tracking-wider">
+                    Empirical India
+                  </span>
+                </div>
 
                 <Image
                   src={line.image}
@@ -192,24 +187,13 @@ function BusinessLineCard({
                   fill
                   loading="lazy"
                   sizes="(max-width: 1024px) 100vw, 460px"
-                  onLoad={() => setImageLoaded(true)}
-                  className={`object-cover group-hover:scale-105 transition-all duration-700 ease-out ${
-                    imageLoaded ? "opacity-100" : "opacity-0"
-                  }`}
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
 
-                <div
-                  className={`absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none transition-opacity duration-500 ${
-                    imageLoaded ? "opacity-100" : "opacity-0"
-                  }`}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none" />
 
                 {/* Image Tag */}
-                <div
-                  className={`absolute bottom-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[11px] font-medium shadow-sm transition-opacity duration-300 ${
-                    imageLoaded ? "opacity-100" : "opacity-0"
-                  }`}
-                >
+                <div className="absolute bottom-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[11px] font-medium shadow-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>Empirical Manufacturing Line</span>
                 </div>
