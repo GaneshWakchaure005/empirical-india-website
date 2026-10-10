@@ -30,26 +30,26 @@ export const About = {
     note: "Update video_url anytime to feature a new manufacturing clip or machine showcase.",
   },
 
-  suggested_values: [
+  company_stats: [
     {
-      value: "Engineering clarity",
-      meaning_in_practice:
-        "Define the profile, use case, process, and acceptance criteria before committing to a solution.",
+      title: "Expertise",
+      description:
+        "With 10+ years of experience in custom cold roll-forming and metal fabrication.",
     },
     {
-      value: "Customer-specific design",
-      meaning_in_practice:
-        "Configure the machine or product around the approved application and technical input.",
+      title: "5K+ Customers",
+      description:
+        "We have proudly engineered tailored solutions for over 5,000 industrial clients.",
     },
     {
-      value: "Reliable manufacture",
-      meaning_in_practice:
-        "Use documented checks and traceable approvals appropriate to the agreed product scope.",
+      title: "Rating 4.9",
+      description:
+        "Consistently rated 4.9 for our engineering precision and manufacturing reliability.",
     },
     {
-      value: "Long-term partnership",
-      meaning_in_practice:
-        "Communicate clearly from first enquiry through delivery and any agreed support.",
+      title: "Installations",
+      description:
+        "Successfully supplied structural profiles for 15 MW of rooftop solar installations.",
     },
   ],
 

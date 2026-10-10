@@ -46,7 +46,7 @@ const DEFAULT_CAPTION =
 export default function ApproachSection({
   intro,
   approach,
-  values,
+  values = [],
   videoConfig,
 }: ApproachSectionProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);

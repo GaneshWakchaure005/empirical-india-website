@@ -115,7 +115,7 @@ export default function FacilityInfrastructureSection({
           </div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-steel-100 text-navy-950 text-xs font-semibold shrink-0 transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-steel-100 text-navy-900 text-xs font-semibold shrink-0 transition-colors shadow-sm"
           >
             <span>Contact Plant Team</span>
           </Link>
