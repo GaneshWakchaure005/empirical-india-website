@@ -7,7 +7,7 @@ const DEFAULT_SECRET = "empirical_india_super_secure_jwt_secret_key_2026_change_
 const AUTH_SECRET = process.env.AUTH_SECRET || DEFAULT_SECRET;
 const SECRET_KEY = new TextEncoder().encode(AUTH_SECRET);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 0. Redirect legacy /admin/dashboard alias directly to /admin
