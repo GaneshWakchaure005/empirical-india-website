@@ -29,7 +29,7 @@ export const About = {
       "Real-time production sequence demonstrating continuous profile forming, straightness, and tooling stability.",
     note: "Update video_url anytime to feature a new manufacturing clip or machine showcase.",
   },
-
+  
   company_stats: [
     {
       title: "Expertise",

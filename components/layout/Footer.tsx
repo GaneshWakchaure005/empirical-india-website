@@ -137,7 +137,7 @@ export default function Footer() {
           </div>
 
           {/* Connect & Social Column */}
-          <div className="lg:col-span-3">
+          <div className="col-span-3">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-steel-400 mb-3.5">
               Connect With Us
             </h3>

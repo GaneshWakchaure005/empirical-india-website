@@ -5,10 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ClipboardList,
-  Shield,
-  Cog,
-  Handshake,
   Play,
   Volume2,
   VolumeX,
@@ -32,11 +28,9 @@ interface VideoConfig {
 interface ApproachSectionProps {
   intro: string;
   approach: string;
-  values: readonly AboutValue[];
   videoConfig?: VideoConfig;
 }
 
-const valueIcons = [ClipboardList, Cog, Shield, Handshake];
 
 const DEFAULT_VIDEO_URL =
   "https://res.cloudinary.com/f4j2yhrc/video/upload/v1791530951/roll_forming_video.mp4";
@@ -46,7 +40,7 @@ const DEFAULT_CAPTION =
 export default function ApproachSection({
   intro,
   approach,
-  values = [],
+  // values = [],
   videoConfig,
 }: ApproachSectionProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -219,65 +213,6 @@ export default function ApproachSection({
                 </div>
               </div>
             </div>
-          </motion.div>
-        </div>
-
-        {/* Bottom: 4 Engineering Values */}
-        <div className="mt-16 pt-12 border-t border-steel-200/70">
-          <div className="text-center mb-8">
-            <span className="text-[11px] font-mono font-bold text-navy-700 uppercase tracking-widest">
-              Core Principles
-            </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-steel-900 tracking-tight mt-1">
-              How Empirical India approaches each engineering enquiry
-            </h3>
-          </div>
-
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.08 } },
-            }}
-          >
-            {values.map((val, index) => {
-              const Icon = valueIcons[index] ?? ArrowRight;
-              return (
-                <motion.div
-                  key={val.value}
-                  variants={{
-                    hidden: { opacity: 0, y: 16 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.45, ease: "easeOut" },
-                    },
-                  }}
-                  className="p-5 rounded-2xl border border-steel-200/80 bg-[#f8fafc] hover:border-steel-300 hover:bg-white hover:shadow-md card-lift transition-all duration-200 flex flex-col justify-between"
-                >
-                  <div>
-                    <div
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-navy-700/8 border border-navy-700/15 mb-3"
-                      aria-hidden="true"
-                    >
-                      <Icon size={18} className="text-navy-700" />
-                    </div>
-                    <span className="block text-[10px] font-mono font-bold text-steel-400 mb-0.5">
-                      0{index + 1}
-                    </span>
-                    <h4 className="text-sm font-bold text-steel-800 mb-1.5">
-                      {val.value}
-                    </h4>
-                    <p className="text-xs text-steel-500 leading-relaxed font-normal">
-                      {val.meaning_in_practice}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
           </motion.div>
         </div>
       </div>

@@ -43,7 +43,6 @@ export default function HomePage() {
       <ApproachSection
         intro={About.page_introduction}
         approach={About.our_approach}
-        values={About.suggested_values}
         videoConfig={About.video_highlight}
       />
 
