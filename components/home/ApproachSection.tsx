@@ -142,13 +142,6 @@ export default function ApproachSection({
                   className="group-hover:translate-x-0.5 transition-transform"
                 />
               </Link>
-
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-steel-200 hover:border-steel-300 bg-steel-50 hover:bg-white text-steel-700 font-medium text-sm transition-all"
-              >
-                <span>View Product Verticals</span>
-              </Link>
             </div>
           </motion.div>
 

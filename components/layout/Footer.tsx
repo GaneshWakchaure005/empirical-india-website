@@ -70,10 +70,10 @@ export default function Footer() {
     <footer className="bg-steel-900 text-steel-300">
       {/* Main Footer - Compact Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8">
           
           {/* Brand & Address Column */}
-          <div className="sm:col-span-2 lg:col-span-4">
+          <div className=" col-span-2 sm:col-span-1 lg:col-span-4">
             <Link href="/" aria-label="Empirical India Home" className="inline-block mb-3.5">
               <div className="relative w-[150px] sm:w-[160px] h-[38px]">
                 <Image
