@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import About from "@/data/02-about";
 import AboutHero from "@/components/about/AboutHero";
 import ManufacturingVideoSection from "@/components/about/ManufacturingVideoSection";
-import ThreeBusinessLinesSection from "@/components/about/ThreeBusinessLinesSection";
+import BusinessLinesSection from "@/components/about/FourBusinesslines";
 import CompanyOverviewSection from "@/components/about/CompanyOverviewSection";
 import FacilityInfrastructureSection from "@/components/about/FacilityInfrastructureSection";
 import TimelineSection from "@/components/about/TimelineSection";
@@ -34,7 +34,7 @@ export default function AboutPage() {
       <ManufacturingVideoSection videoConfig={About.video_highlight} />
 
       {/* 3. The Three Distinct Manufacturing Verticals */}
-      <ThreeBusinessLinesSection />
+      <BusinessLinesSection />
 
       {/* 4. Engineering Approach & Core Methodology */}
       <CompanyOverviewSection
