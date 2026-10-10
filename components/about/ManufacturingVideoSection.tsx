@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Play, Pause, Factory, ShieldCheck, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,54 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const pathname = usePathname();
+
+  // Stop video when navigating to another route
+  useEffect(() => {
+    if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [pathname]);
+
+  // Clean up and stop video on component unmount
+  useEffect(() => {
+    const video = videoRef.current;
+    return () => {
+      if (video) {
+        video.pause();
+      }
+    };
+  }, []);
+
+  // Stop video when user switches browser tab or window, or on browser history navigation
+  useEffect(() => {
+    const handleVisibilityOrPageChange = () => {
+      if (document.hidden && videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    const handleStop = () => {
+      if (videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityOrPageChange);
+    window.addEventListener("pagehide", handleStop);
+    window.addEventListener("beforeunload", handleStop);
+    window.addEventListener("popstate", handleStop);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityOrPageChange);
+      window.removeEventListener("pagehide", handleStop);
+      window.removeEventListener("beforeunload", handleStop);
+      window.removeEventListener("popstate", handleStop);
+    };
+  }, []);
 
   const handleTogglePlay = () => {
     if (!videoRef.current) return;

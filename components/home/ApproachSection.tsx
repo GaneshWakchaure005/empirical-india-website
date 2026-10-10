@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -11,11 +12,6 @@ import {
   MapPin,
   Calendar,
 } from "lucide-react";
-
-interface AboutValue {
-  value: string;
-  meaning_in_practice: string;
-}
 
 interface VideoConfig {
   title?: string;
@@ -31,7 +27,6 @@ interface ApproachSectionProps {
   videoConfig?: VideoConfig;
 }
 
-
 const DEFAULT_VIDEO_URL =
   "https://res.cloudinary.com/f4j2yhrc/video/upload/v1791530951/roll_forming_video.mp4";
 const DEFAULT_CAPTION =
@@ -40,15 +35,62 @@ const DEFAULT_CAPTION =
 export default function ApproachSection({
   intro,
   approach,
-  // values = [],
   videoConfig,
 }: ApproachSectionProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const pathname = usePathname();
 
   const videoUrl = DEFAULT_VIDEO_URL;
-  const caption =  DEFAULT_CAPTION;
+  const caption = DEFAULT_CAPTION;
+
+  // Stop video when navigating to another route
+  useEffect(() => {
+    if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [pathname]);
+
+  // Clean up and stop video on component unmount
+  useEffect(() => {
+    const video = videoRef.current;
+    return () => {
+      if (video) {
+        video.pause();
+      }
+    };
+  }, []);
+
+  // Stop video when user switches browser tab or window, or on browser history navigation
+  useEffect(() => {
+    const handleVisibilityOrPageChange = () => {
+      if (document.hidden && videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    const handleStop = () => {
+      if (videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityOrPageChange);
+    window.addEventListener("pagehide", handleStop);
+    window.addEventListener("beforeunload", handleStop);
+    window.addEventListener("popstate", handleStop);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityOrPageChange);
+      window.removeEventListener("pagehide", handleStop);
+      window.removeEventListener("beforeunload", handleStop);
+      window.removeEventListener("popstate", handleStop);
+    };
+  }, []);
 
   const handleTogglePlay = () => {
     if (!videoRef.current) return;
