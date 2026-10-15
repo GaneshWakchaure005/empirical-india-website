@@ -28,6 +28,36 @@ export const Projects = {
       "Lucky Dip",
       "PMEA Solar"
     ],
+    "approved_customer_logos": [
+      {
+        "name": "Dhumal Infracap",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/dhumal_infracap.webp"
+      },
+      {
+        "name": "VRM Metals",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/vrm_metals.webp"
+      },
+      {
+        "name": "Dhumal Industries",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/dhumal_industries.webp"
+      },
+      {
+        "name": "PMEA Solar",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/pmea_solar.webp"
+      },
+      {
+        "name": "Al Mulla Group",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048570/al_mulla_group.webp"
+      },
+      {
+        "name": "Nilkamal",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/nilkamal.webp"
+      },
+      {
+        "name": "Lucky Deep",
+        "logoUrl": "https://res.cloudinary.com/f4j2yhrc/image/upload/v1792048571/lucky_deep.webp"
+      }
+    ],
     "verification_notes": [
       "Preserve the spelling as supplied until the account owner confirms each legal / public-facing name.",
       "PMEA and PMEA Solar may need to be checked for whether they are distinct entries."

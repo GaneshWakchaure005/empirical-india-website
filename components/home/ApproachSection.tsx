@@ -1,14 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  Play,
-  Volume2,
-  VolumeX,
   MapPin,
   Calendar,
 } from "lucide-react";
@@ -28,7 +23,7 @@ interface ApproachSectionProps {
 }
 
 const DEFAULT_VIDEO_URL =
-  "https://res.cloudinary.com/f4j2yhrc/video/upload/v1791530951/roll_forming_video.mp4";
+  "https://www.youtube.com/embed/i4ylvVyuIj4?autoplay=0&controls=1&rel=0";
 const DEFAULT_CAPTION =
   "Real-time production sequence of roll forming line at Empirical India.";
 
@@ -37,84 +32,8 @@ export default function ApproachSection({
   approach,
   videoConfig,
 }: ApproachSectionProps) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const pathname = usePathname();
-
   const videoUrl = DEFAULT_VIDEO_URL;
   const caption = DEFAULT_CAPTION;
-
-  // Stop video when navigating to another route
-  useEffect(() => {
-    if (videoRef.current && !videoRef.current.paused) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, [pathname]);
-
-  // Clean up and stop video on component unmount
-  useEffect(() => {
-    const video = videoRef.current;
-    return () => {
-      if (video) {
-        video.pause();
-      }
-    };
-  }, []);
-
-  // Stop video when user switches browser tab or window, or on browser history navigation
-  useEffect(() => {
-    const handleVisibilityOrPageChange = () => {
-      if (document.hidden && videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    const handleStop = () => {
-      if (videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityOrPageChange);
-    window.addEventListener("pagehide", handleStop);
-    window.addEventListener("beforeunload", handleStop);
-    window.addEventListener("popstate", handleStop);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityOrPageChange);
-      window.removeEventListener("pagehide", handleStop);
-      window.removeEventListener("beforeunload", handleStop);
-      window.removeEventListener("popstate", handleStop);
-    };
-  }, []);
-
-  const handleTogglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(() => {
-          // Playback interaction handling
-        });
-    }
-  };
-
-  const handleToggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
 
   return (
     <section
@@ -192,56 +111,16 @@ export default function ApproachSection({
             <div className="w-full max-w-sm sm:max-w-md rounded-3xl border border-steel-200/90 bg-steel-950 p-2 sm:p-2.5 shadow-[0_16px_45px_rgba(15,23,42,0.12)] relative overflow-hidden">
               {/* Video wrapper frame */}
               <div
-                onClick={handleTogglePlay}
                 className="relative w-full aspect-[9/16] max-h-[500px] sm:max-h-[540px] rounded-2xl overflow-hidden bg-black flex items-center justify-center cursor-pointer group"
               >
-                <video
-                  ref={videoRef}
+                <iframe
                   src={videoUrl}
-                  className="w-full h-full object-contain bg-black"
-                  playsInline
-                  preload="metadata"
-                  controls={isPlaying}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onEnded={() => setIsPlaying(false)}
+                  title={caption}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
                 />
-
-                {/* Interactive Play Overlay when paused */}
-                {!isPlaying && (
-                  <div className="absolute inset-0 bg-steel-950/40 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center transition-all group-hover:bg-steel-950/30">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTogglePlay();
-                      }}
-                      className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-navy-600/95 hover:bg-navy-600 text-white flex items-center justify-center transition-all shadow-[0_8px_30px_rgba(26,58,143,0.5)] hover:scale-110 active:scale-95 border-2 border-white/20 backdrop-blur-md mb-3 cursor-pointer"
-                      aria-label="Play manufacturing video"
-                    >
-                      <Play className="w-7 h-7 sm:w-8 sm:h-8 translate-x-0.5" />
-                    </button>
-
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 border border-white/10 text-white text-xs font-medium mb-1">
-                      <span>Click to watch machine in action</span>
-                    </div>
-                    <p className="text-[10px] text-steel-300 font-normal">
-                      Cold roll-forming trial at our Nashik plant
-                    </p>
-                  </div>
-                )}
-
-                {/* Floating Quick Mute Toggle when playing */}
-                {isPlaying && (
-                  <button
-                    type="button"
-                    onClick={handleToggleMute}
-                    aria-label={isMuted ? "Unmute video" : "Mute video"}
-                    className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm transition-colors"
-                  >
-                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  </button>
-                )}
               </div>
 
               {/* Caption */}
