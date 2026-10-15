@@ -46,11 +46,9 @@ export default function HomePage() {
         videoConfig={About.video_highlight}
       />
 
-      {/* 5. Customer Names — text only, per content governance rules.
-              Logo approval required before displaying brand marks. */}
+      {/* 5. Companies we have worked with — client partner logos marquee */}
       <CustomersSection
-        customerNames={Projects.customer_names_and_logo_handling.supplied_customer_list}
-        verificationNote={Projects.customer_names_and_logo_handling.verification_notes[0]}
+        logos={Projects.customer_names_and_logo_handling.approved_customer_logos}
       />
 
       {/* 6. Final Enquiry CTA — product-specific paths + general contact */}

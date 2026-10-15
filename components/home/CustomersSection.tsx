@@ -1,27 +1,60 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
+import Projects from "@/data/09-projects";
+
+export interface CustomerLogo {
+  readonly name: string;
+  readonly logoUrl: string;
+}
 
 interface CustomerLogosSectionProps {
-  customerNames: readonly string[];
-  verificationNote: string;
+  logos?: readonly CustomerLogo[];
+  customerNames?: readonly string[];
+  verificationNote?: string;
 }
 
 export default function CustomersSection({
-  customerNames,
-  verificationNote,
+  logos,
 }: CustomerLogosSectionProps) {
+  const logoList =
+    logos && logos.length > 0
+      ? logos
+      : Projects.customer_names_and_logo_handling.approved_customer_logos;
+
+  // Duplicate items within a set to ensure continuous seamless coverage on all screen sizes
+  const displayLogos = [...logoList, ...logoList];
+
   return (
     <section
-      className="relative bg-[#f4f6f9] py-16 sm:py-20"
+      className="relative bg-[#f4f6f9] py-16 sm:py-20 overflow-hidden"
       aria-labelledby="customers-heading"
     >
+      {/* Self-contained keyframes guarantee uninterrupted automatic sliding */}
+      <style>{`
+        @keyframes marqueeAutoScroll {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+        .marquee-auto-track {
+          display: flex;
+          width: max-content;
+          animation: marqueeAutoScroll 28s linear infinite !important;
+          will-change: transform;
+        }
+      `}</style>
+
       <div className="section-divider absolute inset-x-0 top-0" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+      {/* Section Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12">
         <motion.div
-          className="text-center mb-10"
+          className="text-center"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -37,45 +70,65 @@ export default function CustomersSection({
             Companies we have worked with
           </h2>
           <p className="mt-3 text-sm text-steel-500 max-w-lg mx-auto leading-relaxed">
-            Customer names are shown as text only. Logos require written approval before display.
+            Trusted by industry leaders in infrastructure, heavy manufacturing, and commercial enterprise.
           </p>
         </motion.div>
+      </div>
 
-        {/* Customer name pills */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-3"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.06 } },
-          }}
-        >
-          {customerNames.map((name) => (
-            <motion.div
-              key={name}
-              variants={{
-                hidden: { opacity: 0, scale: 0.92 },
-                visible: { opacity: 1, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
-              }}
-              className="px-5 py-2.5 rounded-full border border-steel-200 bg-white text-sm font-medium text-steel-600 hover:border-navy-700/30 hover:text-navy-700 hover:shadow-sm transition-all duration-200 cursor-default shadow-sm"
-            >
-              {name}
-            </motion.div>
-          ))}
-        </motion.div>
+      {/* Automatic Continuous Marquee Slider with Edge Fade Gradients */}
+      <div className="relative w-full overflow-hidden py-3 select-none">
+        {/* Left & Right Fade Masks for smooth edge transition */}
+        <div
+          className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-28 md:w-36 bg-gradient-to-r from-[#f4f6f9] via-[#f4f6f9]/80 to-transparent z-10"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-28 md:w-36 bg-gradient-to-l from-[#f4f6f9] via-[#f4f6f9]/80 to-transparent z-10"
+          aria-hidden="true"
+        />
 
-        {/* Pending note */}
-        <motion.p
-          className="mt-8 text-center text-xs text-steel-400 italic"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          ⚠️ Pending client approval: {verificationNote}
-        </motion.p>
+        {/* Automatic Continuous Sliding Track (Right to Left) */}
+        <div className="marquee-auto-track flex items-center">
+          {/* Set 1 */}
+          <div className="flex shrink-0 items-center gap-6 sm:gap-8 pr-6 sm:pr-8">
+            {displayLogos.map((logo, idx) => (
+              <div
+                key={`set1-${logo.name}-${idx}`}
+                className="relative flex shrink-0 items-center justify-center h-22 sm:h-24 md:h-26 w-44 sm:w-52 md:w-56 px-5 py-3.5 rounded-xl bg-white border border-steel-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] cursor-default select-none"
+              >
+                <Image
+                  src={logo.logoUrl}
+                  alt={`${logo.name} logo`}
+                  width={180}
+                  height={64}
+                  className="max-h-10 sm:max-h-12 w-auto max-w-[82%] object-contain"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Set 2 (Duplicate for infinite seamless loop) */}
+          <div
+            className="flex shrink-0 items-center gap-6 sm:gap-8 pr-6 sm:pr-8"
+            aria-hidden="true"
+          >
+            {displayLogos.map((logo, idx) => (
+              <div
+                key={`set2-${logo.name}-${idx}`}
+                className="relative flex shrink-0 items-center justify-center h-22 sm:h-24 md:h-26 w-44 sm:w-52 md:w-56 px-5 py-3.5 rounded-xl bg-white border border-steel-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] cursor-default select-none"
+              >
+                <Image
+                  src={logo.logoUrl}
+                  alt=""
+                  tabIndex={-1}
+                  width={180}
+                  height={64}
+                  className="max-h-10 sm:max-h-12 w-auto max-w-[82%] object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="section-divider absolute inset-x-0 bottom-0" aria-hidden="true" />

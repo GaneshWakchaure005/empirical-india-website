@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, FileText, Package, Cylinder, Settings } from "lucide-react";
+import { ArrowRight, FileText, Package, Cylinder, Settings, Sun } from "lucide-react";
 
 const enquiryPaths = [
   {
@@ -37,6 +37,18 @@ const enquiryPaths = [
     iconBg: "bg-steel-100 border-steel-200",
     iconColor: "text-steel-600",
     accentBar: "bg-steel-400",
+  },
+  {
+    id: "solar-structures",
+    label: "Solar Structures",
+    description: "Send panel layout, mounting type, and structural specifications.",
+    cta: "Discuss a solar structure project",
+    href: "/contact?product=solar-structures",
+    icon: Sun,
+    iconBg: "bg-amber-500/10 border-amber-500/20",
+    iconColor: "text-amber-600",
+    accentBar: "bg-amber-500",
+    image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791530982/solar-structure.webp",
   },
 ];
 
@@ -74,7 +86,7 @@ export default function EnquiryCTASection() {
 
         {/* Enquiry paths */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 mb-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
@@ -113,9 +125,9 @@ export default function EnquiryCTASection() {
                   <p className="text-sm text-steel-500 leading-relaxed flex-1 mb-4">{path.description}</p>
 
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-navy-700 group-hover:text-navy-600 transition-colors">
-                    <FileText size={12} />
+                    <FileText size={12} className="shrink-0" />
                     <span>{path.cta}</span>
-                    <ArrowRight size={11} className="ml-auto group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight size={11} className="ml-auto shrink-0 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </Link>
               </motion.div>
