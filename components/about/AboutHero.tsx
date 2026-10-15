@@ -11,7 +11,7 @@ interface AboutHeroProps {
 
 export default function AboutHero({ introduction }: AboutHeroProps) {
   return (
-    <section className="relative bg-[#f8fafc] pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden border-b border-steel-200/60">
+    <section className="relative bg-[#f8fafc] pt-24 pb-12 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-24 overflow-hidden border-b border-steel-200/60">
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         <Image
@@ -40,20 +40,20 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-wrap items-center gap-3 mb-6"
+          className="flex flex-wrap items-center gap-2 sm:gap-3 mb-5 sm:mb-6"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-50 border border-navy-100 text-navy-800 text-xs font-semibold tracking-wider uppercase shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-navy-50 border border-navy-100 text-navy-800 text-[11px] sm:text-xs font-semibold tracking-wider uppercase shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse" />
             <span>Industrial Engineering & Manufacturing</span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-steel-100/80 border border-steel-200/80 text-steel-700 text-xs font-medium">
-            <MapPin className="w-3.5 h-3.5 text-navy-700" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-steel-100/80 border border-steel-200/80 text-steel-700 text-[11px] sm:text-xs font-medium">
+            <MapPin className="w-3.5 h-3.5 text-navy-700 shrink-0" />
             <span>Nashik, Maharashtra, India</span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-steel-100/80 border border-steel-200/80 text-steel-700 text-xs font-medium">
-            <Calendar className="w-3.5 h-3.5 text-navy-700" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-steel-100/80 border border-steel-200/80 text-steel-700 text-[11px] sm:text-xs font-medium">
+            <Calendar className="w-3.5 h-3.5 text-navy-700 shrink-0" />
             <span>Est. 2016</span>
           </div>
         </motion.div>
@@ -66,26 +66,26 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-steel-900 tracking-tight leading-[1.15]">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black text-steel-900 tracking-tight leading-[1.18] sm:leading-[1.15]">
               Engineering clarity from requirement to finished production.
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg text-steel-600 leading-relaxed font-normal">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-steel-600 leading-relaxed font-normal">
               {introduction}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-medium text-sm transition-all shadow-sm active:scale-98"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-medium text-sm transition-all shadow-sm active:scale-98 text-center"
               >
                 <span>Request Technical Discussion</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </Link>
 
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-steel-300 hover:border-steel-400 bg-white hover:bg-steel-50 text-steel-800 font-medium text-sm transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-steel-300 hover:border-steel-400 bg-white hover:bg-steel-50 text-steel-800 font-medium text-sm transition-all text-center"
               >
                 <span>Explore Capabilities</span>
               </Link>
@@ -99,7 +99,7 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2 }}
           >
-            <div className="rounded-3xl border border-steel-200/90 bg-white/80 backdrop-blur-xl p-6 sm:p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+            <div className="rounded-2xl sm:rounded-3xl border border-steel-200/90 bg-white/80 backdrop-blur-xl p-5 sm:p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
               <h2 className="text-xs font-bold text-navy-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <Shield className="w-4 h-4 text-navy-700" />
                 <span>Manufacturing Mandate</span>

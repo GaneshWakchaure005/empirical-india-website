@@ -104,11 +104,10 @@ function BusinessLineCard({
 }) {
   return (
     <div
-      className="sticky"
+      className="relative lg:sticky top-auto lg:top-[var(--card-top)] mb-5 sm:mb-8 lg:mb-8"
       style={{
-        top: `${stickyTop}px`,
+        ["--card-top" as string]: `${stickyTop}px`,
         zIndex: index + 1,
-        marginBottom: "32px",
       }}
     >
       {/* ================= CARD ================= */}
@@ -125,13 +124,14 @@ function BusinessLineCard({
             relative
             block
             overflow-hidden
-            rounded-[24px]
+            rounded-[20px]
             sm:rounded-[32px]
             bg-gradient-to-br
             ${line.gradient}
             p-4
-            sm:p-8
-            lg:p-10
+            sm:p-6
+            lg:p-8
+            xl:p-10
             shadow-[0_20px_60px_rgba(15,32,68,0.18)]
             transition-all
             duration-500
@@ -461,11 +461,11 @@ export default function ThreeBusinessLinesSection() {
   const TOP_OFFSET = 80;
 
   return (
-    <section className="relative bg-[#f7f9fc] py-20 sm:py-28 border-b border-steel-200/60">
+    <section className="relative bg-[#f7f9fc] py-14 sm:py-20 lg:py-28 border-b border-steel-200/60">
       <div className="max-w-6xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ================= HEADER ================= */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-16 sm:mb-20"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 lg:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -475,11 +475,11 @@ export default function ThreeBusinessLinesSection() {
             Scope of Manufacture
           </span>
 
-          <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-steel-900 tracking-tight">
+          <h2 className="mt-2.5 sm:mt-3 text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-steel-900 tracking-tight">
             Four manufacturing business lines
           </h2>
 
-          <p className="mt-4 text-sm sm:text-base text-steel-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base text-steel-600 leading-relaxed max-w-2xl mx-auto">
             Empirical India engineers and manufactures across distinct
             industrial verticals, with every solution configured around
             customer requirements.

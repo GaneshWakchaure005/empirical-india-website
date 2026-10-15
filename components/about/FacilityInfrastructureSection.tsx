@@ -23,10 +23,10 @@ export default function FacilityInfrastructureSection({
   bays,
 }: FacilityProps) {
   return (
-    <section className="relative bg-white py-20 sm:py-28 overflow-hidden border-b border-steel-200/60">
+    <section className="relative bg-white py-14 sm:py-20 lg:py-28 overflow-hidden border-b border-steel-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 sm:mb-14 gap-6">
           <motion.div
             className="max-w-2xl"
             initial={{ opacity: 0, y: 18 }}
@@ -37,10 +37,10 @@ export default function FacilityInfrastructureSection({
             <span className="text-xs font-bold text-navy-700 uppercase tracking-widest block mb-2">
               Plant Infrastructure
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
               Our manufacturing facility & production bays
             </h2>
-            <p className="mt-3 text-base text-steel-600 leading-relaxed font-normal">
+            <p className="mt-2.5 sm:mt-3 text-sm sm:text-base text-steel-600 leading-relaxed font-normal">
               Located in {location} ({cluster}), Empirical India operates dedicated engineering bays configured for machine assembly, metal pallet fabrication, and precision tubular processing.
             </p>
           </motion.div>
@@ -50,14 +50,14 @@ export default function FacilityInfrastructureSection({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="shrink-0"
+            className="w-full sm:w-auto shrink-0"
           >
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-navy-200 bg-navy-50 text-navy-800 text-xs font-semibold hover:bg-navy-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-navy-200 bg-navy-50 text-navy-800 text-xs font-semibold hover:bg-navy-100 transition-colors w-full sm:w-auto text-center"
             >
               <span>Schedule Plant Visit or Technical Discussion</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 shrink-0" />
             </Link>
           </motion.div>
         </div>
@@ -104,18 +104,18 @@ export default function FacilityInfrastructureSection({
         </div>
 
         {/* Nashik Industrial Location Note */}
-        <div className="mt-12 rounded-2xl bg-gradient-to-r from-navy-900 to-steel-900 text-white p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="mt-10 sm:mt-12 rounded-2xl bg-gradient-to-r from-navy-900 to-steel-900 text-white p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
           <div>
-            <h4 className="text-lg font-bold tracking-tight">
+            <h4 className="text-base sm:text-lg font-bold tracking-tight">
               Strategic Industrial Connectivity in Maharashtra
             </h4>
-            <p className="mt-1.5 text-xs sm:text-sm text-steel-300 max-w-2xl leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-steel-300 max-w-2xl leading-relaxed font-normal">
               Situated in Maharashtra&apos;s established industrial corridor, our Nashik facility is positioned for rapid transit to Mumbai ports, domestic automotive hubs, and logistics warehouses across India.
             </p>
           </div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-steel-100 text-navy-900 text-xs font-semibold shrink-0 transition-colors shadow-sm"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-steel-100 text-navy-900 text-xs font-semibold shrink-0 transition-colors shadow-sm w-full sm:w-auto text-center"
           >
             <span>Contact Plant Team</span>
           </Link>
