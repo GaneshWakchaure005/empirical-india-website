@@ -22,10 +22,6 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
           sizes="100vw"
           className="object-cover object-center pointer-events-none"
         />
-        {/* Soft translucent gradient overlays for optimal readability & depth */}
-        <div className="absolute inset-0 bg-white/35 sm:bg-white/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#f4f6f9] to-transparent pointer-events-none" />
       </div>
 
       {/* Blueprint grid watermark */}
