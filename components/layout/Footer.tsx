@@ -15,7 +15,7 @@ const footerProducts = [
 const footerCompany = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Products and solutions", href: "/products/roll-forming-lines" },
+  { label: "Products and solutions", href: "/products" },
   { label: "Industries", href: "/industries" },
   { label: "News & Events", href: "/news" },
   { label: "Blogs & Insights", href: "/blogs" },

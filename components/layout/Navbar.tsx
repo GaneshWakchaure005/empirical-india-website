@@ -504,6 +504,22 @@ export default function Navbar() {
                   );
                 })}
               </div>
+
+              {/* Bottom complete catalog banner */}
+              <div className="mt-6 pt-4 border-t border-steel-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-xs text-steel-500">
+                  <span className="font-semibold text-navy-900">Empirical India:</span>
+                  <span>Custom roll-forming lines, modular metal pallets, trolley-bag tubes &amp; solar structures.</span>
+                </div>
+                <Link
+                  href="/products"
+                  onClick={() => setDesktopMegaMenuOpen(false)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-navy-50 text-navy-800 hover:bg-navy-700 hover:text-white text-xs font-bold transition-all shadow-2xs shrink-0"
+                >
+                  <span>View All Products &amp; Solutions</span>
+                  <ArrowRight size={13} />
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
@@ -628,6 +644,18 @@ export default function Navbar() {
                         transition={{ duration: 0.25, ease: "easeOut" }}
                         className="overflow-hidden pt-2 space-y-2 w-full"
                       >
+                        {/* Master Link to /products */}
+                        <div className="pb-1">
+                          <Link
+                            href="/products"
+                            onClick={() => setMobileOpen(false)}
+                            className="flex items-center justify-between p-2.5 rounded-xl bg-navy-50 text-navy-900 font-bold text-xs sm:text-sm hover:bg-navy-100 transition-colors"
+                          >
+                            <span>Browse All Products &amp; Solutions</span>
+                            <ArrowRight size={14} className="text-navy-700" />
+                          </Link>
+                        </div>
+
                         {productCategories.map((category) => {
                           const Icon = category.icon;
                           const isExpanded = mobileExpandedCategory === category.id;
