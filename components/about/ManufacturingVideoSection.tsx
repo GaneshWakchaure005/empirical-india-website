@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Play, Pause, Factory, ShieldCheck, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,54 +19,6 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const pathname = usePathname();
-
-  // Stop video when navigating to another route
-  useEffect(() => {
-    if (videoRef.current && !videoRef.current.paused) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, [pathname]);
-
-  // Clean up and stop video on component unmount
-  useEffect(() => {
-    const video = videoRef.current;
-    return () => {
-      if (video) {
-        video.pause();
-      }
-    };
-  }, []);
-
-  // Stop video when user switches browser tab or window, or on browser history navigation
-  useEffect(() => {
-    const handleVisibilityOrPageChange = () => {
-      if (document.hidden && videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    const handleStop = () => {
-      if (videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityOrPageChange);
-    window.addEventListener("pagehide", handleStop);
-    window.addEventListener("beforeunload", handleStop);
-    window.addEventListener("popstate", handleStop);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityOrPageChange);
-      window.removeEventListener("pagehide", handleStop);
-      window.removeEventListener("beforeunload", handleStop);
-      window.removeEventListener("popstate", handleStop);
-    };
-  }, []);
 
   const handleTogglePlay = () => {
     if (!videoRef.current) return;
@@ -91,11 +42,11 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
   };
 
   return (
-    <section className="relative bg-white py-20 sm:py-28 overflow-hidden border-b border-steel-200/60">
+    <section className="relative bg-white py-14 sm:py-20 lg:py-28 overflow-hidden border-b border-steel-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-14"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -106,11 +57,11 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
             <span>Manufacturing In Action</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
             {videoConfig.title}
           </h2>
 
-          <p className="mt-3.5 text-base text-steel-600 leading-relaxed">
+          <p className="mt-3 sm:mt-3.5 text-sm sm:text-base text-steel-600 leading-relaxed">
             {videoConfig.subtitle}
           </p>
         </motion.div>
@@ -266,7 +217,7 @@ export default function ManufacturingVideoSection({ videoConfig }: VideoHighligh
             {/* Note on video configuration */}
             <div className="rounded-xl p-3.5 bg-steel-50 border border-steel-200/70 text-[11px] text-steel-500">
               <span className="font-semibold text-steel-700">Video Source:</span> Hosted on Cloudinary and configured in{" "}
-              <code className="text-navy-800 bg-white px-1.5 py-0.5 rounded border border-steel-200 font-mono text-[10px]">
+              <code className="text-navy-800 bg-white px-1.5 py-0.5 rounded border border-steel-200 font-mono text-[10px] break-all">
                 data/02-about.ts → video_highlight.video_url
               </code>
               . Update the link anytime.

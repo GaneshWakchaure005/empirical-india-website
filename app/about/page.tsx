@@ -6,7 +6,6 @@ import BusinessLinesSection from "@/components/about/FourBusinesslines";
 import CompanyOverviewSection from "@/components/about/CompanyOverviewSection";
 import FacilityInfrastructureSection from "@/components/about/FacilityInfrastructureSection";
 import TimelineSection from "@/components/about/TimelineSection";
-import LeadershipSection from "@/components/about/LeadershipSection";
 import AboutCTASection from "@/components/about/AboutCTASection";
 
 export const metadata: Metadata = {
@@ -52,14 +51,7 @@ export default function AboutPage() {
       {/* 6. Verified Company Milestones Timeline */}
       <TimelineSection milestones={About.timeline_milestones} />
 
-      {/* 7. Leadership & Governance (strictly following AGENTS.md guidelines) */}
-      <LeadershipSection
-        sectionTitle={About.leadership.section_title}
-        disclaimer={About.leadership.disclaimer}
-        members={About.leadership.members}
-      />
-
-      {/* 8. Final Engineering Enquiry CTA */}
+      {/* 7. Final Engineering Enquiry CTA */}
       <AboutCTASection />
     </div>
   );

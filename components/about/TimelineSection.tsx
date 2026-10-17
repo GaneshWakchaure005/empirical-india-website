@@ -16,11 +16,11 @@ interface TimelineSectionProps {
 
 export default function TimelineSection({ milestones }: TimelineSectionProps) {
   return (
-    <section className="relative bg-white py-20 sm:py-28 overflow-hidden border-b border-steel-200/60">
+    <section className="relative bg-white py-14 sm:py-20 lg:py-28 overflow-hidden border-b border-steel-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -31,11 +31,11 @@ export default function TimelineSection({ milestones }: TimelineSectionProps) {
             <span>Company Progression</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-steel-900 tracking-tight">
             Our engineering milestones
           </h2>
 
-          <p className="mt-3.5 text-base text-steel-600 leading-relaxed font-normal">
+          <p className="mt-2.5 sm:mt-3.5 text-sm sm:text-base text-steel-600 leading-relaxed font-normal">
             A track record of progressive technical expansion, established in 2016 and continuously expanding across roll-forming machinery and fabricated metal systems.
           </p>
         </motion.div>
@@ -74,7 +74,7 @@ export default function TimelineSection({ milestones }: TimelineSectionProps) {
                       isEven ? "sm:pr-10 sm:text-right" : "sm:pl-10 sm:text-left"
                     }`}
                   >
-                    <div className="p-6 rounded-2xl border border-steel-200/80 bg-[#f8fafc] hover:bg-white transition-all shadow-2xs hover:shadow-sm">
+                    <div className="p-4 sm:p-6 rounded-2xl border border-steel-200/80 bg-[#f8fafc] hover:bg-white transition-all shadow-2xs hover:shadow-sm">
                       <div
                         className={`inline-flex items-center gap-2 mb-2 ${
                           isEven ? "sm:justify-end" : ""
