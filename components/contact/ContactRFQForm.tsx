@@ -212,19 +212,6 @@ export default function ContactRFQForm({
     setIsSuccess(false);
   };
 
-  const getLineIcon = (id: string) => {
-    switch (id) {
-      case "roll-forming-lines":
-        return Settings;
-      case "modular-metal-pallets":
-        return Package;
-      case "trolley-bag-tubes":
-        return Cylinder;
-      default:
-        return HelpCircle;
-    }
-  };
-
   return (
     <div className="rounded-3xl border border-steel-200/90 bg-white p-6 sm:p-10 shadow-[0_12px_45px_rgba(15,23,42,0.06)]">
       {/* ─────────────────────────────────────────────────────────────
