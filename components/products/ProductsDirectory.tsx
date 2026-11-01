@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { CatalogProductItem } from "@/data/03-products-and-solutions";
+import TechnicalPlaceholder from "./TechnicalPlaceholder";
 
 interface ProductsDirectoryProps {
   products: readonly CatalogProductItem[];
@@ -97,7 +98,7 @@ export default function ProductsDirectory({ products }: ProductsDirectoryProps) 
               id="product-directory-heading"
               className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-steel-900 tracking-tight"
             >
-              Explore Our <span className="text-navy-700">12 Precision Products</span>
+              Explore Our <span className="text-navy-700">{products.length} Precision Products</span>
             </h2>
             <p className="mt-2 text-sm sm:text-base text-steel-600 max-w-2xl leading-relaxed">
               Filter by vertical or search directly by machinery type, profile category, or tooling specification.
@@ -212,16 +213,11 @@ export default function ProductsDirectory({ products }: ProductsDirectoryProps) 
                 >
                   {/* Top Image Preview */}
                   <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-slate-900">
-                    <Image
-                      src={product.image}
+                    <TechnicalPlaceholder
+                      image={product.image}
                       alt={product.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-106"
-                    />
-                    <div
-                      className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/15 to-transparent"
-                      aria-hidden="true"
+                      category={product.categoryName}
+                      className="h-full w-full"
                     />
 
                     {/* Category & Badge */}

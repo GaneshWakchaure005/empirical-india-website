@@ -5,6 +5,7 @@ import ProductsPageHero from "@/components/products/ProductsPageHero";
 import { Suspense } from "react";
 import ContentLoader from "@/components/ui/ContentLoader";
 import DynamicBusinessLines from "@/components/products/DynamicBusinessLines";
+import ProductsDirectory from "@/components/products/ProductsDirectory";
 import RFQRequirementsGuide from "@/components/products/RFQRequirementsGuide";
 import ProductsWorkflowSection from "@/components/products/ProductsWorkflowSection";
 import ProductsFAQSection from "@/components/products/ProductsFAQSection";
@@ -27,7 +28,10 @@ export default function ProductsPage() {
       {/* 2. Four Core Product Line Cards (matching Home page) */}
       <Suspense fallback={<ContentLoader kind="products" />}><DynamicBusinessLines /></Suspense>
 
-      {/* 3. RFQ Specification Guidelines — What to Submit with Your RFQ */}
+      {/* 3. Interactive Equipment & Product Directory with Live Search & Filter Tabs */}
+      <ProductsDirectory products={ProductsAndSolutions.catalog_products} />
+
+      {/* 4. RFQ Specification Guidelines — What to Submit with Your RFQ */}
       <RFQRequirementsGuide
         eyebrow={ProductsAndSolutions.rfq_guidelines.eyebrow}
         heading={ProductsAndSolutions.rfq_guidelines.heading}

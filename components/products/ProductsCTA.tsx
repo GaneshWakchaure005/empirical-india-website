@@ -66,10 +66,10 @@ export default function ProductsCTA({
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4">
               <Link
                 href={primaryCta.href}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white text-navy-950 hover:bg-slate-100 font-bold text-sm transition-all shadow-lg hover:shadow-xl active:scale-98"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white text-navy-950 hover:bg-slate-100 font-bold text-sm transition-all shadow-lg hover:shadow-xl active:scale-98"
               >
                 <span>{primaryCta.label}</span>
                 <ArrowRight size={16} />
@@ -77,7 +77,7 @@ export default function ProductsCTA({
 
               <Link
                 href={secondaryCta.href}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-steel-700 bg-steel-800/60 hover:bg-steel-800 text-white font-semibold text-sm transition-all active:scale-98"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-steel-700 bg-steel-800/60 hover:bg-steel-800 text-white font-semibold text-sm transition-all active:scale-98"
               >
                 <span>{secondaryCta.label}</span>
               </Link>

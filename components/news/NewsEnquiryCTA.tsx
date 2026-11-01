@@ -41,11 +41,11 @@ export default function NewsEnquiryCTA() {
             </Link>
 
             <a
-              href="mailto:info@empiricalindia.com"
+              href="mailto:sales@empiricalindia.com"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-steel-700 bg-white border border-steel-200 hover:bg-steel-50 hover:border-steel-300 transition-all shadow-xs"
             >
               <Mail size={15} className="text-steel-500" />
-              <span>Email info@empiricalindia.com</span>
+              <span>Email sales@empiricalindia.com</span>
             </a>
           </div>
         </div>

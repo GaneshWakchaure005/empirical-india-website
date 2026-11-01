@@ -53,7 +53,7 @@ export default function ProductsFAQSection({ faqs }: ProductsFAQSectionProps) {
                 </Link>
 
                 <a
-                  href="mailto:contact@empiricalindia.com"
+                  href="mailto:sales@empiricalindia.com"
                   className="flex items-center gap-2 w-full px-3.5 py-2.5 rounded-xl border border-steel-200 hover:bg-slate-50 text-steel-700 text-xs font-semibold transition-colors"
                 >
                   <Mail size={14} className="text-navy-700" />

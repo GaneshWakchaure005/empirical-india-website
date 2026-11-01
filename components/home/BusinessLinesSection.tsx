@@ -44,7 +44,7 @@ export default function BusinessLinesSection({
 }: BusinessLinesSectionProps) {
   return (
     <section
-      className="relative overflow-hidden bg-gray-200 py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-[#f8fafc] py-16 sm:py-20 lg:py-24 border-b border-steel-200/80"
       aria-labelledby="business-lines-heading"
     >
       <div
@@ -54,7 +54,11 @@ export default function BusinessLinesSection({
 
       {/* Subtle background decoration */}
       <div
-        className="pointer-events-none absolute -right-40 top-24 h-96 w-96 rounded-full bg-blue-50/70 blur-3xl"
+        className="pointer-events-none absolute -right-40 top-24 h-96 w-96 rounded-full bg-blue-100/40 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -left-40 bottom-12 h-96 w-96 rounded-full bg-cyan-100/30 blur-3xl"
         aria-hidden="true"
       />
 
@@ -107,18 +111,18 @@ export default function BusinessLinesSection({
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
               className="group relative h-full"
             >
-              {/* Multi-color ambient glow behind card */}
+              {/* Subtle ambient glow behind card */}
               <div
-                className="pointer-events-none absolute -inset-1 rounded-3xl bg-[linear-gradient(135deg,#ec4899,#38bdf8,#facc15,#a855f7)] opacity-20 blur-xl transition-all duration-500 ease-out group-hover:opacity-70 group-hover:blur-2xl"
+                className="pointer-events-none absolute -inset-1 rounded-3xl bg-blue-600/10 opacity-0 blur-xl transition-all duration-500 ease-out group-hover:opacity-100 group-hover:blur-2xl"
                 aria-hidden="true"
               />
 
-              {/* Gradient border wrapper (pink, sky blue, yellow, purple) */}
-              <div className="relative flex h-full flex-col rounded-2xl p-[2px] bg-[linear-gradient(135deg,#ec4899_0%,#38bdf8_35%,#facc15_70%,#a855f7_100%)] bg-[length:220%_220%] bg-[position:0%_0%] shadow-[0_4px_20px_rgba(15,23,42,0.06)] transition-all duration-700 ease-out group-hover:bg-[position:100%_100%] group-hover:shadow-[0_24px_50px_-12px_rgba(15,23,42,0.18)]">
+              {/* Refined industrial gradient border wrapper */}
+              <div className="relative flex h-full flex-col rounded-2xl p-[1.5px] bg-gradient-to-br from-slate-200 via-navy-100 to-slate-200 shadow-[0_4px_20px_rgba(15,23,42,0.05)] transition-all duration-500 ease-out group-hover:from-navy-600 group-hover:via-blue-500 group-hover:to-cyan-400 group-hover:shadow-[0_20px_45px_-10px_rgba(15,23,42,0.16)]">
                 <Link
                   href={product.href}
                   aria-label={`Explore ${product.name} and its product varieties`}
-                  className="relative flex h-full flex-col overflow-hidden rounded-[14px] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600 focus-visible:ring-offset-2"
+                  className="relative flex h-full flex-col overflow-hidden rounded-[14.5px] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-600 focus-visible:ring-offset-2"
                 >
                   {/* Sheen sweep animation on hover */}
                   <div

@@ -32,10 +32,19 @@ const cardVariants = {
   },
 };
 
+const categoryNameMap: Record<string, string> = {
+  "roll-forming-lines": "Roll Forming Module",
+  "modular-metal-pallets": "Modular Pallet Variant",
+  "trolley-bag-tubes": "Luggage Tube Section",
+  "solar-structures": "Solar Structure Section",
+};
+
 export default function ProductRangeGrid({
   products,
   categorySlug = "roll-forming-lines",
 }: ProductRangeGridProps) {
+  const defaultCategoryLabel = categoryNameMap[categorySlug] || "Engineering Module";
+
   return (
     <motion.div
       className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -59,7 +68,7 @@ export default function ProductRangeGrid({
               <TechnicalPlaceholder
                 image={product.image}
                 alt={product.name}
-                category="Roll Forming Module"
+                category={defaultCategoryLabel}
                 className="h-full w-full"
               />
 

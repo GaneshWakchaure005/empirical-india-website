@@ -19,7 +19,7 @@ export const ContactRFQ = {
     name: "Empirical India",
     facility: "Roll Forming Machine Manufacturer & Metal Fabricator",
     location: "Nashik, Maharashtra, India",
-    email: "info@empiricalindia.com",
+    email: "sales@empiricalindia.com",
     plant_hours: "Monday – Saturday: 9:00 AM – 6:30 PM IST",
     sunday: "Closed",
     google_maps_embed:
