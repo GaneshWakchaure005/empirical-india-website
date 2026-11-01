@@ -141,8 +141,12 @@ async function runTests() {
 
   // Oversized mock
   const oversizedData = new Uint8Array(MAX_IMAGE_SIZE_BYTES + 1024);
+  assert(MAX_IMAGE_SIZE_BYTES === 2 * 1024 * 1024, "Admin image limit is 2 MB");
+  assert(validateImageFile(new File([new Uint8Array(MAX_IMAGE_SIZE_BYTES)], "at-limit.png", { type: "image/png" })).valid, "Image exactly 2 MB is accepted");
+  const justOverLimit = validateImageFile(new File([new Uint8Array(MAX_IMAGE_SIZE_BYTES + 1)], "too-large.png", { type: "image/png" }));
+  assert(!justOverLimit.valid && Boolean(justOverLimit.error?.includes("2MB")), "Image one byte over 2 MB is rejected with a clear warning");
   const oversizedMock = new File([oversizedData], "huge.png", { type: "image/png" });
-  assert(!validateImageFile(oversizedMock).valid, "Oversized (>5MB) image rejected");
+  assert(!validateImageFile(oversizedMock).valid, "Oversized (>2MB) image rejected");
 
   // 5. SUMMARY
   console.log("\n==========================================");

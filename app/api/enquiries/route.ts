@@ -1,8 +1,10 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
+import { randomUUID } from "node:crypto";
+import { deliverEnquiryNotification } from "@/lib/enquiry-notifications";
 import connectDB from "@/lib/mongodb";
 import Enquiry from "@/models/Enquiry";
-import { successResponse, errorResponse, handleApiError } from "@/lib/api-response";
+import { successResponse, handleApiError } from "@/lib/api-response";
 
 const enquirySubmitSchema = z.object({
   businessLine: z.string().default("general"),
@@ -12,8 +14,8 @@ const enquirySubmitSchema = z.object({
   phone: z.string().min(6, "Phone number must be at least 6 characters").max(30),
   location: z.string().min(2, "Location is required").max(100),
   requirement: z.string().min(10, "Requirement must be at least 10 characters").max(4000),
-  attachmentName: z.string().optional(),
-  attachmentUrl: z.string().optional(),
+  attachmentName: z.string().max(255).optional(),
+  attachmentUrl: z.string().url().max(2000).refine((value) => new URL(value).protocol === "https:").optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -23,9 +25,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    // Generate unique RFQ reference ID
-    const randomDigits = Math.floor(100000 + Math.random() * 900000);
-    const referenceId = `EI-RFQ-${randomDigits}`;
+    const referenceId = `EI-RFQ-${randomUUID()}`;
 
     const enquiry = await Enquiry.create({
       referenceId,
@@ -40,6 +40,12 @@ export async function POST(request: NextRequest) {
       attachmentUrl: validated.attachmentUrl,
       status: "new",
     });
+
+    try {
+      await deliverEnquiryNotification(enquiry._id.toString());
+    } catch {
+      console.error("Enquiry saved; notification needs review", { referenceId });
+    }
 
     return successResponse(
       {

@@ -18,12 +18,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import {
-  rollFormingLines,
-  modularPallets,
-  tubesForTrolleyBags,
-  solarStructure,
-} from "@/data/products-data";
+import { useProductCatalogue } from "@/components/products/ProductCatalogueProvider";
 
 interface ProductCategoryNav {
   id: string;
@@ -39,56 +34,7 @@ interface ProductCategoryNav {
 }
 
 // Derived dynamically from centralized data source of truth
-const productCategories: ProductCategoryNav[] = [
-  {
-    id: "roll-forming-lines",
-    name: rollFormingLines.name,
-    href: "/products/roll-forming-lines",
-    tagline: rollFormingLines.tagline,
-    badge: `${rollFormingLines.children.length} Products`,
-    icon: Layers3,
-    items: rollFormingLines.children.map((child) => ({
-      name: child.name,
-      href: `/products/roll-forming-lines/${child.slug}`,
-    })),
-  },
-  {
-    id: "modular-metal-pallets",
-    name: "Modular Metal Pallets",
-    href: "/products/modular-metal-pallets",
-    tagline: modularPallets.tagline,
-    badge: `${modularPallets.children.length} Products`,
-    icon: Package,
-    items: modularPallets.children.map((child) => ({
-      name: child.name,
-      href: `/products/modular-metal-pallets/${child.slug}`,
-    })),
-  },
-  {
-    id: "trolley-bag-tubes",
-    name: tubesForTrolleyBags.name,
-    href: "/products/trolley-bag-tubes",
-    tagline: tubesForTrolleyBags.tagline,
-    badge: `${tubesForTrolleyBags.children.length} Products`,
-    icon: Box,
-    items: tubesForTrolleyBags.children.map((child) => ({
-      name: child.name,
-      href: `/products/trolley-bag-tubes/${child.slug}`,
-    })),
-  },
-  {
-    id: "solar-structures",
-    name: "Solar Structures",
-    href: "/products/solar-structures",
-    tagline: solarStructure.tagline,
-    badge: `${solarStructure.children.length} Products`,
-    icon: Sun,
-    items: solarStructure.children.map((child) => ({
-      name: child.name,
-      href: `/products/solar-structures/${child.slug}`,
-    })),
-  },
-];
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -136,6 +82,13 @@ const standardNavLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const categories = useProductCatalogue();
+  const productCategories: ProductCategoryNav[] = categories.map((category) => ({
+    id: category.id, name: category.name, href: `/products/${category.slug}`,
+    tagline: category.tagline, badge: `${category.children.length} Products`,
+    icon: category.slug === "modular-metal-pallets" ? Package : category.slug === "trolley-bag-tubes" ? Box : category.slug === "solar-structures" ? Sun : Layers3,
+    items: category.children.map((child) => ({ name: child.name, href: `/products/${category.slug}/${child.slug}` })),
+  }));
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopMegaMenuOpen, setDesktopMegaMenuOpen] = useState(false);

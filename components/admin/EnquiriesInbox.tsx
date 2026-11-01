@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import EnquiryEmailStatus from "@/components/admin/EnquiryEmailStatus";
 import {
   Mail,
   Search,
@@ -37,6 +38,7 @@ interface EnquiryItem {
   notes?: string;
   attachmentName?: string;
   attachmentUrl?: string;
+  emailStatus?: "pending" | "sending" | "sent" | "failed";
   createdAt: string;
 }
 
@@ -491,6 +493,8 @@ export default function EnquiriesInbox() {
                 </span>
               </div>
             </div>
+
+            <EnquiryEmailStatus key={selectedEnquiry._id} id={selectedEnquiry._id} initialStatus={selectedEnquiry.emailStatus} />
 
             {/* Scope / Requirement */}
             <div>

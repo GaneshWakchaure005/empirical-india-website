@@ -290,7 +290,7 @@ Follow this sequence for an end-to-end integration test:
 - **Headers:**
   - `Authorization: Bearer {{token}}`
 - **Body:** `form-data`
-  - Key `image` (Type: **File**): Choose a valid `.jpg`, `.png`, or `.webp` file (Max 5MB)
+  - Key `image` (Type: **File**): Choose a valid `.jpg`, `.png`, or `.webp` file (Max 2MB)
   - Key `folder` (Type: **Text**, optional): `blogs` (or `news-events`, `general`)
 - **Expected Status:** `201 Created`
 - **Response Structure:**
@@ -366,7 +366,7 @@ Follow this sequence for an end-to-end integration test:
   - `excerpt` (Text): `An in-depth analysis of high-tensile steel profile manufacturing...`
   - `content` (Text): `Detailed breakdown of machine components and tooling design...`
   - `category` (Text): `{{categoryId}}`
-  - `image` (File): *Select image file (JPG/PNG/WEBP < 5MB)*
+  - `image` (File): *Select image file (JPG/PNG/WEBP < 2MB)*
   - `alt` (Text): `Roll-forming production machinery`
   - `tags` (Text): `roll-forming, tooling, export`
   - `status` (Text): `published`
@@ -737,7 +737,7 @@ Test these negative scenarios to confirm the backend's resilience and correct HT
 | **Zod Validation Failure** | `POST /api/admin/blogs` | Title under 3 chars (`"ab"`) | `422 Unprocessable` | `{"success": false, "errors": {"title": ["Title must be at least 3 characters"]}}` |
 | **Missing Image on Create** | `POST /api/admin/blogs` | No file and no `featuredImage` object | `400 Bad Request` | `{"success": false, "message": "Featured image is required"}` |
 | **Invalid Image MIME Type** | `POST /api/admin/upload` | Upload `.pdf` or `.txt` | `400 Bad Request` | `{"success": false, "message": "Invalid file type..."}` |
-| **Image Size Exceeded** | `POST /api/admin/upload` | Upload file > 5 MB | `400 Bad Request` | `{"success": false, "message": "File size exceeds the 5MB limit..."}` |
+| **Image Size Exceeded** | `POST /api/admin/upload` | Upload file > 2 MB | `400 Bad Request` | `{"success": false, "message": "File size exceeds the 2MB limit..."}` |
 | **Category In Use Deletion** | `DELETE /api/admin/categories/:id` | Delete category that has associated blogs | `409 Conflict` | `{"success": false, "message": "Category cannot be deleted because it is currently being used."}` |
 | **Draft Blog on Public Route** | `GET /api/blogs/:slug` | Slug of blog with `status: "draft"` | `404 Not Found` | `{"success": false, "message": "Blog not found"}` |
 

@@ -18,6 +18,7 @@ export default function AdminMobileNav({ unreadEnquiriesCount = 0 }: AdminMobile
   const pathname = usePathname();
 
   const navItems = [
+    { name: "Products", href: "/admin/products", icon: FileText, isActive: pathname.startsWith("/admin/products") },
     {
       name: "Dashboard",
       href: "/admin",
@@ -62,7 +63,7 @@ export default function AdminMobileNav({ unreadEnquiriesCount = 0 }: AdminMobile
       className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 safe-bottom"
       aria-label="Admin mobile navigation"
     >
-      <div className="grid grid-cols-6 items-center px-1 py-1.5 max-w-lg mx-auto">
+      <div className="grid grid-cols-7 items-center px-1 py-1.5 max-w-lg mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (

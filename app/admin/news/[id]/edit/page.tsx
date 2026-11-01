@@ -634,7 +634,7 @@ export default function EditNewsEventPage({
             onAltTextChange={setAltText}
             onRemoveCurrentImage={() => setExistingImageUrl(undefined)}
             label="Cover Image / Banner"
-            helperText="Upload a new image to replace the current banner (PNG, JPG, WebP up to 5MB)."
+            helperText="Upload a new image to replace the current banner (PNG, JPG, WebP up to 2MB)."
           />
         </div>
 

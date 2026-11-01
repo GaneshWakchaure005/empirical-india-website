@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ProductCatalogueProvider from "@/components/products/ProductCatalogueProvider";
 
 function ChromeContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,9 +17,9 @@ function ChromeContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Navbar />
+      <ProductCatalogueProvider><Navbar />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <Footer /></ProductCatalogueProvider>
     </>
   );
 }

@@ -667,6 +667,7 @@ export default function ContactRFQForm({
           </div>
 
           {/* Submit Button */}
+          {errors.form && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{errors.form}</p>}
           <div>
             <button
               type="submit"

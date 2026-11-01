@@ -358,7 +358,7 @@ POST /api/admin/blogs
 | `excerpt` | `string` | ✅ | Min 10, max 600 characters. |
 | `content` | `string` | ✅ | Min 10 characters. |
 | `category` | `string` | ✅ | 24-character hex ObjectId of an existing category. |
-| `image` or `featuredImage` | `File` | ✅ | JPEG, PNG, or WEBP. Max 5 MB. |
+| `image` or `featuredImage` | `File` | ✅ | JPEG, PNG, or WEBP. Max 2 MB. |
 | `alt` | `string` | — | Alt text for the image. Defaults to `title`. |
 | `tags` | `string` | — | Comma-separated tags e.g. `"roll-forming, tooling, export"`. |
 | `status` | `string` | — | `"draft"` (default) or `"published"`. |
@@ -569,7 +569,7 @@ POST /api/admin/news-events
 | `excerpt` | `string` | ✅ | Min 10, max 600. |
 | `content` | `string` | ✅ | Min 10. |
 | `category` | `string` | ✅ | 24-char hex ObjectId. |
-| `image` or `featuredImage` | `File` | ✅ | JPEG, PNG, WEBP. Max 5 MB. Uploaded to `empirical-india/news-events`. |
+| `image` or `featuredImage` | `File` | ✅ | JPEG, PNG, WEBP. Max 2 MB. Uploaded to `empirical-india/news-events`. |
 | `alt` | `string` | — | Image alt text. |
 | `tags` | `string` | — | Comma-separated. |
 | `status` | `string` | — | `"draft"` (default) or `"published"`. |
@@ -838,7 +838,7 @@ Standalone image upload endpoint. Use this to pre-upload images before creating 
 | Constraint | Value |
 |---|---|
 | Allowed MIME types | `image/jpeg`, `image/png`, `image/webp` |
-| Maximum file size | 5 MB |
+| Maximum file size | 2 MB |
 
 #### Response `201 Created`
 
@@ -861,7 +861,7 @@ Store `secureUrl` as the display URL and `publicId` for future deletion/replacem
 |---|---|
 | `400` | `Image file is required` |
 | `400` | `Invalid file type: application/pdf. Allowed formats: JPEG, PNG, WEBP.` |
-| `400` | `File size exceeds the 5MB limit (6.20 MB).` |
+| `400` | `File size exceeds the 2MB limit (6.20 MB).` |
 
 ---
 
@@ -1146,7 +1146,7 @@ Returns only **active** categories (`isActive: true`), sorted alphabetically.
 
 ### Maximum file size
 
-**5 MB** per image.
+**2 MB** per image.
 
 ### Stored in MongoDB
 
@@ -1300,7 +1300,7 @@ HTTP `409`
 ```json
 {
   "success": false,
-  "message": "File size exceeds the 5MB limit (6.20 MB)."
+  "message": "File size exceeds the 2MB limit (6.20 MB)."
 }
 ```
 

@@ -4,7 +4,9 @@ import About from "@/data/02-about";
 import QualityManufacturing from "@/data/07-quality-manufacturing";
 import Projects from "@/data/09-projects";
 import HeroSection from "@/components/home/HeroSection";
-import BusinessLinesSection from "@/components/home/BusinessLinesSection";
+import { Suspense } from "react";
+import ContentLoader from "@/components/ui/ContentLoader";
+import DynamicBusinessLines from "@/components/products/DynamicBusinessLines";
 import ProcessSection from "@/components/home/ProcessSection";
 import ApproachSection from "@/components/home/ApproachSection";
 import CustomersSection from "@/components/home/CustomersSection";
@@ -30,7 +32,7 @@ export default function HomePage() {
       <HeroSection hero={Home.hero} />
 
       {/* 2. Products and Solutions — the core product/machinery verticals */}
-      <BusinessLinesSection />
+      <Suspense fallback={<ContentLoader kind="products" />}><DynamicBusinessLines /></Suspense>
 
       {/* 3. From Requirement to Production — quality process overview */}
       <ProcessSection

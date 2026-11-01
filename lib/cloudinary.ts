@@ -1,5 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryUploadResult } from "@/types/api";
+import { validateImageFile } from "@/lib/image-validation";
+export { validateImageFile, MAX_IMAGE_SIZE_BYTES, ALLOWED_IMAGE_MIME_TYPES } from "@/lib/image-validation";
 
 if (typeof window !== "undefined") {
   throw new Error("Cloudinary configuration must only be used on the server.");
@@ -18,36 +20,8 @@ if (cloudName && apiKey && apiSecret) {
   });
 }
 
-export const ALLOWED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
-export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
-
-export function validateImageFile(file: File): { valid: boolean; error?: string } {
-  if (!file) {
-    return { valid: false, error: "Image file is required." };
-  }
-
-  if (!ALLOWED_IMAGE_MIME_TYPES.includes(file.type)) {
-    return {
-      valid: false,
-      error: `Invalid file type: ${file.type}. Allowed formats: JPEG, PNG, WEBP.`,
-    };
-  }
-
-  if (file.size > MAX_IMAGE_SIZE_BYTES) {
-    return {
-      valid: false,
-      error: `File size exceeds the 5MB limit (${(file.size / (1024 * 1024)).toFixed(2)} MB).`,
-    };
-  }
-
-  return { valid: true };
-}
-
 export type CloudinaryFolder =
+  | "empirical-india/products"
   | "empirical-india/blogs"
   | "empirical-india/news-events"
   | "empirical-india/general";

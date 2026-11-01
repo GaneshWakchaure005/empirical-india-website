@@ -5,7 +5,7 @@
 - `roll-forming-lines.ts` — Roll Forming Lines and its 5 child products.
 - `modular-pallets.ts` — Modular Pallets and its 3 child products.
 - `tubes-for-trolley-bags.ts` — Tubes for Trolley Bags and its 2 child products.
-- `solar-structure.ts` — Solar Structure and its 2 child products.
+- `solar-structure.ts` — Solar Structures (`solar-structures`) and its 2 child products.
 - `index.ts` — convenient named exports.
 
 ## Image placeholders

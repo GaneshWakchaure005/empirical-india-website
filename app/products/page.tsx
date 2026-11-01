@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import ProductsAndSolutions from "@/data/03-products-and-solutions";
 import ProductsPageHero from "@/components/products/ProductsPageHero";
-import BusinessLinesSection from "@/components/home/BusinessLinesSection";
+import { Suspense } from "react";
+import ContentLoader from "@/components/ui/ContentLoader";
+import DynamicBusinessLines from "@/components/products/DynamicBusinessLines";
 import RFQRequirementsGuide from "@/components/products/RFQRequirementsGuide";
 import ProductsWorkflowSection from "@/components/products/ProductsWorkflowSection";
 import ProductsFAQSection from "@/components/products/ProductsFAQSection";
@@ -36,7 +38,7 @@ export default function ProductsPage() {
       />
 
       {/* 2. Four Core Product Line Cards (matching Home page) */}
-      <BusinessLinesSection />
+      <Suspense fallback={<ContentLoader kind="products" />}><DynamicBusinessLines /></Suspense>
 
       {/* 3. RFQ Specification Guidelines — What to Submit with Your RFQ */}
       <RFQRequirementsGuide

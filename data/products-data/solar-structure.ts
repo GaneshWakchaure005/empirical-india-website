@@ -1,9 +1,9 @@
 import type { ProductCategory } from "./types";
 
 const solarStructure: ProductCategory = {
-  id: "solar-structure",
-  name: "Solar Structure",
-  slug: "solar-structure",
+  id: "solar-structures",
+  name: "Solar Structures",
+  slug: "solar-structures",
   tagline: "Structural solutions for rooftop solar installations",
   shortDescription:
     "Prefabricated rooftop solar structures and roll-formed structural sections for suitable solar mounting applications.",

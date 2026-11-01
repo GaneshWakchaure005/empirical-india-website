@@ -1,16 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useProductCatalogue } from "@/components/products/ProductCatalogueProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Mail, MapPin, ExternalLink } from "lucide-react";
 
-const footerProducts = [
-  { label: "Roll-Forming Lines", href: "/products/roll-forming-lines" },
-  { label: "Modular Metal Pallets", href: "/products/modular-metal-pallets" },
-  { label: "Trolley-Bag Tubes", href: "/products/trolley-bag-tubes" },
-  { label: "Solar Structures", href: "/products/solar-structures" },
-];
+
 
 const footerCompany = [
   { label: "Home", href: "/" },
@@ -55,6 +51,7 @@ function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
 }
 
 export default function Footer() {
+  const footerProducts = useProductCatalogue().map((category) => ({ label: category.name, href: `/products/${category.slug}` }));
   const [currentYear, setCurrentYear] = useState(2026);
 
   useEffect(() => {

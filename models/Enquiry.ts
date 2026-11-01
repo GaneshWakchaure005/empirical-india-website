@@ -13,12 +13,24 @@ export interface IEnquiryDocument extends Document {
   notes?: string;
   attachmentName?: string;
   attachmentUrl?: string;
+  emailStatus: "pending" | "sending" | "sent" | "failed";
+  emailAttempts: number;
+  emailLastAttemptAt?: Date;
+  emailSentAt?: Date;
+  emailMessageId?: string;
+  emailFailureCode?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const EnquirySchema = new Schema<IEnquiryDocument>(
   {
+    emailStatus: { type: String, enum: ["pending", "sending", "sent", "failed"], default: "pending" },
+    emailAttempts: { type: Number, default: 0 },
+    emailLastAttemptAt: Date,
+    emailSentAt: Date,
+    emailMessageId: String,
+    emailFailureCode: String,
     referenceId: {
       type: String,
       required: true,

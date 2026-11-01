@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import ContactRFQ from "@/data/12-contact-rfq";
 import ContactHero from "@/components/contact/ContactHero";
-import ContactRFQForm from "@/components/contact/ContactRFQForm";
+import DynamicProductRFQForm from "@/components/contact/DynamicProductRFQForm";
 import PlantLocationCard from "@/components/contact/PlantLocationCard";
 import EnquiryChecklistSection from "@/components/contact/EnquiryChecklistSection";
 import { Loader2 } from "lucide-react";
@@ -65,11 +65,7 @@ export default function ContactPage() {
               </div>
 
               <Suspense fallback={<FormFallback />}>
-                <ContactRFQForm
-                  businessLines={ContactRFQ.business_lines}
-                  uploadGuidance={ContactRFQ.upload_guidance}
-                  consentNote={ContactRFQ.consent_note}
-                />
+                <DynamicProductRFQForm />
               </Suspense>
             </div>
 

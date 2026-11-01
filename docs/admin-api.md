@@ -189,7 +189,7 @@ Sets `admin_token` HTTP-only cookie and returns:
 #### Form Data Parameters
 | Field | Type | Description |
 |---|---|---|
-| `image` | `File` (Binary) | Required. Allowed MIME: `image/jpeg`, `image/png`, `image/webp`. Max size: 5MB. |
+| `image` | `File` (Binary) | Required. Allowed MIME: `image/jpeg`, `image/png`, `image/webp`. Max size: 2MB. |
 | `folder` | `string` | Optional: `"blogs"`, `"news-events"`, or `"general"` (default). |
 
 #### Example curl:
@@ -296,7 +296,7 @@ curl -X POST https://yourdomain.com/api/admin/upload \
 | `excerpt` | `string` | Required. Min 10, max 600 chars. |
 | `content` | `string` | Required. Full markdown or HTML content. |
 | `category` | `string` | Required. 24-character Category ObjectId. |
-| `image` | `File` | Required. Image file (<5MB, JPEG/PNG/WEBP). |
+| `image` | `File` | Required. Image file (<2MB, JPEG/PNG/WEBP). |
 | `alt` | `string` | Optional. Image alt text. |
 | `tags` | `string` | Optional. Comma-separated (e.g. `"roll-forming, tooling, export"`). |
 | `status` | `string` | Optional. `"draft"` (default) or `"published"`. |

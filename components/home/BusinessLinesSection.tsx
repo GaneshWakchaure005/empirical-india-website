@@ -128,14 +128,14 @@ export default function BusinessLinesSection({
 
                   {/* Image */}
                   <div className="relative aspect-[5/3] w-full shrink-0 overflow-hidden bg-slate-100">
-                    <Image
+                    {product.image && product.image !== "null" && <Image
                       src={product.image}
                       alt={product.name}
                       fill
                       priority={index === 0}
                       sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 25vw, 300px"
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                    />
+                    />}
 
                     {/* Image overlays */}
                     <div

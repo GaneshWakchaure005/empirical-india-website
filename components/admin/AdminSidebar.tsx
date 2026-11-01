@@ -34,6 +34,7 @@ export default function AdminSidebar({ unreadEnquiriesCount = 0 }: AdminSidebarP
   }, []);
 
   const navItems = [
+    { name: "Products", href: "/admin/products", icon: FileText, isActive: pathname.startsWith("/admin/products") },
     {
       name: "Dashboard",
       href: "/admin",

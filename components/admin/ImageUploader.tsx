@@ -2,6 +2,7 @@
 
 import { useState, useRef, ChangeEvent, DragEvent } from "react";
 import Image from "next/image";
+import { validateImageFile } from "@/lib/image-validation";
 import { UploadCloud, X, ImageIcon, AlertCircle } from "lucide-react";
 
 interface ImageUploaderProps {
@@ -21,7 +22,7 @@ export default function ImageUploader({
   onAltTextChange,
   onRemoveCurrentImage,
   label = "Featured Image",
-  helperText = "PNG, JPG, or WebP up to 5MB. 16:9 ratio recommended.",
+  helperText = "PNG, JPG, or WebP up to 2MB. 16:9 ratio recommended.",
 }: ImageUploaderProps) {
   const [dragActive, setDragActive] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -30,15 +31,10 @@ export default function ImageUploader({
 
   const validateAndHandleFile = (file: File) => {
     setError(null);
-    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!validTypes.includes(file.type)) {
-      setError("Please select a valid image file (JPG, PNG, WebP).");
-      return;
-    }
-
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      setError("Image file exceeds the 5MB size limit.");
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      setError(validation.error || "Invalid image file.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
 
@@ -162,7 +158,7 @@ export default function ImageUploader({
       />
 
       {error && (
-        <div className="flex items-center gap-2 text-rose-400 text-xs font-medium">
+        <div role="alert" className="flex items-center gap-2 text-rose-400 text-xs font-medium">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>

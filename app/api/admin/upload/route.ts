@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("image") as File | null;
     const folderInput = (formData.get("folder") as string) || "general";
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return errorResponse("Image file is required", 400);
     }
 
@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
     }
 
     let folder: CloudinaryFolder = "empirical-india/general";
-    if (folderInput === "blogs" || folderInput === "empirical-india/blogs") {
+    if (folderInput === "products" || folderInput === "empirical-india/products") {
+      folder = "empirical-india/products";
+    } else if (folderInput === "blogs" || folderInput === "empirical-india/blogs") {
       folder = "empirical-india/blogs";
     } else if (
       folderInput === "news-events" ||

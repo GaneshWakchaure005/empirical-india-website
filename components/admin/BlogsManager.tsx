@@ -1,4 +1,5 @@
 "use client";
+import { validateImageFile } from "@/lib/image-validation";
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -266,8 +267,10 @@ export default function BlogsManager() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setFormError("Selected file exceeds 5MB limit.");
+      const validation = validateImageFile(file);
+      if (!validation.valid) {
+        setFormError(validation.error || "Invalid image file.");
+        e.target.value = "";
         return;
       }
       setImageFile(file);
@@ -777,7 +780,7 @@ export default function BlogsManager() {
               {/* Image Upload Area */}
               <div>
                 <label className="block font-semibold text-slate-300 mb-1">
-                  Featured Image * (Max 5MB - JPG, PNG, WEBP)
+                  Featured Image * (Max 2MB - JPG, PNG, WEBP)
                 </label>
                 <div className="flex items-center gap-4">
                   <input

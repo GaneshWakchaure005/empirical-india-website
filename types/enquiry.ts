@@ -14,6 +14,10 @@ export interface IEnquiry {
   notes?: string;
   attachmentName?: string;
   attachmentUrl?: string;
+  emailStatus?: "pending" | "sending" | "sent" | "failed";
+  emailAttempts?: number;
+  emailSentAt?: string;
+  emailFailureCode?: string;
   createdAt: string;
   updatedAt: string;
 }
