@@ -10,10 +10,6 @@ import {
   AlertCircle,
   FileText,
   X,
-  Settings,
-  Package,
-  Cylinder,
-  HelpCircle,
   Shield,
   Loader2,
   RefreshCw,
@@ -296,64 +292,33 @@ export default function ContactRFQForm({
 
         <form onSubmit={handleSubmit} noValidate>
           {/* Step 1: Business Line Selection */}
-          <div className="mb-8">
-            <label className="block text-xs font-bold text-navy-800 uppercase tracking-wider mb-2">
-              1. Select Capability / Business Line <span className="text-red-600">*</span>
+          <div className="mb-6">
+            <label
+              htmlFor="businessLine"
+              className="block text-xs font-bold text-navy-800 uppercase tracking-wider mb-1.5"
+            >
+              1. Business Line <span className="text-red-600">*</span>
             </label>
-            <p className="text-xs text-steel-500 mb-4">
-              Selecting the appropriate business line loads technical prompt questions tailored to your application.
-            </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {businessLines.map((line) => {
-                const Icon = getLineIcon(line.id);
-                const isSelected = selectedVertical === line.id;
-
-                return (
-                  <button
-                    key={line.id}
-                    type="button"
-                    onClick={() => setSelectedVertical(line.id)}
-                    className={cn(
-                      "p-4 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between group",
-                      isSelected
-                        ? "border-navy-900 bg-navy-50/70 shadow-sm ring-2 ring-navy-900/10"
-                        : "border-steel-200/80 bg-white hover:border-steel-300 hover:bg-steel-50/60"
-                    )}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <div
-                          className={cn(
-                            "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
-                            isSelected
-                              ? "bg-navy-900 text-white"
-                              : "bg-steel-100 text-steel-600 group-hover:text-navy-900"
-                          )}
-                        >
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <span className="text-[10px] font-mono font-bold text-steel-400 uppercase">
-                          {line.badge}
-                        </span>
-                      </div>
-
-                      <h4 className="text-xs font-bold text-steel-900 tracking-tight leading-snug">
-                        {line.name}
-                      </h4>
-                    </div>
-
-                    <span
-                      className={cn(
-                        "text-[11px] mt-2 block",
-                        isSelected ? "text-navy-700 font-semibold" : "text-steel-400"
-                      )}
-                    >
-                      {isSelected ? "Active Selection ✓" : "Click to select"}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="relative">
+              <select
+                id="businessLine"
+                value={selectedVertical}
+                onChange={(e) => setSelectedVertical(e.target.value)}
+                className="w-full appearance-none px-4 py-2.5 pr-10 rounded-xl border border-steel-200 bg-white text-sm font-semibold text-steel-900 focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700 transition-colors cursor-pointer"
+              >
+                {businessLines.map((line) => (
+                  <option key={line.id} value={line.id}>
+                    {line.name}
+                  </option>
+                ))}
+              </select>
+              {/* Chevron icon */}
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-steel-400" aria-hidden="true">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
           </div>
 
