@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:homepage-production": "node scripts/test-homepage-production.mjs",
     "test:seo": "tsx scripts/test-seo.ts",
     "test:seo-rendering": "tsx scripts/test-seo-rendering.tsx",
     "test:admin-api": "tsx scripts/test-admin-api.ts",
