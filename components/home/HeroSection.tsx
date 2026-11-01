@@ -324,7 +324,11 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
             })}
           </div>
 
-          <h1 className="mb-6 max-w-5xl text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow-lg sm:text-4xl lg:text-5xl xl:text-6xl">{siteSEO.pages.home.h1}</h1>
+          <h1 className="mb-6 max-w-5xl text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.15] sm:leading-[1.12] tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+            <span className="bg-gradient-to-r from-white via-sky-100 to-sky-300 bg-clip-text text-transparent">
+              {siteSEO.pages.home.h1}
+            </span>
+          </h1>
 
           {/* 3. Supporting Copy — Locked Grid Row (Bigger on larger screens, height locked to tallest copy) */}
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-center w-full mb-6 md:mb-8">
