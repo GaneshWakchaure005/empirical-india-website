@@ -1,89 +1,26 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { fetchNewsEventBySlug } from "@/lib/api/news-events";
+import { notFound } from "next/navigation";
+import { getPublishedNews } from "@/lib/public-content";
+import { pageMetadata } from "@/lib/seo";
+import ArticleSchema from "@/components/seo/ArticleSchema";
 import NewsDetailClient from "@/components/news/NewsDetailClient";
 
-interface NewsDetailPageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export async function generateMetadata({
-  params,
-}: NewsDetailPageProps): Promise<Metadata> {
+type Props = { params: Promise<{ slug: string }> };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-
-  try {
-    const item = await fetchNewsEventBySlug(slug);
-
-    if (!item) {
-      return {
-        title: "News & Events | Empirical India",
-        description:
-          "Official manufacturing news, machinery dispatches, and exhibition events from Empirical India.",
-      };
-    }
-
-    const title = item.seo?.metaTitle || item.title;
-    const description = item.seo?.metaDescription || item.excerpt;
-    const imageUrl = item.featuredImage?.url;
-
-    return {
-      title: `${title} | Empirical India`,
-      description,
-      keywords: item.seo?.keywords?.length ? item.seo.keywords : item.tags,
-      alternates: {
-        canonical: `/news/${slug}`,
-      },
-      openGraph: {
-        title: `${title} | Empirical India`,
-        description,
-        url: `/news/${slug}`,
-        type: "article",
-        publishedTime: item.publishedAt
-          ? new Date(item.publishedAt).toISOString()
-          : undefined,
-        images: imageUrl
-          ? [
-              {
-                url: imageUrl,
-                alt: item.featuredImage?.alt || title,
-              },
-            ]
-          : undefined,
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: `${title} | Empirical India`,
-        description,
-        images: imageUrl ? [imageUrl] : undefined,
-      },
-    };
-  } catch {
-    return {
-      title: "News & Events | Empirical India",
-      description:
-        "Official manufacturing news, machinery dispatches, and exhibition events from Empirical India.",
-    };
-  }
+  const item = await getPublishedNews(slug);
+  if (!item) notFound();
+  return pageMetadata({ title: item.seo.metaTitle || item.title, description: item.seo.metaDescription || item.excerpt,
+    path: `/news/${slug}`, keywords: item.seo.keywords.length ? item.seo.keywords : item.tags, image: item.featuredImage.url,
+    article: { publishedTime: item.publishedAt, modifiedTime: item.updatedAt } });
 }
-
-async function NewsDetailContent({ params }: NewsDetailPageProps) {
+async function Article({ params }: Props) {
   const { slug } = await params;
-  return <NewsDetailClient slug={slug} />;
+  const item = await getPublishedNews(slug);
+  if (!item) notFound();
+  return <><ArticleSchema item={item} section="news" /><NewsDetailClient key={slug} slug={slug} initialItem={item} /></>;
 }
-
-export default function NewsDetailPage({ params }: NewsDetailPageProps) {
-  return (
-    <Suspense
-      fallback={
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-16 animate-pulse">
-          <div className="h-6 w-32 bg-steel-200 rounded mb-6" />
-          <div className="h-10 w-3/4 bg-steel-200 rounded mb-4" />
-          <div className="aspect-[21/9] bg-steel-200 rounded-3xl w-full" />
-        </div>
-      }
-    >
-      <NewsDetailContent params={params} />
-    </Suspense>
-  );
+export default function DetailPage(props: Props) {
+  return <Suspense fallback={<div className="min-h-96 pt-28" aria-busy="true" />}><Article {...props} /></Suspense>;
 }

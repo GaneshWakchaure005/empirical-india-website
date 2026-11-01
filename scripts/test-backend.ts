@@ -11,6 +11,7 @@ import {
   objectIdSchema,
 } from "../lib/validation";
 import { generateBaseSlug } from "../lib/slug";
+process.env.AUTH_SECRET = "backend-unit-test-secret-with-at-least-32-characters";
 import { hashPassword, comparePassword, signAdminToken, verifyAdminToken } from "../lib/auth";
 import { validateImageFile, MAX_IMAGE_SIZE_BYTES } from "../lib/cloudinary";
 

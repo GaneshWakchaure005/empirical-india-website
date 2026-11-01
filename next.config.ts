@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/:path*", has: [{ type: "host", value: "empiricalindia.com" }], destination: "https://www.empiricalindia.com/:path*", permanent: true },
       // Legacy WordPress indexed routes redirects
       {
         source: "/projects",
@@ -70,6 +71,12 @@ const nextConfig: NextConfig = {
         destination: "/blogs",
         permanent: true,
       },
+    ];
+  },
+  async headers() {
+    return [
+      { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
     ];
   },
 };

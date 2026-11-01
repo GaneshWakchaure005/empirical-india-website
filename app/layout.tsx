@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalSiteChrome from "@/components/layout/ConditionalSiteChrome";
+import { siteSEO } from "@/data/seo";
+import { organizationSchema, pageMetadata, siteOrigin } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,22 +17,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  ...pageMetadata(siteSEO.pages.home),
   title: {
-    default: "Empirical India | Roll Forming Lines, Metal Pallets and Tubes",
-    template: "%s | Empirical India",
+    default: `${siteSEO.pages.home.title} | ${siteSEO.name}`,
+    template: `%s | ${siteSEO.name}`,
   },
-  description:
-    "Empirical India designs custom automated roll-forming lines and manufactures modular metal pallets and tubes to customer requirements. Share a drawing or application to start a discussion.",
-  metadataBase: new URL("https://www.empiricalindia.com"),
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    siteName: "Empirical India",
-  },
+  description: siteSEO.pages.home.description,
+  metadataBase: new URL(siteOrigin()),
   robots: {
-    index: true,
+    index: process.env.SITE_INDEXABLE !== "false",
     follow: true,
   },
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
 };
 
 export default function RootLayout({
@@ -44,6 +43,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <JsonLd data={organizationSchema()} />
         <ConditionalSiteChrome>{children}</ConditionalSiteChrome>
       </body>
     </html>

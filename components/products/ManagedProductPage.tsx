@@ -5,10 +5,13 @@ import type { Metadata } from "next";
 import { getProductCategory } from "@/lib/products";
 import { productUI as ui } from "@/data/product-ui";
 import ProductRangeGrid from "@/components/products/ProductRangeGrid";
+import { absoluteUrl, breadcrumbSchema, pageMetadata } from "@/lib/seo";
+import { siteSEO } from "@/data/seo";
+import JsonLd from "@/components/seo/JsonLd";
 
-function Visual({ image, alt }: { image: string; alt: string }) {
+function Visual({ image, alt, priority = false }: { image: string; alt: string; priority?: boolean }) {
   if (!image || image === "null") return null;
-  return <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-100"><Image src={image} alt={alt} fill sizes="(max-width: 768px) 100vw, 700px" className="object-cover" /></div>;
+  return <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-100"><Image src={image} alt={alt} fill priority={priority} sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" /></div>;
 }
 
 function List({ title, items }: { title: string; items: string[] }) {
@@ -21,18 +24,20 @@ export async function managedProductMetadata(categorySlug: string, productSlug?:
   const record = productSlug ? category?.children.find((child) => child.slug === productSlug) : category;
   if (!record) return { title: "Product not found", robots: { index: false } };
   const canonical = `/products/${categorySlug}${productSlug ? `/${productSlug}` : ""}`;
-  return { title: record.seo.title || record.name, description: record.seo.description || record.shortDescription,
-    keywords: record.seo.keywords, alternates: { canonical }, openGraph: { title: record.seo.title || record.name,
-      description: record.seo.description || record.shortDescription, url: canonical,
-      ...(record.image && record.image !== "null" ? { images: [record.image] } : {}) } };
+  const businessSEO = !productSlug ? siteSEO.productPages[categorySlug] : undefined;
+  return pageMetadata({ title: businessSEO?.title || record.seo.title || `${record.name} in Nashik, India`,
+    description: businessSEO?.description || record.seo.description || record.shortDescription,
+    keywords: record.seo.keywords, path: canonical,
+    image: record.image && record.image !== "null" ? record.image : undefined });
 }
 
 export async function ManagedCategoryPage({ slug }: { slug: string }) {
   const category = await getProductCategory(slug);
   if (!category) notFound();
   return <article className="mx-auto max-w-7xl space-y-12 px-4 pb-20 pt-28 sm:px-8">
+    <JsonLd data={breadcrumbSchema([{ name: siteSEO.breadcrumbs.home, path: "/" }, { name: ui.products, path: "/products" }, { name: category.name, path: `/products/${slug}` }])} />
     <Link href="/products" className="text-sm text-navy-700">{ui.products}</Link>
-    <header className="grid items-center gap-8 lg:grid-cols-2"><div className="space-y-5"><h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">{category.name}</h1><p className="text-xl text-navy-700">{category.tagline}</p><p className="whitespace-pre-line leading-7">{category.description}</p><Link className="inline-block rounded-xl bg-navy-900 px-6 py-3 text-white" href={`/contact?product=${slug}`}>{category.enquiryTitle || ui.enquiry}</Link></div><Visual image={category.heroImage || category.image} alt={category.imageAlt || category.name} /></header>
+    <header className="grid items-center gap-8 lg:grid-cols-2"><div className="space-y-5"><h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">{siteSEO.productHeadings[slug] || category.name}</h1><p className="text-xl text-navy-700">{category.tagline}</p><p className="whitespace-pre-line leading-7">{category.description}</p><p className="text-sm text-slate-600">{siteSEO.productLocation}</p><Link className="inline-block rounded-xl bg-navy-900 px-6 py-3 text-white" href={`/contact?product=${slug}`}>{category.enquiryTitle || ui.enquiry}</Link></div><Visual image={category.heroImage || category.image} alt={category.imageAlt || category.name} priority /></header>
     {category.overview && <section className="space-y-4"><h2 className="text-2xl font-bold text-navy-900">{ui.overview}</h2><p className="whitespace-pre-line leading-7">{category.overview}</p></section>}
     {category.children.length > 0 && <section className="space-y-6"><h2 className="text-2xl font-bold text-navy-900">{ui.range}</h2><ProductRangeGrid products={category.children} categorySlug={slug} /></section>}
     <List title={ui.benefits} items={category.keyBenefits} /><List title={ui.capabilities} items={category.manufacturingCapabilities} /><List title={ui.industries} items={category.industries} />
@@ -52,8 +57,11 @@ export async function ManagedProductPage({ categorySlug, slug }: { categorySlug:
   const product = category?.children.find((child) => child.slug === slug);
   if (!category || !product) notFound();
   return <article className="mx-auto max-w-7xl space-y-12 px-4 pb-20 pt-28 sm:px-8">
+    <JsonLd data={breadcrumbSchema([{ name: siteSEO.breadcrumbs.home, path: "/" }, { name: ui.products, path: "/products" }, { name: category.name, path: `/products/${categorySlug}` }, { name: product.name, path: `/products/${categorySlug}/${slug}` }])} />
+    <JsonLd data={{ "@context": "https://schema.org", "@type": "Product", name: product.name, description: product.shortDescription || product.description,
+      url: absoluteUrl(`/products/${categorySlug}/${slug}`), ...(product.image && product.image !== "null" ? { image: product.image } : {}), manufacturer: { "@id": absoluteUrl("/#organization") } }} />
     <Link href={`/products/${categorySlug}`} className="text-sm text-navy-700">{ui.back}: {category.name}</Link>
-    <header className="grid items-center gap-8 lg:grid-cols-2"><div className="space-y-5"><h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">{product.name}</h1><p className="whitespace-pre-line leading-7">{product.description}</p><Link className="inline-block rounded-xl bg-navy-900 px-6 py-3 text-white" href={`/contact?product=${categorySlug}&module=${slug}`}>{product.enquiryTitle || ui.enquiry}</Link></div><Visual image={product.image} alt={product.imageAlt || product.name} /></header>
+    <header className="grid items-center gap-8 lg:grid-cols-2"><div className="space-y-5"><h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">{product.name}</h1><p className="whitespace-pre-line leading-7">{product.description}</p><p className="text-sm text-slate-600">{siteSEO.productLocation}</p><Link className="inline-block rounded-xl bg-navy-900 px-6 py-3 text-white" href={`/contact?product=${categorySlug}&module=${slug}`}>{product.enquiryTitle || ui.enquiry}</Link></div><Visual image={product.image} alt={product.imageAlt || product.name} priority /></header>
     <List title={ui.highlights} items={product.highlights} />
     {product.features.length > 0 && <section className="space-y-4"><h2 className="text-2xl font-bold text-navy-900">{ui.features}</h2>{product.features.map((feature, index) => <div key={index}><h3 className="font-bold">{feature.title}</h3><p>{feature.description}</p></div>)}</section>}
     {product.specifications.length > 0 && <section className="space-y-4"><h2 className="text-2xl font-bold text-navy-900">{ui.specifications}</h2><dl className="divide-y rounded-xl border p-4">{product.specifications.map((specification, index) => <div key={index} className="grid gap-2 py-3 sm:grid-cols-2"><dt className="font-semibold">{specification.label}</dt><dd>{specification.value}</dd></div>)}</dl></section>}

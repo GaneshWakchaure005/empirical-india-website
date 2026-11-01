@@ -13,6 +13,11 @@ export interface IEnquiryDocument extends Document {
   notes?: string;
   attachmentName?: string;
   attachmentUrl?: string;
+  attachmentPublicId?: string;
+  attachmentResourceType?: "image" | "raw";
+  attachmentFormat?: string;
+  attachmentContentType?: string;
+  attachmentSize?: number;
   emailStatus: "pending" | "sending" | "sent" | "failed";
   emailAttempts: number;
   emailLastAttemptAt?: Date;
@@ -91,6 +96,11 @@ const EnquirySchema = new Schema<IEnquiryDocument>(
     attachmentUrl: {
       type: String,
     },
+    attachmentPublicId: String,
+    attachmentResourceType: { type: String, enum: ["image", "raw"] },
+    attachmentFormat: String,
+    attachmentContentType: String,
+    attachmentSize: Number,
   },
   {
     timestamps: true,
@@ -100,8 +110,13 @@ const EnquirySchema = new Schema<IEnquiryDocument>(
 EnquirySchema.index({ status: 1, createdAt: -1 });
 EnquirySchema.index({ businessLine: 1 });
 
-export const Enquiry: Model<IEnquiryDocument> =
-  mongoose.models.Enquiry ||
-  mongoose.model<IEnquiryDocument>("Enquiry", EnquirySchema);
+const cachedEnquiry = mongoose.models.Enquiry as Model<IEnquiryDocument> | undefined;
+// Next development reloads modules while Mongoose retains compiled models. Upgrade a
+// cached schema so strict mode cannot silently discard newly added attachment fields.
+if (cachedEnquiry && Object.keys(EnquirySchema.paths).some((path) => !cachedEnquiry.schema.path(path))) {
+  cachedEnquiry.schema.add(EnquirySchema);
+  cachedEnquiry.recompileSchema();
+}
+export const Enquiry: Model<IEnquiryDocument> = cachedEnquiry || mongoose.model<IEnquiryDocument>("Enquiry", EnquirySchema);
 
 export default Enquiry;

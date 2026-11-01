@@ -1,50 +1,22 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
-import BlogsContent from "@/data/10-blogs";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
+import { getBlogListing } from "@/lib/public-content";
 import BlogsListingClient from "@/components/blogs/BlogsListingClient";
-import { BlogSkeleton } from "@/components/blogs/BlogStateViews";
 
-export const metadata: Metadata = {
-  title: `${BlogsContent.page} | Empirical India`,
-  description:
-    "Engineering insights, roll-forming machine design principles, modular metal pallet engineering, and precision tube manufacturing articles from Empirical India in Nashik.",
-  alternates: {
-    canonical: "/blogs",
-  },
-  openGraph: {
-    title: `${BlogsContent.page} | Empirical India`,
-    description:
-      "Explore engineering-led manufacturing articles, roll-forming machinery guides, modular metal pallet case studies, and luggage tube specifications.",
-    url: "/blogs",
-    type: "website",
-    images: [
-      {
-        url: BlogsContent.hero.backgroundImage,
-        width: 1200,
-        height: 630,
-        alt: "Empirical India Engineering Blogs and Technical Insights",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${BlogsContent.page} | Empirical India`,
-    description:
-      "Explore engineering-led manufacturing articles, roll-forming machinery guides, modular metal pallet case studies, and luggage tube specifications.",
-    images: [BlogsContent.hero.backgroundImage],
-  },
-};
-
-export default function BlogsPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
-          <BlogSkeleton />
-        </div>
-      }
-    >
-      <BlogsListingClient />
-    </Suspense>
-  );
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+function pageNumber(value: string | string[] | undefined) { return typeof value === "string" && /^\d+$/.test(value) ? Math.min(10000, Math.max(1, Number(value))) : 1; }
+function filtered(query: Record<string, unknown>) { return ["search", "category", "featured", "type", "upcoming", "tag"].some((key) => Boolean(query[key])); }
+export async function generateMetadata({ searchParams }: Props) {
+  const query = await searchParams;
+  const page = pageNumber(query.page);
+  const metadata = pageMetadata({ ...siteSEO.pages.blogs, title: siteSEO.pages.blogs.title + (page > 1 ? ` — Page ${page}` : ""),
+    path: `/blogs${page > 1 ? `?page=${page}` : ""}` });
+  return filtered(query) ? { ...metadata, robots: { index: false, follow: true } } : metadata;
 }
+async function Content({ searchParams }: Props) {
+  const query = await searchParams;
+  const initialData = filtered(query) ? undefined : await getBlogListing(pageNumber(query.page));
+  return <BlogsListingClient initialData={initialData} />;
+}
+export default function Page(props: Props) { return <Suspense fallback={<div className="min-h-96 pt-28" aria-busy="true" />}><Content {...props} /></Suspense>; }

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "404 - Page Not Found",
   description:
     "The page you are looking for does not exist or has been moved. Explore Empirical India's custom roll-forming lines, metal pallets, and tubes or return to the homepage.",

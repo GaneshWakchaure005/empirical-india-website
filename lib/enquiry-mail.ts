@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { enquiryAttachmentDownloadUrl, resolveEnquiryAttachment, retrieveEnquiryAttachment, type EnquiryAttachment } from "@/lib/enquiry-attachments";
 
-export type EnquiryMailData = {
+export type EnquiryMailData = EnquiryAttachment & {
   referenceId: string; businessLine: string; fullName: string; companyName: string;
   workEmail: string; phone: string; location: string; requirement: string;
-  attachmentName?: string; attachmentUrl?: string;
 };
 
 export function getSMTPConfig(env: Record<string, string | undefined> = process.env) {
@@ -22,20 +22,30 @@ export function getSMTPConfig(env: Record<string, string | undefined> = process.
   return { ...parsed.data, secure };
 }
 
-export function createEnquiryMessage(enquiry: EnquiryMailData, config: ReturnType<typeof getSMTPConfig>) {
+export function createEnquiryMessage(enquiry: EnquiryMailData, config: ReturnType<typeof getSMTPConfig>, attachment?: Awaited<ReturnType<typeof retrieveEnquiryAttachment>>) {
+  const storedAttachment = resolveEnquiryAttachment(enquiry);
+  const attachmentUrl = storedAttachment.attachmentPublicId ? enquiryAttachmentDownloadUrl(storedAttachment, 7 * 24 * 60 * 60) : enquiry.attachmentUrl;
+  const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
+  const details = [
+    ["Business line", enquiry.businessLine], ["Name", enquiry.fullName], ["Company", enquiry.companyName],
+    ["Work email", enquiry.workEmail], ["Phone", enquiry.phone], ["Location", enquiry.location],
+  ];
   return {
     from: { name: "Empirical India Website", address: config.user },
     to: config.to,
     replyTo: enquiry.workEmail,
-    subject: `New website enquiry — ${enquiry.referenceId.replace(/[\r\n]/g, " ")}`,
+    subject: "New website enquiry",
     text: [
-      "New website enquiry", "", `Reference: ${enquiry.referenceId}`, `Business line: ${enquiry.businessLine}`,
+      "New website enquiry", "", `Business line: ${enquiry.businessLine}`,
       `Name: ${enquiry.fullName}`, `Company: ${enquiry.companyName}`, `Work email: ${enquiry.workEmail}`,
       `Phone: ${enquiry.phone}`, `Location: ${enquiry.location}`, "", "Requirement:", enquiry.requirement,
-      ...(enquiry.attachmentUrl ? ["", `Document link: ${enquiry.attachmentUrl}`]
+      ...(attachmentUrl ? ["", `Attached file: ${enquiry.attachmentName || "Attachment"}`, `Document link: ${attachmentUrl}`,
+        ...(storedAttachment.attachmentPublicId ? ["The download link expires in 7 days. The file is also attached to this email and available in the admin inbox."] : [])]
         : enquiry.attachmentName ? ["", `Selected filename: ${enquiry.attachmentName}`, "The form supplied a filename only; no file was uploaded or attached."] : []),
       "", "Reply to this email to contact the buyer. The enquiry is also saved in the website admin inbox.",
     ].join("\n"),
+    html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#172033"><h2>New website enquiry</h2>${details.map(([label, value]) => `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`).join("")}<h3>Requirement</h3><p style="white-space:pre-wrap">${escapeHtml(enquiry.requirement)}</p>${attachmentUrl ? `<p><strong>Attachment:</strong> ${escapeHtml(enquiry.attachmentName || "Attachment")}</p><p><a href="${escapeHtml(attachmentUrl)}">View / download attachment</a></p>${storedAttachment.attachmentPublicId ? "<p>This signed link expires in 7 days. The file is also attached to this email and available in the admin inbox.</p>" : ""}` : ""}<p>Reply to this email to contact the buyer.</p></div>`,
+    attachments: attachment ? [{ ...attachment, contentDisposition: "attachment" as const }] : [],
     disableFileAccess: true,
     disableUrlAccess: true,
   };
@@ -51,9 +61,12 @@ export function createSMTPTransport() {
 
 export async function sendEnquiryEmail(enquiry: EnquiryMailData) {
   const config = getSMTPConfig();
+  // Fetch only server-owned Cloudinary assets, then attach bytes. Nodemailer cannot access URLs or local paths.
+  const storedAttachment = resolveEnquiryAttachment(enquiry);
+  const attachment = storedAttachment.attachmentPublicId ? await retrieveEnquiryAttachment(enquiry) : undefined;
   const transport = createSMTPTransport();
   try {
-    const result = await transport.sendMail(createEnquiryMessage(enquiry, config));
+    const result = await transport.sendMail(createEnquiryMessage(enquiry, config, attachment));
     if (!result.accepted.length || result.rejected.length) throw new Error("SMTP_REJECTED");
     return result.messageId;
   } finally { transport.close(); }

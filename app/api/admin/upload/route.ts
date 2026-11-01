@@ -12,6 +12,10 @@ export async function POST(request: NextRequest) {
   try {
     await requireEditorOrAdmin(request);
 
+    if (!request.headers.get("content-type")?.includes("multipart/form-data")) {
+      return errorResponse("Expected multipart/form-data", 400);
+    }
+
     const formData = await request.formData();
     const file = formData.get("image") as File | null;
     const folderInput = (formData.get("folder") as string) || "general";

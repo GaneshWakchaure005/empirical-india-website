@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
 import Home from "@/data/01-home";
 import About from "@/data/02-about";
 import QualityManufacturing from "@/data/07-quality-manufacturing";
@@ -12,18 +13,7 @@ import ApproachSection from "@/components/home/ApproachSection";
 import CustomersSection from "@/components/home/CustomersSection";
 import EnquiryCTASection from "@/components/home/EnquiryCTASection";
 
-export const metadata: Metadata = {
-  title: Home.seo.page_title,
-  description: Home.seo.meta_description,
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    title: Home.seo.page_title,
-    description: Home.seo.meta_description,
-    url: "/",
-  },
-};
+export const metadata = pageMetadata(siteSEO.pages.home);
 
 export default function HomePage() {
   return (

@@ -1,12 +1,11 @@
 import { NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
-import { SignJWT, jwtVerify } from "jose";
+import { SignJWT } from "jose";
+import { authSecretKey, verifyAdminToken } from "@/lib/auth-token";
+export { verifyAdminToken } from "@/lib/auth-token";
 import { JWTPayload } from "@/types/admin";
 
 export const AUTH_COOKIE_NAME = "admin_token";
-const DEFAULT_SECRET = "empirical_india_super_secure_jwt_secret_key_2026_change_in_production";
-const AUTH_SECRET = process.env.AUTH_SECRET || DEFAULT_SECRET;
-const SECRET_KEY = new TextEncoder().encode(AUTH_SECRET);
 
 export const COOKIE_OPTIONS = {
   name: AUTH_COOKIE_NAME,
@@ -43,20 +42,12 @@ export async function signAdminToken(payload: Omit<JWTPayload, "iat" | "exp">): 
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
-    .sign(SECRET_KEY);
+    .sign(authSecretKey());
 }
 
 /**
  * Verifies JWT token and extracts payload
  */
-export async function verifyAdminToken(token: string): Promise<JWTPayload | null> {
-  try {
-    const { payload } = await jwtVerify(token, SECRET_KEY);
-    return payload as unknown as JWTPayload;
-  } catch (error) {
-    return null;
-  }
-}
 
 /**
  * Extracts and verifies admin from NextRequest (via cookie or Bearer token)
@@ -101,7 +92,18 @@ export async function requireEditorOrAdmin(
     throw error;
   }
 
-  return admin;
+  // Re-check the account so disabling a user or changing their role takes effect immediately.
+  const { default: connectDB } = await import("@/lib/mongodb");
+  const { default: Admin } = await import("@/models/Admin");
+  await connectDB();
+  const account = await Admin.findById(admin.id).lean();
+  if (!account || !account.isActive) {
+    throw Object.assign(new Error("Unauthorized: Account is unavailable."), { status: 401 });
+  }
+  if (account.role !== "admin" && account.role !== "editor") {
+    throw Object.assign(new Error("Forbidden: Insufficient privileges."), { status: 403 });
+  }
+  return { ...admin, role: account.role, email: account.email, name: account.name };
 }
 
 /**

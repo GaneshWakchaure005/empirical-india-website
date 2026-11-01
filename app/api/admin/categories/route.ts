@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { literalSearch } from "@/lib/admin-query";
 import connectDB from "@/lib/mongodb";
 import Category from "@/models/Category";
 import { requireEditorOrAdmin } from "@/lib/auth";
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     // Check if category with this name already exists (case-insensitive)
     const existing = await Category.findOne({
-      name: { $regex: new RegExp(`^${validated.name.trim()}$`, "i") },
+      name: { $regex: new RegExp(`^${literalSearch(validated.name.trim())}$`, "i") },
     });
     if (existing) {
       return successResponse(existing, 200);

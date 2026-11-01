@@ -1,3 +1,4 @@
+import { siteSEO } from "@/data/seo";
 // Centralized data file for Empirical India Industries Page
 // Strictly adheres to AGENTS.md guidelines and client content rules.
 
@@ -41,7 +42,7 @@ export const Industries = {
 
   hero: {
     eyebrow: "APPLICATION-LED ENGINEERING",
-    heading: "Engineering Solutions for Every Industry",
+    heading: siteSEO.pages.industries.h1,
     description:
       "Empirical India partners with industrial OEMs, infrastructure contractors, and system fabricators to deliver custom automated roll-forming lines, heavy-duty modular metal pallets, and precision metal tubes configured precisely to sector requirements.",
     pills: [

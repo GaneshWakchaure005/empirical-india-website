@@ -1,3 +1,4 @@
+import { siteSEO } from "@/data/seo";
 // Centralized data file for Empirical India Products & Solutions Page
 // Strictly adheres to AGENTS.md guidelines and client content rules.
 
@@ -73,7 +74,7 @@ export const ProductsAndSolutions = {
 
   hero: {
     eyebrow: "ENGINEERING-LED MANUFACTURING",
-    heading: "Precision Machinery & Made-to-Requirement Metal Products",
+    heading: siteSEO.pages.products.h1,
     description:
       "Empirical India designs custom automated roll-forming lines and manufactures modular metal pallets and precision tubes tailored directly to your approved profile drawings, load cases, material grades, and production throughput targets.",
     trust_metrics: [

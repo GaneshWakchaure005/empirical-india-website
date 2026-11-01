@@ -29,12 +29,13 @@ import { cn } from "@/lib/utils";
 
 interface NewsDetailClientProps {
   slug: string;
+  initialItem?: NewsEventPublic;
 }
 
-export default function NewsDetailClient({ slug }: NewsDetailClientProps) {
-  const [item, setItem] = useState<NewsEventPublic | null>(null);
+export default function NewsDetailClient({ slug, initialItem }: NewsDetailClientProps) {
+  const [item, setItem] = useState<NewsEventPublic | null>(initialItem || null);
   const [relatedItems, setRelatedItems] = useState<NewsEventPublic[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(!initialItem);
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
@@ -74,8 +75,18 @@ export default function NewsDetailClient({ slug }: NewsDetailClientProps) {
   }, [slug, retryCount]);
 
   useEffect(() => {
+    if (initialItem?.slug === slug && retryCount === 0) return;
     loadArticle();
-  }, [loadArticle]);
+  }, [loadArticle, initialItem, slug, retryCount]);
+
+  useEffect(() => {
+    if (!initialItem) return;
+    let active = true;
+    fetchNewsEvents({ limit: 4, type: initialItem.type }).then((result) => {
+      if (active) setRelatedItems(result.data.filter((article) => article.id !== initialItem.id).slice(0, 3));
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [initialItem]);
 
   const handleCopyLink = () => {
     if (typeof window !== "undefined") {

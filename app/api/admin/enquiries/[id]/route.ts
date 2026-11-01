@@ -4,6 +4,7 @@ import connectDB from "@/lib/mongodb";
 import Enquiry from "@/models/Enquiry";
 import { requireEditorOrAdmin, requireAdmin } from "@/lib/auth";
 import { objectIdSchema } from "@/lib/validation";
+import { deleteEnquiryAttachment } from "@/lib/enquiry-attachments";
 import {
   successResponse,
   errorResponse,
@@ -77,6 +78,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (!deleted) {
       return errorResponse("Enquiry not found", 404);
     }
+    await deleteEnquiryAttachment(deleted).catch(() => console.error("Failed to remove deleted enquiry attachment", { id }));
 
     return successResponse({
       message: "Enquiry deleted successfully",

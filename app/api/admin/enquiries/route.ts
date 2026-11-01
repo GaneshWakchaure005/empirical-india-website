@@ -1,3 +1,4 @@
+import { adminPagination, literalSearch } from "@/lib/admin-query";
 import { NextRequest } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Enquiry from "@/models/Enquiry";
@@ -10,11 +11,7 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
-    const limit = Math.min(
-      100,
-      Math.max(1, parseInt(searchParams.get("limit") || "15", 10))
-    );
+    const { page, limit } = adminPagination(searchParams, 15);
     const status = searchParams.get("status")?.trim();
     const businessLine = searchParams.get("businessLine")?.trim();
     const search = searchParams.get("search")?.trim();
@@ -31,12 +28,12 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       query.$or = [
-        { referenceId: { $regex: search, $options: "i" } },
-        { fullName: { $regex: search, $options: "i" } },
-        { companyName: { $regex: search, $options: "i" } },
-        { workEmail: { $regex: search, $options: "i" } },
-        { location: { $regex: search, $options: "i" } },
-        { requirement: { $regex: search, $options: "i" } },
+        { referenceId: { $regex: literalSearch(search), $options: "i" } },
+        { fullName: { $regex: literalSearch(search), $options: "i" } },
+        { companyName: { $regex: literalSearch(search), $options: "i" } },
+        { workEmail: { $regex: literalSearch(search), $options: "i" } },
+        { location: { $regex: literalSearch(search), $options: "i" } },
+        { requirement: { $regex: literalSearch(search), $options: "i" } },
       ];
     }
 

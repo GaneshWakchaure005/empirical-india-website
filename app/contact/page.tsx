@@ -1,5 +1,6 @@
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import ContactRFQ from "@/data/12-contact-rfq";
 import ContactHero from "@/components/contact/ContactHero";
 import DynamicProductRFQForm from "@/components/contact/DynamicProductRFQForm";
@@ -7,20 +8,7 @@ import PlantLocationCard from "@/components/contact/PlantLocationCard";
 import EnquiryChecklistSection from "@/components/contact/EnquiryChecklistSection";
 import { Loader2 } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: ContactRFQ.seo.title,
-  description: ContactRFQ.seo.description,
-  alternates: {
-    canonical: "/contact",
-  },
-  openGraph: {
-    title: ContactRFQ.seo.title,
-    description: ContactRFQ.seo.description,
-    url: "/contact",
-    siteName: "Empirical India",
-    type: "website",
-  },
-};
+export const metadata = pageMetadata(siteSEO.pages.contact);
 
 function FormFallback() {
   return (

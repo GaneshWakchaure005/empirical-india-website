@@ -15,7 +15,7 @@ import NewsEnquiryCTA from "./NewsEnquiryCTA";
 
 const PAGE_SIZE = 9;
 
-export default function NewsListingClient() {
+export default function NewsListingClient({ initialData }: { initialData?: { data: NewsEventPublic[]; pagination: { page: number; limit: number; total: number; totalPages: number } } }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -24,7 +24,8 @@ export default function NewsListingClient() {
   const initialUpcoming = searchParams.get("upcoming") === "true";
   const initialCategory = searchParams.get("category") || "";
   const initialSearch = searchParams.get("search") || "";
-  const initialPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+  const requestedPage = Number(searchParams.get("page") || "1");
+  const initialPage = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? Math.min(10000, requestedPage) : 1;
 
   let initialTab: FilterTab = "all";
   if (initialUpcoming) initialTab = "upcoming";
@@ -37,17 +38,17 @@ export default function NewsListingClient() {
   const [debouncedSearch, setDebouncedSearch] = useState<string>(initialSearch);
   const [page, setPage] = useState<number>(initialPage);
 
-  const [items, setItems] = useState<NewsEventPublic[]>([]);
-  const [featuredItem, setFeaturedItem] = useState<NewsEventPublic | null>(null);
+  const [items, setItems] = useState<NewsEventPublic[]>(initialData?.data || []);
+  const [featuredItem, setFeaturedItem] = useState<NewsEventPublic | null>(initialData?.data.find((item) => item.featured) || initialData?.data[0] || null);
   const [categories, setCategories] = useState<CategoryPublic[]>([]);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState(initialData?.pagination || {
     page: 1,
     limit: PAGE_SIZE,
     total: 0,
     totalPages: 1,
   });
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(!initialData);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [, startTransition] = useTransition();
@@ -89,6 +90,7 @@ export default function NewsListingClient() {
   // Fetch news data
   useEffect(() => {
     let ignore = false;
+    if (initialData && page === initialData.pagination.page && currentTab === "all" && !selectedCategory && !debouncedSearch && retryCount === 0) return;
     setLoading(true);
     setError(null);
 
@@ -147,7 +149,7 @@ export default function NewsListingClient() {
     return () => {
       ignore = true;
     };
-  }, [page, currentTab, selectedCategory, debouncedSearch, retryCount]);
+  }, [page, currentTab, selectedCategory, debouncedSearch, retryCount, initialData]);
 
   // Sync state to URL query parameters
   useEffect(() => {

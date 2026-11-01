@@ -30,7 +30,7 @@ export default function ConditionalSiteChrome({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<div className="flex-1">{children}</div>}>
+    <Suspense fallback={<div className="flex-1" aria-busy="true" />}>
       <ChromeContent>{children}</ChromeContent>
     </Suspense>
   );

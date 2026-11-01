@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
 import About from "@/data/02-about";
 import AboutHero from "@/components/about/AboutHero";
 import ManufacturingVideoSection from "@/components/about/ManufacturingVideoSection";
@@ -8,20 +9,7 @@ import FacilityInfrastructureSection from "@/components/about/FacilityInfrastruc
 import TimelineSection from "@/components/about/TimelineSection";
 import AboutCTASection from "@/components/about/AboutCTASection";
 
-export const metadata: Metadata = {
-  title: About.seo.title,
-  description: About.seo.description,
-  alternates: {
-    canonical: "/about",
-  },
-  openGraph: {
-    title: About.seo.title,
-    description: About.seo.description,
-    url: "/about",
-    siteName: "Empirical India",
-    type: "website",
-  },
-};
+export const metadata = pageMetadata(siteSEO.pages.about);
 
 export default function AboutPage() {
   return (

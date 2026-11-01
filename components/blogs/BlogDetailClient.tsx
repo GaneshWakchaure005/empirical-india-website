@@ -27,12 +27,13 @@ import BlogEnquiryCTA from "./BlogEnquiryCTA";
 
 interface BlogDetailClientProps {
   slug: string;
+  initialItem?: BlogPublic;
 }
 
-export default function BlogDetailClient({ slug }: BlogDetailClientProps) {
-  const [item, setItem] = useState<BlogPublic | null>(null);
+export default function BlogDetailClient({ slug, initialItem }: BlogDetailClientProps) {
+  const [item, setItem] = useState<BlogPublic | null>(initialItem || null);
   const [relatedItems, setRelatedItems] = useState<BlogPublic[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(!initialItem);
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
@@ -72,8 +73,18 @@ export default function BlogDetailClient({ slug }: BlogDetailClientProps) {
   }, [slug, retryCount]);
 
   useEffect(() => {
+    if (initialItem?.slug === slug && retryCount === 0) return;
     loadArticle();
-  }, [loadArticle]);
+  }, [loadArticle, initialItem, slug, retryCount]);
+
+  useEffect(() => {
+    if (!initialItem) return;
+    let active = true;
+    fetchBlogs({ limit: 4, category: initialItem.category?.slug }).then((result) => {
+      if (active) setRelatedItems(result.data.filter((article) => article.id !== initialItem.id).slice(0, 3));
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [initialItem]);
 
   const handleCopyLink = () => {
     if (typeof window !== "undefined") {

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
 import ProductsAndSolutions from "@/data/03-products-and-solutions";
 import ProductsPageHero from "@/components/products/ProductsPageHero";
 import { Suspense } from "react";
@@ -9,21 +10,7 @@ import ProductsWorkflowSection from "@/components/products/ProductsWorkflowSecti
 import ProductsFAQSection from "@/components/products/ProductsFAQSection";
 import ProductsCTA from "@/components/products/ProductsCTA";
 
-export const metadata: Metadata = {
-  title: ProductsAndSolutions.seo.title,
-  description: ProductsAndSolutions.seo.description,
-  keywords: ProductsAndSolutions.seo.keywords as unknown as string[],
-  alternates: {
-    canonical: ProductsAndSolutions.seo.canonical,
-  },
-  openGraph: {
-    title: ProductsAndSolutions.seo.title,
-    description: ProductsAndSolutions.seo.description,
-    url: ProductsAndSolutions.seo.canonical,
-    siteName: "Empirical India",
-    type: "website",
-  },
-};
+export const metadata = pageMetadata(siteSEO.pages.products);
 
 export default function ProductsPage() {
   return (

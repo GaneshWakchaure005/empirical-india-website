@@ -7,6 +7,7 @@ import { ArrowRight, FileText, CheckCircle2, ChevronLeft, ChevronRight } from "l
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Home from "@/data/01-home";
+import { siteSEO } from "@/data/seo";
 
 export interface HeroSlide {
   id: string;
@@ -323,26 +324,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
             })}
           </div>
 
-          {/* 2. Gradient Headline — Locked Grid Row (Height locked to tallest headline so lines below NEVER shift) */}
-          <div className="grid grid-cols-1 grid-rows-1 items-center justify-center w-full mb-6">
-            {slides.map((slide, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <h1
-                  key={`headline-${slide.id}`}
-                  className={cn(
-                    "col-start-1 row-start-1 text-4xl sm:text-5xl lg:text-6xl xl:text-[4.2rem] font-extrabold tracking-tight leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] max-w-4xl transition-opacity duration-700 ease-in-out",
-                    isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
-                  )}
-                  aria-hidden={!isActive}
-                >
-                  <span className="bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">
-                    {slide.headline}
-                  </span>
-                </h1>
-              );
-            })}
-          </div>
+          <h1 className="mb-6 max-w-5xl text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow-lg sm:text-4xl lg:text-5xl xl:text-6xl">{siteSEO.pages.home.h1}</h1>
 
           {/* 3. Supporting Copy — Locked Grid Row (Bigger on larger screens, height locked to tallest copy) */}
           <div className="grid grid-cols-1 grid-rows-1 items-center justify-center w-full mb-6 md:mb-8">

@@ -1,49 +1,22 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
-import NewsAndEvents from "@/data/10-news-and-events";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
+import { getNewsListing } from "@/lib/public-content";
 import NewsListingClient from "@/components/news/NewsListingClient";
-import { NewsSkeleton } from "@/components/news/NewsStateViews";
 
-export const metadata: Metadata = {
-  title: `${NewsAndEvents.page} | Empirical India`,
-  description:
-    "Official company updates, manufacturing milestones, machine dispatches, roll-forming product innovations, and industrial trade expo events from Empirical India.",
-  alternates: {
-    canonical: "/news",
-  },
-  openGraph: {
-    title: `${NewsAndEvents.page} | Empirical India`,
-    description:
-      "Explore company updates, manufacturing milestones, product developments, and trade events from Empirical India.",
-    url: "/news",
-    type: "website",
-    images: [
-      {
-        url: "/images/company logo.webp",
-        width: 1200,
-        height: 630,
-        alt: "Empirical India News and Events",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${NewsAndEvents.page} | Empirical India`,
-    description:
-      "Explore company updates, manufacturing milestones, product developments, and trade events from Empirical India.",
-  },
-};
-
-export default function NewsPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
-          <NewsSkeleton />
-        </div>
-      }
-    >
-      <NewsListingClient />
-    </Suspense>
-  );
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+function pageNumber(value: string | string[] | undefined) { return typeof value === "string" && /^\d+$/.test(value) ? Math.min(10000, Math.max(1, Number(value))) : 1; }
+function filtered(query: Record<string, unknown>) { return ["search", "category", "featured", "type", "upcoming", "tag"].some((key) => Boolean(query[key])); }
+export async function generateMetadata({ searchParams }: Props) {
+  const query = await searchParams;
+  const page = pageNumber(query.page);
+  const metadata = pageMetadata({ ...siteSEO.pages.news, title: siteSEO.pages.news.title + (page > 1 ? ` — Page ${page}` : ""),
+    path: `/news${page > 1 ? `?page=${page}` : ""}` });
+  return filtered(query) ? { ...metadata, robots: { index: false, follow: true } } : metadata;
 }
+async function Content({ searchParams }: Props) {
+  const query = await searchParams;
+  const initialData = filtered(query) ? undefined : await getNewsListing(pageNumber(query.page));
+  return <NewsListingClient initialData={initialData} />;
+}
+export default function Page(props: Props) { return <Suspense fallback={<div className="min-h-96 pt-28" aria-busy="true" />}><Content {...props} /></Suspense>; }

@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import PaginationLink from "@/components/seo/PaginationLink";
 
 interface BlogPaginationProps {
   currentPage: number;
@@ -57,7 +58,8 @@ export default function BlogPagination({
 
       <div className="flex items-center gap-1.5 order-1 sm:order-2">
         {/* Previous Button */}
-        <button
+        <PaginationLink
+          page={currentPage - 1}
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
           aria-label="Previous page"
@@ -70,7 +72,7 @@ export default function BlogPagination({
         >
           <ChevronLeft size={14} />
           <span className="hidden xs:inline">Prev</span>
-        </button>
+        </PaginationLink>
 
         {/* Numeric Page Buttons */}
         <div className="flex items-center gap-1">
@@ -88,25 +90,27 @@ export default function BlogPagination({
 
             const isCurrent = p === currentPage;
             return (
-              <button
+              <PaginationLink
                 key={`page-${p}`}
+                page={p as number}
                 onClick={() => onPageChange(p as number)}
                 aria-current={isCurrent ? "page" : undefined}
                 className={cn(
-                  "w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                  "inline-flex items-center justify-center w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer",
                   isCurrent
                     ? "bg-navy-900 text-white shadow-xs"
                     : "bg-white text-steel-700 border border-steel-200 hover:border-steel-300 hover:bg-steel-50"
                 )}
               >
                 {p}
-              </button>
+              </PaginationLink>
             );
           })}
         </div>
 
         {/* Next Button */}
-        <button
+        <PaginationLink
+          page={currentPage + 1}
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
           aria-label="Next page"
@@ -119,7 +123,7 @@ export default function BlogPagination({
         >
           <span className="hidden xs:inline">Next</span>
           <ChevronRight size={14} />
-        </button>
+        </PaginationLink>
       </div>
     </nav>
   );

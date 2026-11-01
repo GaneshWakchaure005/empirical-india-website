@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:seo": "tsx scripts/test-seo.ts",
+    "test:seo-rendering": "tsx scripts/test-seo-rendering.tsx",
+    "test:admin-api": "tsx scripts/test-admin-api.ts",
+    "test:enquiry-attachments": "tsx scripts/test-enquiry-attachments.ts",
+    "test:enquiry-model-reload": "tsx scripts/test-enquiry-model-reload.ts",
+    "test:enquiry-references": "tsx scripts/test-enquiry-references.ts",
     "test:enquiry-mail": "tsx scripts/test-enquiry-mail.ts",
     "test:enquiry-notifications": "tsx scripts/test-enquiry-notifications.ts",
     "test:smtp": "tsx scripts/check-smtp.ts",

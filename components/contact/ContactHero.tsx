@@ -1,4 +1,5 @@
 "use client";
+import { siteSEO } from "@/data/seo";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -81,7 +82,7 @@ export default function ContactHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
           >
-            Start a direct technical discussion with our engineering team.
+            {siteSEO.pages.contact.h1}
           </motion.h1>
 
           <motion.p

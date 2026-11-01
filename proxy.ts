@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
+import { verifyAdminToken } from "@/lib/auth-token";
+import { publicRouteExists } from "@/lib/public-route-exists";
 
 const AUTH_COOKIE_NAME = "admin_token";
-const DEFAULT_SECRET = "empirical_india_super_secure_jwt_secret_key_2026_change_in_production";
-const AUTH_SECRET = process.env.AUTH_SECRET || DEFAULT_SECRET;
-const SECRET_KEY = new TextEncoder().encode(AUTH_SECRET);
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (!pathname.startsWith("/admin") && !pathname.startsWith("/api/admin")) {
+    try {
+      if (!(await publicRouteExists(pathname))) {
+        return NextResponse.rewrite(new URL("/_not-found", request.url), { status: 404, headers: { "X-Robots-Tag": "noindex, follow" } });
+      }
+    } catch {
+      return new NextResponse("Content temporarily unavailable. Please try again.", { status: 503, headers: { "Retry-After": "60", "X-Robots-Tag": "noindex" } });
+    }
+    return NextResponse.next();
+  }
 
   // 0. Redirect legacy /admin/dashboard alias directly to /admin
   if (pathname === "/admin/dashboard") {
@@ -26,11 +34,10 @@ export async function proxy(request: NextRequest) {
   }
 
   // 2. Verify token
-  let payload: any = null;
+  let payload: Awaited<ReturnType<typeof verifyAdminToken>> = null;
   if (token) {
     try {
-      const verified = await jwtVerify(token, SECRET_KEY);
-      payload = verified.payload;
+      payload = await verifyAdminToken(token);
     } catch {
       // Invalid or expired token
       payload = null;
@@ -90,5 +97,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/admin/:path*", "/admin/:path*"],
+  matcher: ["/api/admin/:path*", "/admin/:path*", "/blogs/:path*", "/news/:path*", "/products/:path*"],
 };

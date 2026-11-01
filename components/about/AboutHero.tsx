@@ -1,4 +1,5 @@
 "use client";
+import { siteSEO } from "@/data/seo";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -67,7 +68,7 @@ export default function AboutHero({ introduction }: AboutHeroProps) {
             transition={{ duration: 0.55, delay: 0.1 }}
           >
             <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black text-steel-900 tracking-tight leading-[1.18] sm:leading-[1.15]">
-              Engineering clarity from requirement to finished production.
+              {siteSEO.pages.about.h1}
             </h1>
 
             <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-steel-600 leading-relaxed font-normal">

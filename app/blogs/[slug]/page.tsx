@@ -1,89 +1,26 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { fetchBlogBySlug } from "@/lib/api/blogs";
+import { notFound } from "next/navigation";
+import { getPublishedBlog } from "@/lib/public-content";
+import { pageMetadata } from "@/lib/seo";
+import ArticleSchema from "@/components/seo/ArticleSchema";
 import BlogDetailClient from "@/components/blogs/BlogDetailClient";
 
-interface BlogDetailPageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export async function generateMetadata({
-  params,
-}: BlogDetailPageProps): Promise<Metadata> {
+type Props = { params: Promise<{ slug: string }> };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-
-  try {
-    const item = await fetchBlogBySlug(slug);
-
-    if (!item) {
-      return {
-        title: "Blog Article | Empirical India",
-        description:
-          "Engineering insights, roll-forming machine design principles, and custom manufacturing articles from Empirical India.",
-      };
-    }
-
-    const title = item.seo?.metaTitle || item.title;
-    const description = item.seo?.metaDescription || item.excerpt;
-    const imageUrl = item.featuredImage?.url;
-
-    return {
-      title: `${title} | Empirical India`,
-      description,
-      keywords: item.seo?.keywords?.length ? item.seo.keywords : item.tags,
-      alternates: {
-        canonical: `/blogs/${slug}`,
-      },
-      openGraph: {
-        title: `${title} | Empirical India`,
-        description,
-        url: `/blogs/${slug}`,
-        type: "article",
-        publishedTime: item.publishedAt
-          ? new Date(item.publishedAt).toISOString()
-          : undefined,
-        images: imageUrl
-          ? [
-              {
-                url: imageUrl,
-                alt: item.featuredImage?.alt || title,
-              },
-            ]
-          : undefined,
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: `${title} | Empirical India`,
-        description,
-        images: imageUrl ? [imageUrl] : undefined,
-      },
-    };
-  } catch {
-    return {
-      title: "Blog Article | Empirical India",
-      description:
-        "Engineering insights, roll-forming machine design principles, and custom manufacturing articles from Empirical India.",
-    };
-  }
+  const item = await getPublishedBlog(slug);
+  if (!item) notFound();
+  return pageMetadata({ title: item.seo.metaTitle || item.title, description: item.seo.metaDescription || item.excerpt,
+    path: `/blogs/${slug}`, keywords: item.seo.keywords.length ? item.seo.keywords : item.tags, image: item.featuredImage.url,
+    article: { publishedTime: item.publishedAt, modifiedTime: item.updatedAt } });
 }
-
-async function BlogDetailContent({ params }: BlogDetailPageProps) {
+async function Article({ params }: Props) {
   const { slug } = await params;
-  return <BlogDetailClient slug={slug} />;
+  const item = await getPublishedBlog(slug);
+  if (!item) notFound();
+  return <><ArticleSchema item={item} section="blogs" /><BlogDetailClient key={slug} slug={slug} initialItem={item} /></>;
 }
-
-export default function BlogDetailPage({ params }: BlogDetailPageProps) {
-  return (
-    <Suspense
-      fallback={
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-16 animate-pulse">
-          <div className="h-6 w-32 bg-steel-200 rounded mb-6" />
-          <div className="h-10 w-3/4 bg-steel-200 rounded mb-4" />
-          <div className="aspect-[21/9] bg-steel-200 rounded-3xl w-full" />
-        </div>
-      }
-    >
-      <BlogDetailContent params={params} />
-    </Suspense>
-  );
+export default function DetailPage(props: Props) {
+  return <Suspense fallback={<div className="min-h-96 pt-28" aria-busy="true" />}><Article {...props} /></Suspense>;
 }

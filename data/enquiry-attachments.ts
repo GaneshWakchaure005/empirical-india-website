@@ -1,0 +1,16 @@
+export const enquiryAttachmentContent = {
+  guidance: "PDF, DWG, DXF, STEP, STP, PNG, JPG or WebP files up to 15MB",
+  tooLarge: "File exceeds the maximum allowed size of 15MB.",
+  empty: "The selected file is empty. Please choose another file.",
+  unsupported: "Choose a PDF, DWG, DXF, STEP, STP, PNG, JPG or WebP file.",
+  invalid: "The file contents do not match its format. Please choose a valid file.",
+  uploadFailed: "The attachment could not be uploaded. Please try again.",
+  downloadFailed: "The attachment could not be retrieved. Please try again.",
+  loading: "Loading attachment...",
+  attachment: "Attachment",
+  open: "Open attachment",
+  download: "Download attachment",
+  legacy: "Only a filename was saved with this older enquiry; the file is unavailable.",
+  submitting: "Uploading file and submitting enquiry...",
+  skip: "Continue without a file",
+} as const;

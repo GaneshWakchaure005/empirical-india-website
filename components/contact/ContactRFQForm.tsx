@@ -19,6 +19,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ENQUIRY_ATTACHMENT_ACCEPT, validateEnquiryAttachment } from "@/lib/enquiry-attachment-validation";
+import { enquiryAttachmentContent } from "@/data/enquiry-attachments";
 
 interface BusinessLine {
   id: string;
@@ -112,10 +114,11 @@ export default function ContactRFQForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check size limit: 15MB
-    const maxSize = 15 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setFileError("File exceeds maximum allowed size of 15MB.");
+    const validation = validateEnquiryAttachment(file);
+    if (!validation.valid) {
+      setAttachedFile(null);
+      e.target.value = "";
+      setFileError(validation.error);
       return;
     }
 
@@ -166,26 +169,20 @@ export default function ContactRFQForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    if (!validate() || fileError) return;
 
     setIsSubmitting(true);
 
     try {
+      const payload = new FormData();
+      payload.set("businessLine", selectedVertical);
+      for (const [key, value] of Object.entries(formData)) {
+        if (key !== "consent") payload.set(key, String(value));
+      }
+      if (attachedFile) payload.set("attachment", attachedFile);
       const res = await fetch("/api/enquiries", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          businessLine: selectedVertical,
-          fullName: formData.fullName,
-          companyName: formData.companyName,
-          workEmail: formData.workEmail,
-          phone: formData.phone,
-          location: formData.location,
-          requirement: formData.requirement,
-          attachmentName: attachedFile?.name || undefined,
-        }),
+        body: payload,
       });
 
       const data = await res.json().catch(() => ({}));
@@ -196,8 +193,8 @@ export default function ContactRFQForm({
 
       setReferenceId(data.data.referenceId);
       setIsSuccess(true);
-    } catch (err: any) {
-      setErrors({ form: err.message || "Submission failed. Please try again." });
+    } catch (err: unknown) {
+      setErrors({ form: err instanceof Error ? err.message : "Submission failed. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -592,7 +589,10 @@ export default function ContactRFQForm({
               ref={fileInputRef}
               type="file"
               onChange={handleFileChange}
-              accept=".pdf,.dwg,.dxf,.stp,.step,.png,.jpg,.jpeg"
+              accept={ENQUIRY_ATTACHMENT_ACCEPT}
+              aria-describedby={fileError ? "attachment-error" : undefined}
+              aria-invalid={Boolean(fileError)}
+              disabled={isSubmitting}
               className="hidden"
               id="fileUploadInput"
             />
@@ -609,7 +609,7 @@ export default function ContactRFQForm({
                   Click to select drawing or document
                 </span>
                 <span className="text-[11px] text-steel-400 mt-0.5">
-                  PDF, DWG, DXF, STP, CAD files or high-res photos up to 15MB
+                  {enquiryAttachmentContent.guidance}
                 </span>
               </label>
             ) : (
@@ -628,6 +628,7 @@ export default function ContactRFQForm({
                 <button
                   type="button"
                   onClick={handleRemoveFile}
+                  disabled={isSubmitting}
                   className="p-1.5 rounded-lg hover:bg-navy-100 text-steel-500 hover:text-red-600 transition-colors"
                   aria-label="Remove attached file"
                 >
@@ -637,9 +638,10 @@ export default function ContactRFQForm({
             )}
 
             {fileError && (
-              <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1">
+              <p id="attachment-error" role="alert" className="mt-1.5 text-xs text-red-600 flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" />
                 <span>{fileError}</span>
+                <button type="button" onClick={handleRemoveFile} className="underline">{enquiryAttachmentContent.skip}</button>
               </p>
             )}
           </div>
@@ -677,7 +679,7 @@ export default function ContactRFQForm({
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Submitting Enquiry...</span>
+                  <span>{attachedFile ? enquiryAttachmentContent.submitting : "Submitting Enquiry..."}</span>
                 </>
               ) : (
                 <>

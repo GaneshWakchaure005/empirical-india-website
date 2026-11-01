@@ -86,7 +86,7 @@ export const ContactRFQ = {
 
   upload_guidance: {
     title: "Technical File Attachments",
-    formats: "Accepted formats: PDF, DWG, DXF, STEP, STP, PNG, JPG (Max 15MB)",
+    formats: "Accepted formats: PDF, DWG, DXF, STEP, STP, PNG, JPG, WebP (Max 15MB)",
     description:
       "Attaching a 2D cross-section drawing with tolerances or a 3D CAD model helps our engineering team evaluate feasibility and respond faster.",
   },

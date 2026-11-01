@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import { loadEnvConfig } from "@next/env";
 import { randomUUID } from "node:crypto";
+import mongoose from "mongoose";
 import { emptyCategory, emptyProduct } from "../lib/product-validation";
 
 async function test() {
   loadEnvConfig(process.cwd());
-  const { signAdminToken } = await import("../lib/auth");
-  const token = await signAdminToken({ id: "000000000000000000000001", email: "product-test@example.invalid", name: "Product test", role: "admin" });
+  const { signAdminToken, hashPassword } = await import("../lib/auth");
+  const { default: connectDB } = await import("../lib/mongodb");
+  const { default: Admin } = await import("../models/Admin");
+  await connectDB();
+  const account = await Admin.create({ name: "Product test", email: `product-test-${randomUUID()}@example.invalid`, password: await hashPassword(randomUUID()), role: "admin" });
+  const token = await signAdminToken({ id: account._id.toString(), email: account.email, name: account.name, role: "admin" });
   const base = process.env.PRODUCT_TEST_URL || "http://127.0.0.1:3000";
   const slug = `test-product-${randomUUID()}`;
   const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
@@ -96,6 +101,7 @@ async function test() {
     assert.ok(!finalPublic.body.data.some((category: { slug: string }) => category.slug === slug));
     console.log("HTTP product CRUD passed: auth, validation, duplicate rejection, draft visibility, nested text/images, publication, category/detail rendering, stable URLs, child/image removal and deletion.");
   } finally {
+    try {
     if (recordId) {
       const cleanup = await fetch(`${base}/api/admin/products/${recordId}`, { method: "DELETE", headers });
       assert.ok(cleanup.ok, "Temporary test category cleanup failed");
@@ -104,7 +110,8 @@ async function test() {
       const { deleteImageFromCloudinary } = await import("../lib/cloudinary");
       assert.ok(await deleteImageFromCloudinary(uploadedPublicId), "Temporary Cloudinary image cleanup failed");
     }
+    } finally { await Admin.deleteOne({ _id: account._id }); }
   }
 }
 
-test().catch((error: unknown) => { console.error(error); process.exitCode = 1; });
+test().catch((error: unknown) => { console.error(error); process.exitCode = 1; }).finally(() => mongoose.disconnect());

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { siteSEO } from "@/data/seo";
+import { pageMetadata } from "@/lib/seo";
 import Industries from "@/data/08-industries";
 import IndustriesHero from "@/components/industries/IndustriesHero";
 import IndustriesGridSection from "@/components/industries/IndustriesGridSection";
@@ -6,20 +7,7 @@ import IndustrySolutionsSection from "@/components/industries/IndustrySolutionsS
 import IndustryWorkflowSection from "@/components/industries/IndustryWorkflowSection";
 import IndustryCTASection from "@/components/industries/IndustryCTASection";
 
-export const metadata: Metadata = {
-  title: Industries.seo.title,
-  description: Industries.seo.description,
-  alternates: {
-    canonical: Industries.seo.canonical,
-  },
-  openGraph: {
-    title: Industries.seo.title,
-    description: Industries.seo.description,
-    url: Industries.seo.canonical,
-    siteName: "Empirical India",
-    type: "website",
-  },
-};
+export const metadata = pageMetadata(siteSEO.pages.industries);
 
 export default function IndustriesPage() {
   return (

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import EnquiryEmailStatus from "@/components/admin/EnquiryEmailStatus";
+import EnquiryAttachment from "@/components/admin/EnquiryAttachment";
 import {
   Mail,
   Search,
@@ -38,6 +39,8 @@ interface EnquiryItem {
   notes?: string;
   attachmentName?: string;
   attachmentUrl?: string;
+  attachmentPublicId?: string;
+  attachmentContentType?: string;
   emailStatus?: "pending" | "sending" | "sent" | "failed";
   createdAt: string;
 }
@@ -64,6 +67,20 @@ export default function EnquiriesInbox() {
   // Delete State
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!selectedEnquiry) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedEnquiry(null);
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [selectedEnquiry]);
 
   const fetchEnquiries = async () => {
     setLoading(true);
@@ -428,33 +445,37 @@ export default function EnquiriesInbox() {
 
       {/* Enquiry Detail Drawer / Modal */}
       {selectedEnquiry && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm overflow-y-auto">
-          <div className="max-w-2xl w-full rounded-3xl bg-slate-900 border border-slate-700/80 p-6 sm:p-8 shadow-2xl my-8 space-y-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm sm:p-5">
+          <div role="dialog" aria-modal="true" aria-labelledby="enquiry-detail-title"
+            className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-slate-700/80 bg-slate-900 shadow-2xl sm:max-h-[calc(100dvh-2.5rem)]">
             {/* Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-slate-800">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-sm font-bold text-amber-400">
+            <div className="flex shrink-0 items-start justify-between gap-3 border-b border-slate-800 px-4 py-3 sm:px-5 sm:py-4">
+              <div className="min-w-0">
+                <div className="mb-1 flex flex-wrap items-center gap-2">
+                  <span className="break-all font-mono text-[11px] font-bold text-amber-400 sm:text-xs">
                     {selectedEnquiry.referenceId}
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-xs font-medium capitalize">
                     {selectedEnquiry.businessLine.replace(/-/g, " ")}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 id="enquiry-detail-title" className="text-base font-bold text-white sm:text-lg">
                   Technical Requirement Enquiry
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedEnquiry(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                aria-label="Close enquiry"
+                className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white focus-visible:outline-2 focus-visible:outline-cyan-400"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
+            <div className="grid min-h-0 grid-cols-1 items-start gap-4 overflow-y-auto overscroll-contain p-4 md:grid-cols-2 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,1fr)] sm:p-5">
+            <div className="min-w-0 space-y-3">
             {/* Sender Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs">
+            <div className="grid grid-cols-1 gap-3 rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-xs break-words sm:grid-cols-2 lg:grid-cols-1">
               <div>
                 <span className="text-slate-500 block mb-0.5">Sender Name</span>
                 <span className="font-semibold text-white">
@@ -469,8 +490,8 @@ export default function EnquiriesInbox() {
               </div>
               <div>
                 <span className="text-slate-500 block mb-0.5">Work Email</span>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-slate-200">
+                <div className="flex min-w-0 items-start gap-2">
+                  <span className="min-w-0 break-all font-mono text-slate-200">
                     {selectedEnquiry.workEmail}
                   </span>
                   <button
@@ -496,30 +517,8 @@ export default function EnquiriesInbox() {
 
             <EnquiryEmailStatus key={selectedEnquiry._id} id={selectedEnquiry._id} initialStatus={selectedEnquiry.emailStatus} />
 
-            {/* Scope / Requirement */}
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                Detailed Technical Requirement / Scope
-              </h4>
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 text-xs leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
-                {selectedEnquiry.requirement}
-              </div>
-            </div>
-
-            {/* Attachment note */}
-            {selectedEnquiry.attachmentName && (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-slate-400">
-                  Attached Document:{" "}
-                  <strong className="text-slate-200 font-mono">
-                    {selectedEnquiry.attachmentName}
-                  </strong>
-                </span>
-              </div>
-            )}
-
             {/* Status Workflow Selector */}
-            <div className="p-4 rounded-2xl bg-slate-950/90 border border-slate-800 space-y-3">
+            <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-950/90 p-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-slate-300">
                   Enquiry Status Workflow
@@ -532,7 +531,7 @@ export default function EnquiriesInbox() {
                 )}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {(["new", "in-review", "responded", "archived"] as const).map(
                   (st) => (
                     <button
@@ -551,18 +550,31 @@ export default function EnquiriesInbox() {
                 )}
               </div>
             </div>
+            </div>
+
+            <div className="min-w-0 space-y-4">
+            {/* Scope / Requirement */}
+            <div>
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+                Detailed Technical Requirement / Scope
+              </h4>
+              <div className="whitespace-pre-wrap break-words rounded-xl border border-slate-800 bg-slate-950 p-3 text-xs leading-relaxed text-slate-200">
+                {selectedEnquiry.requirement}
+              </div>
+            </div>
 
             {/* Internal Notes */}
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-400">
+              <label htmlFor="enquiry-admin-notes" className="block text-xs font-semibold text-slate-400">
                 Internal Engineering Team Notes
               </label>
               <textarea
-                rows={2}
+                id="enquiry-admin-notes"
+                rows={3}
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
                 placeholder="e.g. Nashik plant team reviewed drawing; quotation sent via email on..."
-                className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="w-full resize-none rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-amber-500"
               />
               <div className="flex justify-end">
                 <button
@@ -576,9 +588,18 @@ export default function EnquiriesInbox() {
                 </button>
               </div>
             </div>
+            </div>
+
+            <div className="min-w-0 md:col-span-2 lg:col-span-1">
+              <EnquiryAttachment key={selectedEnquiry._id} id={selectedEnquiry._id}
+                name={selectedEnquiry.attachmentName} publicId={selectedEnquiry.attachmentPublicId}
+                storedUrl={selectedEnquiry.attachmentUrl}
+                contentType={selectedEnquiry.attachmentContentType} />
+            </div>
+            </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-slate-800 px-4 py-3 sm:px-5">
               <a
                 href={`mailto:${selectedEnquiry.workEmail}?subject=Regarding Technical Enquiry ${selectedEnquiry.referenceId} - Empirical India`}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shadow-lg shadow-amber-950/40 transition-colors"

@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest, { params }: Context) {
       const replacement = data.children.find((product) => product.id === child.id);
       if (replacement && replacement.slug !== child.slug) return errorResponse("Existing product URL slugs cannot change. Create a new product and configure a redirect instead.", 409);
     }
-    return successResponse(await ProductCategory.findByIdAndUpdate(id, data, { new: true, runValidators: true }));
+    return successResponse(await ProductCategory.findByIdAndUpdate(id, data, { returnDocument: "after", runValidators: true }));
   } catch (error) { return handleApiError(error); }
 }
 

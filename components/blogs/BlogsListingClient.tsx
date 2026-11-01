@@ -15,7 +15,7 @@ import BlogEnquiryCTA from "./BlogEnquiryCTA";
 
 const PAGE_SIZE = 9;
 
-export default function BlogsListingClient() {
+export default function BlogsListingClient({ initialData }: { initialData?: { data: BlogPublic[]; pagination: { page: number; limit: number; total: number; totalPages: number } } }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -23,7 +23,8 @@ export default function BlogsListingClient() {
   const initialCategory = searchParams.get("category") || "";
   const initialSearch = searchParams.get("search") || "";
   const initialFeatured = searchParams.get("featured") === "true";
-  const initialPage = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+  const requestedPage = Number(searchParams.get("page") || "1");
+  const initialPage = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? Math.min(10000, requestedPage) : 1;
 
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
@@ -31,17 +32,17 @@ export default function BlogsListingClient() {
   const [featuredOnly, setFeaturedOnly] = useState<boolean>(initialFeatured);
   const [page, setPage] = useState<number>(initialPage);
 
-  const [items, setItems] = useState<BlogPublic[]>([]);
-  const [featuredItem, setFeaturedItem] = useState<BlogPublic | null>(null);
+  const [items, setItems] = useState<BlogPublic[]>(initialData?.data || []);
+  const [featuredItem, setFeaturedItem] = useState<BlogPublic | null>(initialData?.data.find((item) => item.featured) || initialData?.data[0] || null);
   const [categories, setCategories] = useState<CategoryPublic[]>([]);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState(initialData?.pagination || {
     page: 1,
     limit: PAGE_SIZE,
     total: 0,
     totalPages: 1,
   });
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(!initialData);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [, startTransition] = useTransition();
@@ -76,6 +77,7 @@ export default function BlogsListingClient() {
   // Fetch blogs when page, category, search, or featured filter changes
   useEffect(() => {
     let ignore = false;
+    if (initialData && page === initialData.pagination.page && !selectedCategory && !debouncedSearch && !featuredOnly && retryCount === 0) return;
     setLoading(true);
     setError(null);
 
@@ -131,7 +133,7 @@ export default function BlogsListingClient() {
     return () => {
       ignore = true;
     };
-  }, [page, selectedCategory, debouncedSearch, featuredOnly, retryCount]);
+  }, [page, selectedCategory, debouncedSearch, featuredOnly, retryCount, initialData]);
 
   // Synchronize state with URL search parameters
   useEffect(() => {

@@ -63,6 +63,9 @@ export function formatZodErrors(error: ZodError): Record<string, string[]> {
  * Centralized error handler for Route Handlers
  */
 export function handleApiError(error: unknown) {
+  if (error instanceof SyntaxError) {
+    return errorResponse("Malformed JSON request body", 400);
+  }
   // Zod validation errors
   if (error instanceof ZodError) {
     const formattedErrors = formatZodErrors(error);

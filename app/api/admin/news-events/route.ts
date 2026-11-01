@@ -1,3 +1,4 @@
+import { adminPagination, literalSearch } from "@/lib/admin-query";
 import { NextRequest } from "next/server";
 import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
@@ -26,11 +27,7 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
-    const limit = Math.min(
-      100,
-      Math.max(1, parseInt(searchParams.get("limit") || "10", 10))
-    );
+    const { page, limit } = adminPagination(searchParams);
     const search = searchParams.get("search")?.trim();
     const type = searchParams.get("type")?.trim();
     const status = searchParams.get("status")?.trim();
@@ -67,8 +64,8 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: "i" } },
-        { excerpt: { $regex: search, $options: "i" } },
+        { title: { $regex: literalSearch(search), $options: "i" } },
+        { excerpt: { $regex: literalSearch(search), $options: "i" } },
       ];
     }
 

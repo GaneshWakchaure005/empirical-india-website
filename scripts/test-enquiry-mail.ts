@@ -21,11 +21,20 @@ async function test() {
   assert.equal(message.replyTo, enquiry.workEmail);
   assert.equal(message.from.address, env.SMTP_USER);
   assert.equal(message.to, env.SMTP_USER);
-  for (const value of Object.values(enquiry)) assert.ok(message.text.includes(value));
+  assert.equal(message.subject, "New website enquiry");
+  assert.ok(!JSON.stringify(message).includes(enquiry.referenceId));
+  for (const [key, value] of Object.entries(enquiry)) {
+    if (key !== "referenceId") assert.ok(message.text.includes(value));
+  }
   assert.ok(message.text.includes("no file was uploaded or attached"));
   assert.ok(!JSON.stringify(message).includes(env.SMTP_PASS));
   assert.equal(message.disableFileAccess, true);
   assert.equal(message.disableUrlAccess, true);
+  const htmlMessage = createEnquiryMessage({ ...enquiry, fullName: '<script>alert("test")</script>', attachmentUrl: "https://example.invalid/test.png?x=1&y=2" }, config);
+  assert.ok(!htmlMessage.html.includes("<script>"));
+  assert.ok(htmlMessage.html.includes("&lt;script&gt;"));
+  assert.ok(htmlMessage.html.includes('href="https://example.invalid/test.png?x=1&amp;y=2"'));
+  assert.ok(htmlMessage.html.includes("View / download attachment"));
   assert.ok(!createEnquiryMessage({ ...enquiry, referenceId: "bad\r\nBcc: attacker@example.com" }, config).subject.includes("\n"));
   const transport = nodemailer.createTransport({ jsonTransport: true });
   const result = await transport.sendMail(message);

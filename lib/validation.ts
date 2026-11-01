@@ -121,7 +121,7 @@ export const newsEventCreateSchema = z
     featured: z.boolean().default(false),
     alt: z.string().default(""),
     eventStartDate: z.string().optional(),
-    eventEndDate: z.string().optional(),
+    eventEndDate: z.string().refine((value) => !value || !isNaN(Date.parse(value)), "Invalid event end date").optional(),
     eventLocation: z.string().optional(),
     eventRegistrationUrl: z.string().url("Invalid URL").or(z.literal("")).optional(),
     metaTitle: z.string().max(100).optional().default(""),
@@ -139,8 +139,8 @@ export const newsEventCreateSchema = z
   })
   .refine(
     (data) => {
-      if (data.type === "event" && data.eventStartDate) {
-        return !isNaN(Date.parse(data.eventStartDate));
+      if (data.type === "event") {
+        return Boolean(data.eventStartDate && !isNaN(Date.parse(data.eventStartDate)));
       }
       return true;
     },
