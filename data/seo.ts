@@ -11,7 +11,7 @@ export const siteSEO = {
   location: "Nashik, Maharashtra, India",
 
   address: {
-    streetAddress: "XLO Point, Chunchale Gaon, MIDC Ambad",
+    streetAddress: "Gat No. 40, Behind NMC Hospital, Chunchale, Near XLO Point, Ambad MIDC",
     addressLocality: "Nashik",
     addressRegion: "Maharashtra",
     postalCode: "422010",

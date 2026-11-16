@@ -9,6 +9,7 @@ interface PlantLocationProps {
     location: string;
     email: string;
     plant_hours: string;
+    closed?: string;
     google_maps_embed: string;
   };
 }
@@ -75,7 +76,7 @@ export default function PlantLocationCard({ companyInfo }: PlantLocationProps) {
               </strong>
               <span>{companyInfo.plant_hours}</span>
               <p className="text-[11px] text-steel-400 mt-0.5">
-                Sunday Closed • Industrial holidays observed
+                {companyInfo.closed ?? "Saturday Closed"}
               </p>
             </div>
           </div>
