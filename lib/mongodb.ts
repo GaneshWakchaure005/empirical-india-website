@@ -1,4 +1,16 @@
 import mongoose from "mongoose";
+import dns from "node:dns";
+
+// When running on Windows/environments where Node's DNS resolver defaults to loopback (127.0.0.1),
+// c-ares fails to resolve MongoDB SRV records. Fall back to reliable public DNS resolvers.
+try {
+  const servers = dns.getServers();
+  if (servers.length === 0 || servers.every((s) => s.startsWith("127.") || s === "::1")) {
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  }
+} catch {
+  // Ignore if restricted in sandboxed environments
+}
 
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 

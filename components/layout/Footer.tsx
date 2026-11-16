@@ -202,7 +202,7 @@ export default function Footer() {
           </h4>
 
           <p className="text-[11px] text-steel-400 mt-1 leading-relaxed">
-            XLO Point, Chunchale Gaon, MIDC Ambad, Nashik, Maharashtra 422010
+            Gat No. 40, Behind NMC Hospital, Chunchale, Near XLO Point, Ambad MIDC, Nashik, Maharashtra, India - 422010
           </p>
         </div>
 

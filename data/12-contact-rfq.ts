@@ -18,10 +18,12 @@ export const ContactRFQ = {
   company_info: {
     name: "Empirical India",
     facility: "Roll Forming Machine Manufacturer & Metal Fabricator",
-    location: "Nashik, Maharashtra, India",
+    location:
+      "Gat No. 40, Behind NMC Hospital, Chunchale, Near XLO Point, Ambad MIDC, Nashik, Maharashtra, India - 422010",
     email: "sales@empiricalindia.com",
-    plant_hours: "Monday – Saturday: 9:00 AM – 6:30 PM IST",
-    sunday: "Closed",
+    plant_hours: "Sunday – Friday: 9:00 AM – 6:30 PM IST",
+    closed: "Saturday Closed",
+    saturday: "Closed",
     google_maps_embed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d551.3262335011021!2d73.72461784299102!3d19.965087499705678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdded1969be5401%3A0xef43b713a1b067b6!2sEmpirical%20India%2CRoll%20Forming%20Machine%20Manufacturer!5e1!3m2!1sen!2sin!4v1791480573816!5m2!1sen!2sin",
   },
