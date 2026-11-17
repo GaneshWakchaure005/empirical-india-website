@@ -53,7 +53,7 @@ export const Home = {
         specs: "Lightweight • Strong • Precise",
         productline: "Trolley Bag Tubes",
         image: {
-          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1791535658/tubes_bg-compressed.webp",
+          src: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794916940/tubes_bg.webp",
           alt: "Precision metal tubes manufactured for trolley-bag applications",
         },
 
