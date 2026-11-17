@@ -60,7 +60,7 @@ export const Industries = {
       tagline: "Rooftop & Ground-Mount Mounting Profiles",
       description:
         "High-precision roll-formed mounting channels, purlins, strut channels, and durable hardware engineered for solar panel mounting arrays, rooftop racking, and utility-scale ground structures.",
-      image: "/images/industries/solar-energy.jpg",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915891/solar-energy.webp",
       image_alt:
         "Commercial solar energy installation with roll-formed steel mounting channels and ground structures",
       key_applications: [
@@ -79,7 +79,7 @@ export const Industries = {
       tagline: "Structural Framing & Continuous Purlins",
       description:
         "Automated roll-forming lines for continuous C & Z purlin production, roofing deck profiles, eave struts, and customized cold-formed structural sections with inline punching.",
-      image: "/images/industries/peb-buildings.jpg",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/peb-buildings.webp",
       image_alt:
         "Modern pre-engineered steel building construction showing galvanized purlins and industrial framework",
       key_applications: [
@@ -98,7 +98,7 @@ export const Industries = {
       tagline: "Crash Barriers, Cable Trays & Heavy Sections",
       description:
         "Heavy-gauge roll-forming machinery and structural profiles engineered for highway W-beam crash barriers, industrial cable trays, bridge ducting channels, and transit utilities.",
-      image: "/images/industries/infrastructure.jpg",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/infrastructure.webp",
       image_alt:
         "Civil infrastructure project with galvanized steel cable tray channels and barrier profiles",
       key_applications: [
@@ -117,7 +117,7 @@ export const Industries = {
       tagline: "Silo Components, Greenhouse Frames & Handling",
       description:
         "Cold-formed curved wall channels for grain storage silos, greenhouse arch framing sections, and robust modular metal pallets engineered for agricultural produce storage and yard handling.",
-      image: "/images/industries/agriculture.jpg",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915891/agriculture.webp",
       image_alt:
         "Commercial agricultural greenhouse galvanized steel framing arches and grain storage silo logistics",
       key_applications: [
@@ -136,7 +136,7 @@ export const Industries = {
       tagline: "Custom Machinery, Pallets & Precision Tubes",
       description:
         "Turnkey custom roll-forming equipment lines, robust modular steel pallets for factory logistics and AS/RS racking, and precision cut-to-length tubes for luggage trolley and consumer hardware manufacturing.",
-      image: "/images/industries/industrial-manufacturing.jpg",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/industrial-manufacturing.webp",
       image_alt:
         "Clean manufacturing plant floor with automated roll-forming line, steel coils, and modular metal pallets",
       key_applications: [
