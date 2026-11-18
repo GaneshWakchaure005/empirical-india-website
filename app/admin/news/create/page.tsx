@@ -523,7 +523,7 @@ export default function CreateNewsEventPage() {
             onImageSelect={setImageFile}
             onAltTextChange={setAltText}
             label="Cover Image / Banner"
-            helperText="Event poster or announcement photo (PNG, JPG, WebP up to 2MB)."
+            helperText="Event poster or announcement photo (PNG, JPG, WebP under 500 KB). Please compress image before uploading."
           />
         </div>
       </div>

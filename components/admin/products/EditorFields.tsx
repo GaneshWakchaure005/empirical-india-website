@@ -54,7 +54,7 @@ export function ImageField({ label, value, onChange, onBusy }: { label: string; 
     <div className="flex flex-wrap items-center gap-2"><label htmlFor={id} className={`${buttonClass} cursor-pointer ${busy ? "pointer-events-none opacity-50" : ""}`}>{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}{busy ? "Uploading…" : hasImage ? "Replace image" : "Upload image"}<input id={id} type="file" className="sr-only" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.target.value = ""; }} /></label>
       {hasImage && <button type="button" className={buttonClass} disabled={busy} onClick={() => onChange("")}><Trash2 className="h-4 w-4" />Remove</button>}
     </div>
-    <p className="text-xs text-slate-400">JPG, PNG or WebP · Up to 2 MB</p>
+    <div className="rounded-lg bg-amber-500/10 border border-amber-500/25 px-3 py-1.5 text-xs text-amber-300 font-medium">⚠️ Max 500 KB (JPG, PNG, WebP). Please compress images before uploading to maintain fast performance.</div>
     <details><summary className="cursor-pointer text-xs text-slate-400">Use an existing image URL</summary><div className="mt-3"><TextField label="Image URL" value={value === "null" ? "" : value} disabled={busy} onChange={onChange} /></div></details>
     {error && <p role="alert" className="text-sm text-rose-300">{error}</p>}
   </div>;

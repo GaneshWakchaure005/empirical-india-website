@@ -381,7 +381,7 @@ return (
             onImageSelect={setImageFile}
             onAltTextChange={setAltText}
             label="Cover Image"
-            helperText="PNG, JPG, or WebP up to 2MB."
+            helperText="PNG, JPG, or WebP under 500 KB. Please compress image before uploading."
           />
         </section>
 

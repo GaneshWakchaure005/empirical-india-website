@@ -500,7 +500,7 @@ export default function EditBlogPage({
             onAltTextChange={setAltText}
             onRemoveCurrentImage={() => setExistingImageUrl(undefined)}
             label="Featured Cover Image"
-            helperText="Upload a new image to replace the current cover photo (PNG, JPG, WebP up to 2MB)."
+            helperText="Upload a new image to replace current cover photo (PNG, JPG, WebP under 500 KB). Please compress image before uploading."
           />
         </div>
 

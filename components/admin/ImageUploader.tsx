@@ -22,7 +22,7 @@ export default function ImageUploader({
   onAltTextChange,
   onRemoveCurrentImage,
   label = "Featured Image",
-  helperText = "PNG, JPG, or WebP up to 2MB. 16:9 ratio recommended.",
+  helperText = "PNG, JPG, or WebP under 500 KB (compress before uploading). 16:9 ratio recommended.",
 }: ImageUploaderProps) {
   const [dragActive, setDragActive] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -100,31 +100,36 @@ export default function ImageUploader({
       </div>
 
       {displayImage ? (
-        <div className="relative rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 aspect-video max-h-64 flex items-center justify-center group">
-          <Image
-            src={displayImage}
-            alt={altText || "Preview image"}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 600px"
-          />
-          <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-md transition-all"
-            >
-              Change Image
-            </button>
-            <button
-              type="button"
-              onClick={handleClear}
-              className="p-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all"
-              title="Remove image"
-            >
-              <X className="w-4 h-4" />
-            </button>
+        <div className="space-y-1.5">
+          <div className="relative rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 aspect-video max-h-64 flex items-center justify-center group">
+            <Image
+              src={displayImage}
+              alt={altText || "Preview image"}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 600px"
+            />
+            <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-md transition-all"
+              >
+                Change Image
+              </button>
+              <button
+                type="button"
+                onClick={handleClear}
+                className="p-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all"
+                title="Remove image"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
+          <p className="text-[11px] text-amber-400/80 font-medium">
+            ⚡ Image must be &lt; 500 KB. Please compress prior to uploading.
+          </p>
         </div>
       ) : (
         <div
@@ -146,6 +151,9 @@ export default function ImageUploader({
             Click to upload or drag & drop
           </p>
           <p className="text-xs text-slate-400 mt-1">{helperText}</p>
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[11px] text-amber-300 font-medium">
+            <span>⚠️ Must be &lt; 500 KB — Please compress image before upload</span>
+          </div>
         </div>
       )}
 

@@ -779,8 +779,11 @@ export default function NewsEventsManager() {
               {/* Image Upload Area */}
               <div>
                 <label className="block font-semibold text-slate-300 mb-1">
-                  Featured Image * (Max 2MB)
+                  Featured Image * (Max 500 KB)
                 </label>
+                <div className="rounded-lg bg-amber-500/10 border border-amber-500/25 px-3 py-1.5 text-xs text-amber-300 font-medium mb-3">
+                  ⚠️ Image size must be less than 500 KB. Please compress your image before uploading for improved website performance.
+                </div>
                 <div className="flex items-center gap-4">
                   <input
                     type="file"
