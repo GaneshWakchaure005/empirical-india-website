@@ -210,12 +210,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
         </>
       )}
       {/* ── Layer 1: Background Carousel Images (z-0) ── */}
-      <motion.div
-        initial={{ opacity: 0, scale: 1.06 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="absolute inset-0 z-0 overflow-hidden"
-      >
+      <div className="absolute inset-0 z-0 overflow-hidden">
         {slides.map((slide, idx) => {
           const isActive = idx === currentIndex;
           return (
@@ -238,6 +233,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
                   alt={slide.image.alt}
                   fill
                   priority={idx === 0}
+                  fetchPriority={idx === 0 ? "high" : "auto"}
                   sizes="100vw"
                   loading={idx === 0 ? "eager" : "lazy"}
                   className="object-cover object-center"
@@ -246,7 +242,7 @@ export default function HeroSection({ hero }: { hero?: HeroData }) {
             </div>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* ── Layer 2: Dedicated Balanced Dark Overlays (z-[1]) ── */}
       <div className="absolute inset-0 z-[1] pointer-events-none">

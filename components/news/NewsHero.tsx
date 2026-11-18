@@ -12,6 +12,7 @@ export default function NewsHero() {
           alt="Empirical India News and Events"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-center"
         />

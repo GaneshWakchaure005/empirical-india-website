@@ -15,6 +15,7 @@ export default function BlogsHero() {
           alt="Empirical India Technical Blogs and Industrial Insights"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-center transform scale-105 transition-transform duration-1000"
         />
