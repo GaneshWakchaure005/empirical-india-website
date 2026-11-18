@@ -5,7 +5,6 @@ import { useSearchParams, usePathname } from "next/navigation";
 import { BlogPublic, BlogQueryParams } from "@/types/blog";
 import { CategoryPublic } from "@/types/category";
 import { fetchBlogs, fetchBlogCategories } from "@/lib/api/blogs";
-import BlogsHero from "./BlogsHero";
 import BlogFilters from "./BlogFilters";
 import BlogCard from "./BlogCard";
 import FeaturedBlog from "./FeaturedBlog";
@@ -207,73 +206,64 @@ export default function BlogsListingClient({ initialData }: { initialData?: { da
       : items;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* ── Visually Impressive Light-Themed Hero Section ── */}
-      <BlogsHero />
+    <>
+      {/* Search, Categories, and Result Counter */}
+      <BlogFilters
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        featuredOnly={featuredOnly}
+        onFeaturedToggle={handleFeaturedToggle}
+        onResetFilters={handleResetFilters}
+        totalCount={pagination.total}
+        filteredCount={items.length}
+      />
 
-      {/* ── Main Blogs Content & Filter Section ── */}
-      <div
-        id="blogs-listing-section"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
-      >
-        {/* Search, Categories, and Result Counter */}
-        <BlogFilters
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={handleCategoryChange}
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          featuredOnly={featuredOnly}
-          onFeaturedToggle={handleFeaturedToggle}
+      {/* Content States: Loading, Error, Empty, or Card Grid */}
+      {loading ? (
+        <BlogSkeleton />
+      ) : error ? (
+        <BlogErrorState message={error} onRetry={handleRetry} />
+      ) : items.length === 0 ? (
+        <BlogEmptyState
           onResetFilters={handleResetFilters}
-          totalCount={pagination.total}
-          filteredCount={items.length}
+          message={
+            debouncedSearch
+              ? `No published articles matched "${debouncedSearch}".`
+              : selectedCategory
+              ? "No published articles found in this category."
+              : undefined
+          }
         />
+      ) : (
+        <div>
+          {/* Featured Article Spotlight (shown on Page 1 default view) */}
+          {featuredItem &&
+            page === 1 &&
+            !debouncedSearch &&
+            !selectedCategory &&
+            !featuredOnly && <FeaturedBlog item={featuredItem} />}
 
-        {/* Content States: Loading, Error, Empty, or Card Grid */}
-        {loading ? (
-          <BlogSkeleton />
-        ) : error ? (
-          <BlogErrorState message={error} onRetry={handleRetry} />
-        ) : items.length === 0 ? (
-          <BlogEmptyState
-            onResetFilters={handleResetFilters}
-            message={
-              debouncedSearch
-                ? `No published articles matched "${debouncedSearch}".`
-                : selectedCategory
-                ? "No published articles found in this category."
-                : undefined
-            }
-          />
-        ) : (
-          <div>
-            {/* Featured Article Spotlight (shown on Page 1 default view) */}
-            {featuredItem &&
-              page === 1 &&
-              !debouncedSearch &&
-              !selectedCategory &&
-              !featuredOnly && <FeaturedBlog item={featuredItem} />}
-
-            {/* Responsive Card Grid (3-columns on desktop, 2-columns on tablet, 1 on mobile) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
-              {displayItems.map((item, index) => (
-                <BlogCard key={item.id} item={item} priority={index < 3} />
-              ))}
-            </div>
-
-            {/* Pagination Controls */}
-            <BlogPagination
-              currentPage={pagination.page}
-              totalPages={pagination.totalPages}
-              onPageChange={handlePageChange}
-            />
+          {/* Responsive Card Grid (3-columns on desktop, 2-columns on tablet, 1 on mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
+            {displayItems.map((item, index) => (
+              <BlogCard key={item.id} item={item} priority={index < 3} />
+            ))}
           </div>
-        )}
 
-        {/* Commercial Technical RFQ & Drawing Discussion CTA */}
-        <BlogEnquiryCTA />
-      </div>
-    </div>
+          {/* Pagination Controls */}
+          <BlogPagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
+
+      {/* Commercial Technical RFQ & Drawing Discussion CTA */}
+      <BlogEnquiryCTA />
+    </>
   );
 }

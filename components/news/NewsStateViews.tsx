@@ -2,10 +2,86 @@
 
 import { AlertCircle, RotateCcw, SearchX } from "lucide-react";
 
-import ContentLoader from "@/components/ui/ContentLoader";
-
 export function NewsSkeleton() {
-  return <ContentLoader kind="news" />;
+  return (
+    <div className="w-full space-y-8 animate-pulse select-none" aria-busy="true" aria-label="Loading news and events">
+      {/* ── Filter Bar Skeleton ── */}
+      <div className="bg-steel-50/80 border border-steel-200 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Tab pills */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="h-9 w-24 rounded-xl bg-navy-800/20" />
+          <div className="h-9 w-32 rounded-xl bg-steel-200" />
+          <div className="h-9 w-28 rounded-xl bg-steel-200" />
+          <div className="h-9 w-24 rounded-xl bg-steel-200" />
+        </div>
+        {/* Search input + category dropdown */}
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="h-10 w-full md:w-64 rounded-xl bg-steel-200" />
+          <div className="h-10 w-36 rounded-xl bg-steel-200 hidden sm:block" />
+        </div>
+      </div>
+
+      {/* ── Featured Spotlight Card Skeleton ── */}
+      <div className="rounded-2xl border border-steel-200 bg-white p-4 sm:p-6 shadow-xs">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-7 aspect-[16/10] sm:aspect-[16/9] rounded-xl bg-steel-200" />
+          <div className="lg:col-span-5 space-y-4 py-2">
+            <div className="flex items-center gap-2">
+              <div className="h-6 w-24 rounded-full bg-steel-200" />
+              <div className="h-6 w-20 rounded-full bg-steel-100" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-7 w-full rounded-lg bg-steel-200" />
+              <div className="h-7 w-3/4 rounded-lg bg-steel-200" />
+            </div>
+            <div className="space-y-2 pt-1">
+              <div className="h-4 w-full rounded bg-steel-100" />
+              <div className="h-4 w-5/6 rounded bg-steel-100" />
+            </div>
+            <div className="pt-4 flex items-center justify-between border-t border-steel-100">
+              <div className="h-4 w-28 rounded bg-steel-200" />
+              <div className="h-9 w-28 rounded-xl bg-steel-200" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 6-Card Grid Skeleton ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[0, 1, 2, 3, 4, 5].map((idx) => (
+          <div key={idx} className="rounded-2xl border border-steel-200 bg-white overflow-hidden shadow-xs flex flex-col">
+            <div className="aspect-[16/10] bg-steel-200 w-full" />
+            <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-5 w-20 rounded-full bg-steel-200" />
+                  <div className="h-4 w-16 rounded bg-steel-100" />
+                </div>
+                <div className="h-5 w-5/6 rounded bg-steel-200" />
+                <div className="h-5 w-3/5 rounded bg-steel-200" />
+                <div className="space-y-1.5 pt-1">
+                  <div className="h-3.5 w-full rounded bg-steel-100" />
+                  <div className="h-3.5 w-4/5 rounded bg-steel-100" />
+                </div>
+              </div>
+              <div className="pt-4 border-t border-steel-100 flex items-center justify-between">
+                <div className="h-3.5 w-24 rounded bg-steel-100" />
+                <div className="h-3.5 w-16 rounded bg-steel-200" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Pagination Bar Skeleton ── */}
+      <div className="pt-4 flex items-center justify-center gap-2">
+        <div className="h-10 w-24 rounded-xl bg-steel-200" />
+        <div className="h-10 w-10 rounded-xl bg-steel-200" />
+        <div className="h-10 w-10 rounded-xl bg-steel-100" />
+        <div className="h-10 w-24 rounded-xl bg-steel-200" />
+      </div>
+    </div>
+  );
 }
 
 interface NewsEmptyStateProps {

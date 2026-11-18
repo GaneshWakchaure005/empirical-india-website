@@ -67,13 +67,14 @@ export default function Footer() {
       {/* Brand */}
       <div className="col-span-2 sm:col-span-1 lg:col-span-4">
         <Link href="/" aria-label="Empirical India Home" className="inline-block mb-2">
-          <div className="relative w-[130px] sm:w-[145px] h-[32px]">
+          <div className="relative w-[130px] sm:w-[145px] h-[32px] flex items-center">
             <Image
-              src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791531151/company-logo.webp"
+              src="/images/company-logo.webp"
               alt="Empirical India"
-              fill
+              width={145}
+              height={33}
               sizes="145px"
-              className="object-contain object-left"
+              className="w-auto h-[32px] object-contain object-left"
             />
           </div>
         </Link>

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { NewsAndEvents } from "@/data/10-news-and-events";
 import { Factory, Calendar, Wrench } from "lucide-react";

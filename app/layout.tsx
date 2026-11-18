@@ -42,6 +42,16 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link
+          rel="preload"
+          href="/images/company-logo.webp"
+          as="image"
+          type="image/webp"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <JsonLd data={organizationSchema()} />
         <ConditionalSiteChrome>{children}</ConditionalSiteChrome>

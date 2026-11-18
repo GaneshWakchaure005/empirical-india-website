@@ -5,7 +5,6 @@ import { useSearchParams, usePathname } from "next/navigation";
 import { NewsEventPublic, NewsEventsQueryParams } from "@/types/news-event";
 import { CategoryPublic } from "@/types/category";
 import { fetchNewsEvents, fetchActiveCategories } from "@/lib/api/news-events";
-import NewsHero from "./NewsHero";
 import NewsFilters, { FilterTab } from "./NewsFilters";
 import NewsCard from "./NewsCard";
 import FeaturedNews from "./FeaturedNews";
@@ -219,66 +218,60 @@ export default function NewsListingClient({ initialData }: { initialData?: { dat
       : items;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <NewsHero />
+    <>
+      {/* Filter Controls */}
+      <NewsFilters
+        currentTab={currentTab}
+        onTabChange={handleTabChange}
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onResetFilters={handleResetFilters}
+        totalCount={pagination.total}
+        filteredCount={items.length}
+      />
 
-      {/* Main Listing Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Filter Controls */}
-        <NewsFilters
-          currentTab={currentTab}
-          onTabChange={handleTabChange}
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={handleCategoryChange}
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
+      {/* Content States */}
+      {loading ? (
+        <NewsSkeleton />
+      ) : error ? (
+        <NewsErrorState message={error} onRetry={handleRetry} />
+      ) : items.length === 0 ? (
+        <NewsEmptyState
           onResetFilters={handleResetFilters}
-          totalCount={pagination.total}
-          filteredCount={items.length}
+          message={
+            debouncedSearch
+              ? `No announcements or events matched "${debouncedSearch}".`
+              : "No announcements are currently published in this view."
+          }
         />
+      ) : (
+        <div>
+          {/* Featured Item Spotlight (Page 1 default view) */}
+          {featuredItem && page === 1 && !debouncedSearch && !selectedCategory && (
+            <FeaturedNews item={featuredItem} />
+          )}
 
-        {/* Content States */}
-        {loading ? (
-          <NewsSkeleton />
-        ) : error ? (
-          <NewsErrorState message={error} onRetry={handleRetry} />
-        ) : items.length === 0 ? (
-          <NewsEmptyState
-            onResetFilters={handleResetFilters}
-            message={
-              debouncedSearch
-                ? `No announcements or events matched "${debouncedSearch}".`
-                : "No announcements are currently published in this view."
-            }
-          />
-        ) : (
-          <div>
-            {/* Featured Item Spotlight (Page 1 default view) */}
-            {featuredItem && page === 1 && !debouncedSearch && !selectedCategory && (
-              <FeaturedNews item={featuredItem} />
-            )}
-
-            {/* Grid of News & Event Cards: 3-column -> 2-column -> 1-column */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
-              {displayItems.map((item, index) => (
-                <NewsCard key={item.id} item={item} priority={index < 3} />
-              ))}
-            </div>
-
-            {/* Pagination Controls */}
-            <NewsPagination
-              currentPage={pagination.page}
-              totalPages={pagination.totalPages}
-              onPageChange={handlePageChange}
-            />
+          {/* Grid of News & Event Cards: 3-column -> 2-column -> 1-column */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
+            {displayItems.map((item, index) => (
+              <NewsCard key={item.id} item={item} priority={index < 3} />
+            ))}
           </div>
-        )}
 
-        {/* Commercial Enquiry CTA Section */}
-        <NewsEnquiryCTA />
-      </div>
-    </div>
+          {/* Pagination Controls */}
+          <NewsPagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
+
+      {/* Commercial Enquiry CTA Section */}
+      <NewsEnquiryCTA />
+    </>
   );
 }

@@ -170,15 +170,15 @@ export default function Navbar() {
               setMobileOpen(false);
             }}
           >
-            <div className="relative w-[210px] sm:w-[250px] md:w-[270px] lg:w-[280px] xl:w-[310px] h-[64px] sm:h-[62px] md:h-[68px] lg:h-[72px] xl:h-[76px]">
+            <div className="relative w-[210px] sm:w-[250px] md:w-[270px] lg:w-[280px] xl:w-[310px] h-[54px] sm:h-[62px] md:h-[68px] lg:h-[72px] xl:h-[76px] flex items-center">
               <Image
-                src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791531151/company-logo.webp"
+                src="/images/company-logo.webp"
                 alt="Empirical India - Roll Forming Experts"
-                fill
+                width={310}
+                height={71}
                 sizes="(max-width: 640px) 210px, (max-width: 1024px) 270px, 310px"
-                className="object-contain object-left"
+                className="w-auto h-[44px] sm:h-[50px] md:h-[56px] lg:h-[62px] xl:h-[66px] object-contain object-left"
                 priority
-                loading="eager"
               />
             </div>
           </Link>
@@ -498,14 +498,14 @@ export default function Navbar() {
                 className="flex items-center shrink-0 h-full"
                 aria-label="Empirical India Home"
               >
-                <div className="relative w-[210px] sm:w-[250px] h-[54px] sm:h-[62px]">
+                <div className="relative w-[210px] sm:w-[250px] h-[54px] sm:h-[62px] flex items-center">
                   <Image
-                    src="https://res.cloudinary.com/f4j2yhrc/image/upload/v1791531151/company-logo.webp"
+                    src="/images/company-logo.webp"
                     alt="Empirical India - Roll Forming Experts"
-                    fill
+                    width={250}
+                    height={57}
                     sizes="210px"
-                    className="object-contain object-left"
-                    priority
+                    className="w-auto h-[44px] sm:h-[50px] object-contain object-left"
                   />
                 </div>
               </Link>
