@@ -12,14 +12,19 @@ import {
   HardHat,
   Tractor,
   Factory,
+  Package,
+  Layers,
 } from "lucide-react";
 import type { IndustryItem } from "@/data/08-industries";
 
 const iconMap: Record<string, React.ElementType> = {
+  "warehousing-material-handling": Warehouse,
   "solar-energy": SunMedium,
-  "peb": Warehouse,
-  "infrastructure": HardHat,
-  "agriculture": Tractor,
+  "luggage-travel-products": Package,
+  "metal-processing-manufacturing": Factory,
+  peb: Warehouse,
+  infrastructure: HardHat,
+  agriculture: Tractor,
   "industrial-manufacturing": Factory,
 };
 
@@ -189,12 +194,12 @@ export default function IndustryCard({
             {industry.description}
           </p>
 
-          {/* Key Components */}
+          {/* Key Applications & Relevant Solutions */}
           <div className="mt-4 pt-3.5 border-t border-slate-800/80">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-2">
-              Key Engineered Components
+              Applications
             </span>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
               {industry.key_applications.map((app, idx) => (
                 <li
                   key={idx}
@@ -205,6 +210,14 @@ export default function IndustryCard({
                 </li>
               ))}
             </ul>
+            {industry.relevant_solutions_summary && (
+              <div className="text-xs text-slate-300">
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider">
+                  Relevant solutions:{" "}
+                </span>
+                <span>{industry.relevant_solutions_summary}</span>
+              </div>
+            )}
           </div>
         </div>
 

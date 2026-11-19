@@ -6,10 +6,18 @@ import IndustryCard from "@/components/industries/IndustryCard";
 import type { IndustryItem } from "@/data/08-industries";
 
 interface IndustriesGridSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
   industries: readonly IndustryItem[];
 }
 
-export default function IndustriesGridSection({ industries }: IndustriesGridSectionProps) {
+export default function IndustriesGridSection({
+  eyebrow = "INDUSTRIES WE SERVE",
+  heading = "Supporting Industry Through Engineering Excellence",
+  description = "Every industry has different requirements for material selection, dimensional accuracy, durability and production efficiency. Our approach begins with understanding the intended application and translating those requirements into a suitable product or manufacturing solution.",
+  industries,
+}: IndustriesGridSectionProps) {
   // Desktop hover state: null by default so all cards have equal width
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -45,7 +53,7 @@ export default function IndustriesGridSection({ industries }: IndustriesGridSect
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header Matching Reference — Clean, authoritative, no redundant H1 repetition */}
+        {/* Section Header Matching Reference */}
         <motion.div
           className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 16 }}
@@ -53,14 +61,17 @@ export default function IndustriesGridSection({ industries }: IndustriesGridSect
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.45, ease: "easeOut" }}
         >
+          <span className="inline-block text-[11px] font-semibold tracking-[0.18em] uppercase text-amber-500 mb-2.5">
+            {eyebrow}
+          </span>
           <h2
             id="industries-grid-heading"
-            className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight uppercase"
+            className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight"
           >
-            INDUSTRIES WE SERVE
+            {heading}
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-slate-400 font-normal max-w-xl mx-auto leading-relaxed">
-            Hover to explore our engineering capabilities across each industry.
+          <p className="mt-3 text-sm sm:text-base text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed">
+            {description}
           </p>
         </motion.div>
 

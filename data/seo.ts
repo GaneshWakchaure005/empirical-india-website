@@ -76,11 +76,11 @@ export const siteSEO = {
     industries: {
       path: "/industries",
       title:
-        "Industrial Applications for Roll Forming & Metal Products",
+        "Industries We Serve | Engineered Solutions | Empirical India",
       description:
-        "Explore industrial applications for custom roll-forming machinery, metal pallets, trolley-bag tubes and solar structure components from Empirical India.",
+        "Empirical India delivers precision-engineered products, roll-forming technology and industrial manufacturing solutions for warehousing, solar energy, luggage and metal processing.",
       h1:
-        "Industrial Applications & Manufacturing Solutions",
+        "Engineered Solutions for Diverse Industries",
     },
 
     contact: {

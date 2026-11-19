@@ -50,7 +50,7 @@ const solutionThemes: Record<string, SolutionTheme> = {
     chipHover: "group-hover:border-blue-200/90 group-hover:bg-blue-50/60 group-hover:text-blue-900",
     buttonHover:
       "hover:bg-gradient-to-r hover:from-navy-900 hover:to-blue-900 hover:shadow-md hover:shadow-blue-950/20",
-    stepTag: "Vertical 01",
+    stepTag: "01",
   },
   "modular-metal-pallets": {
     gradientBorder: "from-amber-500 via-orange-500 to-yellow-400",
@@ -67,7 +67,24 @@ const solutionThemes: Record<string, SolutionTheme> = {
     chipHover: "group-hover:border-amber-200/90 group-hover:bg-amber-50/60 group-hover:text-amber-900",
     buttonHover:
       "hover:bg-gradient-to-r hover:from-navy-900 hover:to-amber-950 hover:shadow-md hover:shadow-amber-950/20",
-    stepTag: "Vertical 02",
+    stepTag: "02",
+  },
+  "solar-structures": {
+    gradientBorder: "from-sky-500 via-blue-500 to-indigo-400",
+    ambientGlow: "from-sky-500/30 via-blue-500/20 to-indigo-400/25",
+    subtleBorder: "from-sky-500/20 via-blue-500/15 to-indigo-500/20",
+    spotlight: "bg-[radial-gradient(ellipse_at_top_right,rgba(14,165,233,0.08),transparent_65%)]",
+    badgePill: "bg-sky-50 border-sky-200/80 text-sky-800",
+    iconBaseBg: "bg-sky-50/90 border-sky-100",
+    iconHoverGradient:
+      "group-hover:bg-gradient-to-br group-hover:from-sky-600 group-hover:to-blue-600 group-hover:text-white group-hover:border-transparent group-hover:shadow-[0_4px_16px_rgba(14,165,233,0.35)]",
+    iconBaseColor: "text-sky-700",
+    subtitleColor: "text-sky-700",
+    checkColor: "text-sky-600",
+    chipHover: "group-hover:border-sky-200/90 group-hover:bg-sky-50/60 group-hover:text-sky-900",
+    buttonHover:
+      "hover:bg-gradient-to-r hover:from-navy-900 hover:to-sky-950 hover:shadow-md hover:shadow-sky-950/20",
+    stepTag: "03",
   },
   "trolley-bag-tubes": {
     gradientBorder: "from-teal-500 via-emerald-500 to-cyan-400",
@@ -84,7 +101,7 @@ const solutionThemes: Record<string, SolutionTheme> = {
     chipHover: "group-hover:border-teal-200/90 group-hover:bg-teal-50/60 group-hover:text-teal-900",
     buttonHover:
       "hover:bg-gradient-to-r hover:from-navy-900 hover:to-teal-950 hover:shadow-md hover:shadow-teal-950/20",
-    stepTag: "Vertical 03",
+    stepTag: "04",
   },
 };
 
@@ -99,9 +116,9 @@ const defaultTheme: SolutionTheme = {
   iconBaseColor: "text-navy-700",
   subtitleColor: "text-navy-700",
   checkColor: "text-navy-700",
-  chipHover: "group-hover:border-steel-300 group-hover:bg-steel-100",
+  chipHover: "group-hover:border-navy-200 group-hover:bg-navy-50 group-hover:text-navy-900",
   buttonHover: "hover:bg-navy-800",
-  stepTag: "Capability",
+  stepTag: "01",
 };
 
 export default function IndustrySolutionsSection({
@@ -112,29 +129,19 @@ export default function IndustrySolutionsSection({
 }: IndustrySolutionsSectionProps) {
   return (
     <section
-      className="relative bg-[#f8fafc] py-20 sm:py-28 border-b border-steel-200/60 overflow-hidden"
+      className="relative bg-slate-50/70 py-16 sm:py-20 border-b border-steel-200/80 overflow-hidden"
       aria-labelledby="solutions-section-heading"
     >
-      {/* Background Decorative Grid Accent */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.02]"
-        style={{
-          backgroundImage: `radial-gradient(var(--navy-900) 1px, transparent 1px)`,
-          backgroundSize: "28px 28px",
-        }}
-        aria-hidden="true"
-      />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-14 sm:mb-20"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-12"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-50 border border-navy-100/90 text-navy-800 text-xs font-semibold tracking-wider uppercase shadow-2xs mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-50 border border-navy-100/90 text-navy-800 text-xs font-semibold tracking-wider uppercase shadow-2xs mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse" />
             <span>{eyebrow}</span>
           </div>
@@ -146,24 +153,33 @@ export default function IndustrySolutionsSection({
             {heading}
           </h2>
 
-          <p className="mt-3.5 text-sm sm:text-base text-steel-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-3 text-sm sm:text-base text-steel-600 leading-relaxed max-w-2xl mx-auto">
             {description}
           </p>
         </motion.div>
 
-        {/* 3 Core Solutions Cards with Border Color Gradients & Hover Effects */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-7 lg:gap-8 items-stretch">
+        {/* Compact 4-Column Grid */}
+        <div
+          className={`grid grid-cols-1 ${
+            solutions.length === 4
+              ? "md:grid-cols-2 lg:grid-cols-4 gap-5"
+              : "lg:grid-cols-3 gap-6"
+          } items-stretch`}
+        >
           {solutions.map((solution, idx) => {
             const Icon = iconMap[solution.icon_name] || Settings;
-            const theme = solutionThemes[solution.id] || defaultTheme;
+            const theme = solutionThemes[solution.id] || {
+              ...defaultTheme,
+              stepTag: String(idx + 1).padStart(2, "0"),
+            };
 
             return (
               <motion.div
                 key={solution.id}
-                initial={{ opacity: 0, y: 22 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: idx * 0.1 }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
                 className="group relative flex flex-col h-full select-none"
               >
                 {/* 1. Ambient Diffused Glow behind the card on hover */}
@@ -173,68 +189,63 @@ export default function IndustrySolutionsSection({
                 />
 
                 {/* 2. Outer Gradient Border Container (1.5px border effect) */}
-                <div className="relative flex flex-col h-full rounded-2xl p-[1.5px] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-steel-900/10">
-                  {/* Base border: subtle tinted gradient in rest state */}
+                <div className="relative flex flex-col h-full rounded-2xl p-[1.5px] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:shadow-steel-900/10">
+                  {/* Base border */}
                   <div
                     className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${theme.subtleBorder} border border-steel-200/90 transition-opacity duration-500`}
                     aria-hidden="true"
                   />
 
-                  {/* Hover border: blooms into vibrant gradient combination */}
+                  {/* Hover border */}
                   <div
                     className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${theme.gradientBorder} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                     aria-hidden="true"
                   />
 
-                  {/* 3. Inner Card Surface */}
-                  <div className="relative flex flex-col h-full rounded-[14.5px] bg-white p-6 sm:p-7 overflow-hidden z-10">
+                  {/* 3. Inner Compact Card Surface */}
+                  <div className="relative flex flex-col h-full rounded-[14.5px] bg-white p-5 sm:p-5.5 overflow-hidden z-10">
                     {/* Top Corner Radial Spotlight glow on hover */}
                     <div
                       className={`absolute inset-0 ${theme.spotlight} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
                       aria-hidden="true"
                     />
 
-                    {/* Header Row: Icon, Title & Step Badge */}
-                    <div className="flex items-start justify-between gap-3 mb-5 relative z-10">
-                      <div className="flex items-start gap-3.5">
-                        <div
-                          className={`w-12 h-12 rounded-xl ${theme.iconBaseBg} border flex items-center justify-center ${theme.iconBaseColor} shrink-0 transition-all duration-300 ${theme.iconHoverGradient} group-hover:scale-105 group-hover:rotate-1`}
-                        >
-                          <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <div>
-                          <h3 className="text-base sm:text-lg font-bold text-steel-900 group-hover:text-steel-950 transition-colors">
-                            {solution.title}
-                          </h3>
-                          <p className={`text-xs font-semibold ${theme.subtitleColor} mt-0.5`}>
-                            {solution.subtitle}
-                          </p>
-                        </div>
+                    {/* Top Row: Icon on left, Step number badge on right */}
+                    <div className="flex items-center justify-between mb-3.5 relative z-10">
+                      <div
+                        className={`w-10 h-10 rounded-xl ${theme.iconBaseBg} border flex items-center justify-center ${theme.iconBaseColor} shrink-0 transition-all duration-300 ${theme.iconHoverGradient}`}
+                      >
+                        <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
                       </div>
 
-                      {/* Vertical Tag Pill */}
+                      {/* Number Tag Pill without 'Vertical' prefix */}
                       <span
-                        className={`shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase ${theme.badgePill} border shadow-2xs`}
+                        className={`shrink-0 px-2 py-0.5 rounded-md text-[11px] font-mono font-bold tracking-wider ${theme.badgePill} border shadow-2xs`}
                       >
                         {theme.stepTag}
                       </span>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-xs sm:text-sm text-steel-600 leading-relaxed mb-5 relative z-10">
-                      {solution.description}
-                    </p>
+                    {/* Title & Subtitle - Full width to prevent any overlapping */}
+                    <div className="mb-3.5 relative z-10">
+                      <h3 className="text-base font-bold text-steel-900 group-hover:text-steel-950 transition-colors leading-snug">
+                        {solution.title}
+                      </h3>
+                      <p className={`text-xs font-semibold ${theme.subtitleColor} mt-1 leading-snug`}>
+                        {solution.subtitle}
+                      </p>
+                    </div>
 
                     {/* Applicable Industries Chips */}
-                    <div className="mb-5 relative z-10">
-                      <span className="text-[11px] font-bold text-steel-400 uppercase tracking-wider block mb-2">
+                    <div className="mb-3.5 relative z-10">
+                      <span className="text-[10px] font-bold text-steel-400 uppercase tracking-wider block mb-1.5">
                         Primary Sector Fit
                       </span>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1">
                         {solution.applicable_industries.map((sec) => (
                           <span
                             key={sec}
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-steel-100/80 text-steel-700 border border-steel-200/70 transition-all duration-300 ${theme.chipHover}`}
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-steel-100/80 text-steel-700 border border-steel-200/70 transition-all duration-300 ${theme.chipHover}`}
                           >
                             {sec}
                           </span>
@@ -243,38 +254,38 @@ export default function IndustrySolutionsSection({
                     </div>
 
                     {/* Capabilities list */}
-                    <div className="flex-1 mb-6 pt-4 border-t border-steel-100 relative z-10">
-                      <span className="text-[11px] font-bold text-steel-400 uppercase tracking-wider block mb-2.5">
+                    <div className="flex-1 mb-4 pt-3 border-t border-steel-100 relative z-10">
+                      <span className="text-[10px] font-bold text-steel-400 uppercase tracking-wider block mb-2">
                         Engineering Scope
                       </span>
-                      <ul className="space-y-2">
+                      <ul className="space-y-1.5">
                         {solution.capabilities.map((cap, cIdx) => (
-                          <li key={cIdx} className="flex items-start gap-2 text-xs text-steel-700">
+                          <li key={cIdx} className="flex items-start gap-1.5 text-xs text-steel-700">
                             <CheckCircle2
                               className={`w-3.5 h-3.5 ${theme.checkColor} shrink-0 mt-0.5 transition-colors duration-300`}
                             />
-                            <span>{cap}</span>
+                            <span className="leading-snug">{cap}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
                     {/* Action Links */}
-                    <div className="pt-4 border-t border-steel-100 flex flex-col gap-2 relative z-10 mt-auto">
+                    <div className="pt-3 border-t border-steel-100 flex flex-col gap-1.5 relative z-10 mt-auto">
                       <Link
                         href={`/contact?product=${solution.id}`}
-                        className={`group/btn inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-navy-900 text-white text-xs font-semibold transition-all shadow-2xs text-center active:scale-98 ${theme.buttonHover}`}
+                        className={`group/btn inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-navy-900 text-white text-xs font-semibold transition-all shadow-2xs text-center active:scale-98 ${theme.buttonHover}`}
                       >
                         <span>Request Technical Review</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
                       </Link>
 
                       <Link
                         href={solution.href}
-                        className="group/link inline-flex items-center justify-center gap-1.5 text-xs font-medium text-steel-600 hover:text-navy-900 py-1 transition-colors"
+                        className="group/link inline-flex items-center justify-center gap-1 text-[11px] font-medium text-steel-500 hover:text-navy-900 py-0.5 transition-colors"
                       >
                         <span>View Product Details</span>
-                        <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover/link:translate-x-1" />
+                        <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover/link:translate-x-0.5" />
                       </Link>
                     </div>
                   </div>

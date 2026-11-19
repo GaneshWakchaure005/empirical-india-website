@@ -12,6 +12,7 @@ export interface IndustryItem {
   readonly image_alt: string;
   readonly key_applications: readonly string[];
   readonly relevant_product_line: string;
+  readonly relevant_solutions_summary: string;
   readonly product_href: string;
   readonly enquiry_href: string;
 }
@@ -31,187 +32,219 @@ export const Industries = {
   page: "Industries",
   route: "/industries",
   source_pages: [12],
-  purpose: "Use an application-led page to help industrial buyers recognize their use case and initiate drawing-led discussions.",
+  purpose:
+    "Engineered solutions for diverse industries: helping industrial buyers recognize their application requirements and initiate drawing-led discussions.",
 
   seo: {
-    title: "Engineering Solutions for Every Industry | Empirical India",
-    description:
-      "Explore Empirical India's custom roll-forming lines, heavy-duty modular metal pallets, and precision tubes engineered for Solar Energy, PEB, Infrastructure, Agriculture, and Manufacturing.",
+    title: siteSEO.pages.industries.title,
+    description: siteSEO.pages.industries.description,
     canonical: "/industries",
   },
 
   hero: {
-    eyebrow: "APPLICATION-LED ENGINEERING",
+    eyebrow: "INDUSTRIES WE SERVE",
     heading: siteSEO.pages.industries.h1,
     description:
-      "Empirical India partners with industrial OEMs, infrastructure contractors, and system fabricators to deliver custom automated roll-forming lines, heavy-duty modular metal pallets, and precision metal tubes configured precisely to sector requirements.",
+      "Empirical India delivers precision-engineered products, roll-forming technology and industrial manufacturing solutions for businesses across multiple sectors. We combine practical engineering, application-specific design and manufacturing expertise to help customers meet their production and operational requirements.",
+    sub_description:
+      "From metal profile production and industrial material handling to solar mounting structures and precision tubing, our solutions are developed around the needs of each application.",
     pills: [
-      "Custom Profile Forming",
-      "Heavy-Duty Metal Pallets",
-      "Precision Luggage Tubes",
+      "Metal Profile Production",
+      "Industrial Material Handling",
+      "Solar Mounting Structures",
+      "Precision Tubing",
     ] as const,
+    primary_cta: {
+      label: "Explore Our Products",
+      href: "/products",
+    },
+    secondary_cta: {
+      label: "Discuss Your Requirements",
+      href: "/contact",
+    },
+  },
+
+  grid_section: {
+    eyebrow: "ENGINEERING EXCELLENCE",
+    heading: "Supporting Industry Through Engineering Excellence",
+    description:
+      "Every industry has different requirements for material selection, dimensional accuracy, durability and production efficiency. Our approach begins with understanding the intended application and translating those requirements into a suitable product or manufacturing solution.",
   },
 
   industries: [
     {
-      id: "solar-energy",
-      title: "Solar Energy",
-      short_title: "Solar",
-      tagline: "Rooftop & Ground-Mount Mounting Profiles",
+      id: "warehousing-material-handling",
+      title: "Warehousing & Material Handling",
+      short_title: "Warehousing",
+      tagline: "Reliable solutions for industrial storage and logistics.",
       description:
-        "High-precision roll-formed mounting channels, purlins, strut channels, and durable hardware engineered for solar panel mounting arrays, rooftop racking, and utility-scale ground structures.",
-      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915891/solar-energy.webp",
-      image_alt:
-        "Commercial solar energy installation with roll-formed steel mounting channels and ground structures",
-      key_applications: [
-        "Strut channels & guide rails",
-        "Solar purlins & mounting brackets",
-        "Corrosion-resistant metal sections",
-      ],
-      relevant_product_line: "Custom Roll-Forming Lines",
-      product_href: "/products/roll-forming-lines",
-      enquiry_href: "/contact?industry=solar-energy&product=roll-forming-lines",
-    },
-    {
-      id: "peb",
-      title: "Pre-Engineered Buildings (PEB)",
-      short_title: "PEB",
-      tagline: "Structural Framing & Continuous Purlins",
-      description:
-        "Automated roll-forming lines for continuous C & Z purlin production, roofing deck profiles, eave struts, and customized cold-formed structural sections with inline punching.",
+        "Our modular metal pallets are designed for industrial environments where efficient storage, organized material movement and dependable handling are essential. Configurable pallet designs help businesses address their operational, load-bearing and space-utilization requirements.",
       image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/peb-buildings.webp",
       image_alt:
-        "Modern pre-engineered steel building construction showing galvanized purlins and industrial framework",
+        "Industrial warehouse facility with heavy-duty modular metal pallets and organized storage racking",
       key_applications: [
-        "C & Z structural purlins",
-        "Inline punched framing channels",
-        "Roofing deck & cladding profiles",
+        "Industrial warehouses",
+        "Manufacturing facilities",
+        "Distribution centres",
+        "Material handling operations",
       ],
-      relevant_product_line: "Custom Roll-Forming Lines",
-      product_href: "/products/roll-forming-lines",
-      enquiry_href: "/contact?industry=peb&product=roll-forming-lines",
+      relevant_product_line: "Modular Metal Pallets",
+      relevant_solutions_summary:
+        "Modular metal pallets and customized pallet configurations.",
+      product_href: "/products/modular-metal-pallets",
+      enquiry_href:
+        "/contact?industry=warehousing-material-handling&product=modular-metal-pallets",
     },
     {
-      id: "infrastructure",
-      title: "Infrastructure",
-      short_title: "Infrastructure",
-      tagline: "Crash Barriers, Cable Trays & Heavy Sections",
+      id: "solar-energy",
+      title: "Solar Energy & Renewable Infrastructure",
+      short_title: "Solar Energy",
+      tagline: "Precision-formed profiles for solar mounting applications.",
       description:
-        "Heavy-gauge roll-forming machinery and structural profiles engineered for highway W-beam crash barriers, industrial cable trays, bridge ducting channels, and transit utilities.",
+        "Solar mounting systems depend on appropriately designed structural components and consistent manufacturing quality. Our roll-formed profiles, including C-channels and strut rails, support solar structure manufacturing requirements based on specified dimensions, materials and project needs.",
+      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915891/solar-energy.webp",
+      image_alt:
+        "Commercial solar energy installation with roll-formed steel mounting channels, purlins and support systems",
+      key_applications: [
+        "Solar mounting structures",
+        "Rooftop solar installations",
+        "Solar support systems",
+      ],
+      relevant_product_line: "Roll-Formed Profiles & Solar Structures",
+      relevant_solutions_summary:
+        "Roll-formed structural profiles, C-channels and strut rails.",
+      product_href: "/products/solar-structures",
+      enquiry_href:
+        "/contact?industry=solar-energy&product=solar-structures",
+    },
+    {
+      id: "luggage-travel-products",
+      title: "Luggage & Travel Products",
+      short_title: "Luggage",
+      tagline: "Precision tubing for dependable luggage components.",
+      description:
+        "Telescopic handles and luggage frames require accurately formed metal profiles with suitable dimensional tolerances, strength and fit. Our trolley-bag tube profiles are developed for manufacturers seeking consistency in the production of luggage components.",
       image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/infrastructure.webp",
       image_alt:
-        "Civil infrastructure project with galvanized steel cable tray channels and barrier profiles",
+        "Precision-engineered metal tube profiles and telescopic handle components for luggage manufacturing",
       key_applications: [
-        "Highway W-beam crash barriers",
-        "Cable trays & transit ducting",
-        "Heavy structural channels",
+        "Suitcase handles",
+        "Telescopic trolley systems",
+        "Luggage frame components",
       ],
-      relevant_product_line: "Custom Roll-Forming Lines",
-      product_href: "/products/roll-forming-lines",
-      enquiry_href: "/contact?industry=infrastructure&product=roll-forming-lines",
+      relevant_product_line: "Trolley-Bag Tubes",
+      relevant_solutions_summary:
+        "Oval trolley tubes and ribbed square tube profiles.",
+      product_href: "/products/trolley-bag-tubes",
+      enquiry_href:
+        "/contact?industry=luggage-travel-products&product=trolley-bag-tubes",
     },
     {
-      id: "agriculture",
-      title: "Agriculture",
-      short_title: "Agriculture",
-      tagline: "Silo Components, Greenhouse Frames & Handling",
+      id: "metal-processing-manufacturing",
+      title: "Metal Processing & Industrial Manufacturing",
+      short_title: "Metal Processing",
+      tagline: "Custom roll-forming technology for production requirements.",
       description:
-        "Cold-formed curved wall channels for grain storage silos, greenhouse arch framing sections, and robust modular metal pallets engineered for agricultural produce storage and yard handling.",
-      image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915891/agriculture.webp",
-      image_alt:
-        "Commercial agricultural greenhouse galvanized steel framing arches and grain storage silo logistics",
-      key_applications: [
-        "Greenhouse framing channels",
-        "Curved silo wall panels & stiffeners",
-        "Heavy-duty farm produce pallets",
-      ],
-      relevant_product_line: "Modular Metal Pallets & Roll Forming",
-      product_href: "/products/modular-metal-pallets",
-      enquiry_href: "/contact?industry=agriculture&product=modular-metal-pallets",
-    },
-    {
-      id: "industrial-manufacturing",
-      title: "Industrial Manufacturing",
-      short_title: "Manufacturing",
-      tagline: "Custom Machinery, Pallets & Precision Tubes",
-      description:
-        "Turnkey custom roll-forming equipment lines, robust modular steel pallets for factory logistics and AS/RS racking, and precision cut-to-length tubes for luggage trolley and consumer hardware manufacturing.",
+        "Manufacturers need reliable equipment to transform metal strips into consistent, application-specific profiles. Our roll-forming machinery and associated equipment can be configured around defined profile geometries, material specifications and production requirements.",
       image: "https://res.cloudinary.com/f4j2yhrc/image/upload/v1794915890/industrial-manufacturing.webp",
       image_alt:
-        "Clean manufacturing plant floor with automated roll-forming line, steel coils, and modular metal pallets",
+        "Industrial roll-forming production line with automated decoiler, forming stands and inline punching",
       key_applications: [
-        "Custom automated roll-forming lines",
-        "AS/RS compatible metal pallets",
-        "Precision luggage trolley tubes",
+        "Metal profile manufacturing",
+        "Continuous forming operations",
+        "Specialized metal component production",
       ],
-      relevant_product_line: "All Three Core Business Lines",
-      product_href: "/products",
-      enquiry_href: "/contact?industry=industrial-manufacturing",
+      relevant_product_line: "Custom Roll-Forming Lines",
+      relevant_solutions_summary:
+        "Roll-forming lines, special-purpose machinery, inline punching units, automatic decoilers and tooling.",
+      product_href: "/products/roll-forming-lines",
+      enquiry_href:
+        "/contact?industry=metal-processing-manufacturing&product=roll-forming-lines",
     },
   ] as const,
 
   solutions_section: {
-    eyebrow: "CORE MANUFACTURING CAPABILITIES",
-    heading: "How Our Solutions Map to Your Industry",
+    eyebrow: "RELEVANT MANUFACTURING SOLUTIONS",
+    heading: "Solutions Developed Around Application Needs",
     description:
-      "Every project at Empirical India is built around customer-defined drawings, material specifications, and verified production targets across our three core manufacturing verticals.",
+      "From metal profile production and industrial material handling to solar mounting structures and precision tubing, our solutions are developed around the needs of each application.",
     solutions: [
-      {
-        id: "roll-forming-lines",
-        title: "Custom Roll-Forming Lines",
-        subtitle: "Continuous Cold Roll-Formed Profiles",
-        description:
-          "Engineered around customer-defined profiles, material thickness, inline hydraulic punching, and targeted cycle times. Delivers repeatable cross-sections from coil to finished length.",
-        applicable_industries: [
-          "Solar Energy",
-          "Pre-Engineered Buildings (PEB)",
-          "Infrastructure",
-          "Industrial Manufacturing",
-        ],
-        capabilities: [
-          "Decoiling, Leveling & Feeding",
-          "Multi-station Forming Stands",
-          "Inline Hydraulic Punching & Flying Cutoff",
-          "Automated PLC Control Panel",
-        ],
-        href: "/products/roll-forming-lines",
-        icon_name: "roll-forming",
-      },
       {
         id: "modular-metal-pallets",
         title: "Modular Metal Pallets",
-        subtitle: "Engineered Heavy-Duty Industrial Handling",
+        subtitle: "Configured for Industrial Storage & Logistics",
         description:
-          "Custom-configured cold-formed steel pallets designed for specific product dimensions, fork handling methods, static/dynamic load cases, and automated high-bay warehouse racking.",
+          "Configurable steel pallet designs engineered for industrial warehouses, distribution centres, and automated handling operations with specific static, dynamic, and racking load requirements.",
         applicable_industries: [
-          "Industrial Manufacturing",
-          "Agriculture",
-          "Heavy Logistics & Warehousing",
+          "Warehousing & Material Handling",
+          "Industrial Manufacturing Facilities",
+          "Distribution Operations",
         ],
         capabilities: [
-          "C-Channel & Custom Modular Profiles",
-          "2-Way or 4-Way Forklift Entry",
-          "Stacking, Nesting & High-Bay Racking",
-          "Durable Corrosion-Resistant Finish",
+          "Configurable modular pallet dimensions",
+          "Static, dynamic & high-bay racking compliance",
+          "2-Way or 4-Way forklift access",
+          "Durable, repairable steel construction",
         ],
         href: "/products/modular-metal-pallets",
         icon_name: "metal-pallets",
       },
       {
-        id: "trolley-bag-tubes",
-        title: "Trolley-Bag Tubes",
-        subtitle: "Precision Section & Cut-Length Tubing",
+        id: "roll-forming-lines",
+        title: "Custom Roll-Forming Lines",
+        subtitle: "Equipment Built Around Defined Profile Geometry",
         description:
-          "High-volume, tight-tolerance metal tubes supplied to approved sectional dimensions, wall thicknesses, straightness criteria, and deburred end-conditions for luggage manufacturing.",
+          "Automated roll-forming machinery configured to transform metal strips into consistent, application-specific profiles with integrated punching and flying cut-off units.",
         applicable_industries: [
-          "Industrial Manufacturing",
-          "Travel Goods & Consumer Hardware",
+          "Metal Processing & Component Manufacturing",
+          "Continuous Profile Forming",
+          "Industrial Equipment Facilities",
         ],
         capabilities: [
-          "Approved Cross-Sectional Geometry",
-          "Consistent Wall Thickness & Straightness",
-          "Burr-Free Cut-to-Length Precision",
-          "Custom Punching & End Profiling",
+          "Automatic decoiling, levelling & feeding",
+          "Multi-station CNC roll-pass tooling",
+          "Synchronized inline hydraulic punching",
+          "Integrated PLC automated line controls",
+        ],
+        href: "/products/roll-forming-lines",
+        icon_name: "roll-forming",
+      },
+      {
+        id: "solar-structures",
+        title: "Solar Structural Profiles",
+        subtitle: "Precision-Formed C-Channels & Strut Rails",
+        description:
+          "Roll-formed structural components and continuous purlins manufactured to specified dimensions, materials, and structural load requirements for commercial solar arrays.",
+        applicable_industries: [
+          "Solar Energy & Renewable Infrastructure",
+          "Rooftop Solar Installations",
+          "Utility-Scale Solar Support Systems",
+        ],
+        capabilities: [
+          "Strut channels & guide rails",
+          "Pre-punched continuous C & Z purlins",
+          "Galvanized corrosion-resistant finish",
+          "Accurate hole and slot pitch spacing",
+        ],
+        href: "/products/solar-structures",
+        icon_name: "roll-forming",
+      },
+      {
+        id: "trolley-bag-tubes",
+        title: "Trolley-Bag Tubes",
+        subtitle: "Precision Tubing for Luggage Components",
+        description:
+          "Accurately formed metal profiles developed for luggage manufacturers seeking tight dimensional tolerances, high structural strength, and smooth sliding fit.",
+        applicable_industries: [
+          "Luggage & Travel Products",
+          "Telescopic Trolley Handle Systems",
+          "Luggage Frame Assemblies",
+        ],
+        capabilities: [
+          "Oval trolley tubes & ribbed square sections",
+          "Strict dimensional tolerances & straightness",
+          "Precision deburred cut lengths",
+          "Custom punching for telescopic locks",
         ],
         href: "/products/trolley-bag-tubes",
         icon_name: "tubes",
@@ -220,54 +253,54 @@ export const Industries = {
   },
 
   engineering_workflow: {
-    eyebrow: "OUR ENGINEERING METHODOLOGY",
-    heading: "From Drawing to Verified Production",
+    eyebrow: "OUR ENGINEERING APPROACH",
+    heading: "Built Around Your Application",
     description:
-      "A disciplined, drawing-led engineering workflow ensuring clarity, repeatable tolerances, and pre-dispatch verification for every sector.",
+      "We understand that no two manufacturing requirements are exactly alike. Our engineering approach considers material specifications, product geometry, dimensional tolerances, operating conditions and production objectives before a suitable solution is defined. Whether you require a finished industrial product or equipment for your own manufacturing process, we aim to align the solution with your technical and operational requirements.",
     steps: [
       {
         step: "01",
-        title: "Requirement & Drawing Review",
+        title: "Application & Requirement Review",
         description:
-          "We examine your 2D/3D drawings, section geometry, material specifications, and operating conditions.",
+          "We analyze your intended use case, material selection, dimensional accuracy tolerances, and production objectives.",
       },
       {
         step: "02",
-        title: "Engineering & Tooling Design",
+        title: "Design & Engineering Alignment",
         description:
-          "Forming passes, roll flower diagrams, structural load cases, or tube tolerances are engineered specifically for your application.",
+          "Our engineering team translates your operational specifications into suitable tooling geometry, load-bearing profiles, or machinery modules.",
       },
       {
         step: "03",
         title: "Precision Manufacturing",
         description:
-          "Fabrication, machining, and assembly at our Nashik facility under controlled production protocols.",
+          "Fabrication, forming, and assembly at our Nashik manufacturing facility under disciplined process controls.",
       },
       {
         step: "04",
         title: "Pre-Dispatch Verification",
         description:
-          "Documented dimensional checks, trial operation, and acceptance verification before shipping.",
+          "Rigorous dimensional checks, visual inspection, and trial verification ensure the solution meets your stated specifications.",
       },
     ] as const,
   },
 
   cta_section: {
-    eyebrow: "START A DISCUSSION",
-    heading: "Discuss Your Industry Requirement",
+    eyebrow: "LET'S DISCUSS YOUR REQUIREMENTS",
+    heading: "Let's Discuss Your Requirements",
     description:
-      "Whether you need a dedicated roll-forming line, load-rated modular metal pallets, or precision metal tubes, our engineering team in Nashik is ready to review your drawing and application requirements.",
+      "Looking for a manufacturing solution, precision metal profile or industrial product tailored to your application? Share your drawings, specifications or project requirements with our team.",
     primary_button: {
-      label: "Contact Our Engineering Team",
+      label: "Enquire About Your Project",
       href: "/contact",
     },
     secondary_button: {
-      label: "Share Drawing / Request RFQ",
-      href: "/contact?rfq=true",
+      label: "Contact Our Team",
+      href: "/contact?type=contact-team",
     },
     guarantees: [
       "Drawing-Led Technical Evaluation",
-      "No Fabricated Specs or Assumptions",
+      "Application-Specific Design Feasibility",
       "Nashik, Maharashtra Manufacturing Facility",
     ] as const,
   },
