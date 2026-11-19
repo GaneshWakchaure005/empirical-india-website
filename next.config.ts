@@ -32,46 +32,56 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/:path*", has: [{ type: "host", value: "empiricalindia.com" }], destination: "https://www.empiricalindia.com/:path*", permanent: true },
-      // Legacy WordPress indexed routes redirects
+      // Legacy WordPress indexed routes redirects (301 Moved Permanently)
       {
         source: "/projects",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/projects/:path*",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
+      },
+      {
+        source: "/project",
+        destination: "/products",
+        statusCode: 301,
+      },
+      {
+        source: "/project/:path*",
+        destination: "/products",
+        statusCode: 301,
       },
       {
         source: "/services",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/services/:path*",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/detail-service",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/detail-service/:path*",
         destination: "/products",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/blog-solar-energy-v1",
         destination: "/blogs",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/blog-solar-energy-v1/:path*",
         destination: "/blogs",
-        permanent: true,
+        statusCode: 301,
       },
     ];
   },

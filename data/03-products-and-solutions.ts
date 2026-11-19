@@ -49,26 +49,41 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface ManufacturingFocusItem {
+  id: string;
+  title: string;
+  tagline: string;
+  description: string;
+  highlights: readonly string[];
+  href: string;
+  rfqHref: string;
+  badge: string;
+}
+
 export const ProductsAndSolutions = {
   page: "Products and Solutions",
   route: "/products",
   source_pages: [5],
 
   seo: {
-    title: "Custom Roll-Forming Lines, Modular Metal Pallets & Tubes | Products | Empirical India",
+    title: "Explore Products & Solutions | Roll Forming Machines & Metal Pallets | Empirical India",
     description:
-      "Explore Empirical India's engineering-led manufacturing solutions: custom roll-forming lines, heavy-duty modular metal pallets, precision trolley-bag tubes, and solar mounting structures. Built to customer drawings and verified specifications.",
+      "Explore products and solutions of Empirical India. We manufacture custom roll forming machines, roll formed products, rollers for roll forming, modular metal pallets, and precision tubes in Nashik, India.",
     canonical: "/products",
     keywords: [
-      "roll forming lines",
-      "custom roll forming machine",
+      "explore products and solutions",
+      "roll formed products",
+      "roll forming machines",
+      "rollers for roll forming",
+      "metal pallets",
       "modular metal pallets",
       "trolley bag tubes",
+      "roll tooling",
+      "custom roll forming lines",
+      "cold roll forming",
       "solar mounting structures",
-      "cold roll forming lines",
-      "punching and shearing tools",
       "industrial manufacturing Nashik",
-      "Empirical India products"
+      "Empirical India products",
     ],
   },
 
@@ -76,7 +91,7 @@ export const ProductsAndSolutions = {
     eyebrow: "ENGINEERING-LED MANUFACTURING",
     heading: siteSEO.pages.products.h1,
     description:
-      "Empirical India designs custom automated roll-forming lines and manufactures modular metal pallets and precision tubes tailored directly to your approved profile drawings, load cases, material grades, and production throughput targets.",
+      "Explore products and solutions of Empirical India. We manufacture high-precision roll forming machines, custom roll formed products, precision rollers for roll forming, heavy-duty modular metal pallets, and luggage trolley-bag tubes — engineered directly to your approved profile drawings, load cases, material grades, and production throughput targets.",
     trust_metrics: [
       {
         label: "Tooling Heritage",
@@ -95,15 +110,116 @@ export const ProductsAndSolutions = {
       },
       {
         label: "Manufacturing Scope",
-        value: "4 Verticals",
-        detail: "Forming lines, metal pallets, luggage tubes & solar",
+        value: "Custom Solutions",
+        detail: "Machines, rollers, profiles & metal pallets",
       },
     ] as const,
     pills: [
-      "Custom Roll-Forming Lines",
+      "Roll Forming Machines",
+      "Roll Formed Products",
+      "Rollers & Tooling",
       "Modular Metal Pallets",
       "Trolley-Bag Tubes",
       "Solar Structures",
+    ] as const,
+  },
+
+  manufacturing_focus: {
+    eyebrow: "WHAT WE MANUFACTURE",
+    heading: "Explore Products and Solutions of Empirical India",
+    description:
+      "At Empirical India, we specialize in design-to-delivery industrial manufacturing. We engineer and manufacture custom automated roll forming machines, precision-profiled roll formed products, high-hardness rollers for roll forming, heavy-duty modular metal pallets, and precision trolley-bag tubes for B2B buyers across India and global export markets.",
+    items: [
+      {
+        id: "roll-forming-machines",
+        title: "Roll Forming Machines",
+        tagline: "Custom Automated Production Lines",
+        description:
+          "Turnkey roll forming lines equipped with automatic decoilers, precision levellers, multiple forming stands, and flying cut-off systems engineered for customer-defined profiles.",
+        highlights: [
+          "Custom profile geometry & flower-pass design",
+          "Integrated online punching, embossing & flying shear",
+          "Engineered for CRCA, GI, HR, SS & Aluminium",
+        ],
+        href: "/products/roll-forming-lines",
+        rfqHref: "/contact?product=roll-forming-lines",
+        badge: "Industrial Machinery",
+      },
+      {
+        id: "roll-formed-products",
+        title: "Roll Formed Products",
+        tagline: "Cold-Formed Profiles & Sections",
+        description:
+          "Precision roll-formed metal sections, C/Z purlins, channels, and bespoke industrial profiles produced continuously with uniform wall thickness and strict dimensional repeatability.",
+        highlights: [
+          "Consistent sectional accuracy across long runs",
+          "Customer drawing-defined hole and slot configurations",
+          "Structural and commercial applications",
+        ],
+        href: "/products/roll-forming-lines",
+        rfqHref: "/contact?product=roll-forming-lines",
+        badge: "Engineered Profiles",
+      },
+      {
+        id: "rollers-tooling",
+        title: "Rollers for Roll Forming",
+        tagline: "Precision Roll Tooling & Dies",
+        description:
+          "High-durability forming rollers and shafts manufactured with calculated pass design, CNC precision machining, vacuum heat treatment (D2 / EN31), and polished finish.",
+        highlights: [
+          "Precision CNC contouring & hardening",
+          "Wear-resistant tooling for high-speed lines",
+          "Refurbishment, re-profiling & replacement tooling",
+        ],
+        href: "/contact?product=roll-forming-lines",
+        rfqHref: "/contact?product=roll-forming-lines",
+        badge: "Tooling & Spares",
+      },
+      {
+        id: "modular-metal-pallets",
+        title: "Modular Metal Pallets",
+        tagline: "Heavy-Duty Storage & Handling",
+        description:
+          "Made-to-requirement steel pallets built for heavy industrial unit loads, 2-way and 4-way forklift handling, warehouse racking, and closed-loop supply chains.",
+        highlights: [
+          "Calculated load-bearing structural design",
+          "Stackable, nestable & rack-compatible options",
+          "Durable, fire-safe & repairable steel build",
+        ],
+        href: "/products/modular-metal-pallets",
+        rfqHref: "/contact?product=modular-metal-pallets",
+        badge: "Material Handling",
+      },
+      {
+        id: "trolley-bag-tubes",
+        title: "Trolley-Bag Tubes",
+        tagline: "Precision Luggage Framework",
+        description:
+          "Dimensional metal tubes produced for luggage trolley handles and internal frames with exact cut lengths, tight tolerances, and integrated hole/slot punching.",
+        highlights: [
+          "Precise cut length, straightness & deburred edges",
+          "Custom punching for telescopic locks & fasteners",
+          "Consistent finish for smooth sliding assembly",
+        ],
+        href: "/products/trolley-bag-tubes",
+        rfqHref: "/contact?product=trolley-bag-tubes",
+        badge: "Precision Tubing",
+      },
+      {
+        id: "solar-structures",
+        title: "Solar Mounting Structures",
+        tagline: "Ground & Rooftop Support Profiles",
+        description:
+          "Cold-formed galvanized steel profiles, columns, rafters, and mounting purlins engineered for ground-mount and industrial rooftop photovoltaic installations.",
+        highlights: [
+          "Corrosion-resistant galvanized steel",
+          "Pre-engineered modular mounting geometry",
+          "Fast bolt-together field installation",
+        ],
+        href: "/products/solar-structures",
+        rfqHref: "/contact?product=solar-structures",
+        badge: "Renewable Structures",
+      },
     ] as const,
   },
 

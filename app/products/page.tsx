@@ -5,7 +5,7 @@ import ProductsPageHero from "@/components/products/ProductsPageHero";
 import { Suspense } from "react";
 import ContentLoader from "@/components/ui/ContentLoader";
 import DynamicBusinessLines from "@/components/products/DynamicBusinessLines";
-import ProductsDirectory from "@/components/products/ProductsDirectory";
+import ProductsManufacturingFocus from "@/components/products/ProductsManufacturingFocus";
 import RFQRequirementsGuide from "@/components/products/RFQRequirementsGuide";
 import ProductsWorkflowSection from "@/components/products/ProductsWorkflowSection";
 import ProductsFAQSection from "@/components/products/ProductsFAQSection";
@@ -16,7 +16,7 @@ export const metadata = pageMetadata(siteSEO.pages.products);
 export default function ProductsPage() {
   return (
     <div className="flex flex-col w-full">
-      {/* 1. Hero Section — Engineering-Led Manufacturing Verticals */}
+      {/* 1. Hero Section — Centered with SEO-focused Heading & Scope */}
       <ProductsPageHero
         eyebrow={ProductsAndSolutions.hero.eyebrow}
         heading={ProductsAndSolutions.hero.heading}
@@ -25,11 +25,18 @@ export default function ProductsPage() {
         pills={ProductsAndSolutions.hero.pills}
       />
 
-      {/* 2. Four Core Product Line Cards (matching Home page) */}
-      <Suspense fallback={<ContentLoader kind="products" />}><DynamicBusinessLines /></Suspense>
+      {/* 2. Manufacturing Focus Overview — Roll Forming Machines, Products, Rollers, Pallets, Tubes */}
+      <ProductsManufacturingFocus
+        eyebrow={ProductsAndSolutions.manufacturing_focus.eyebrow}
+        heading={ProductsAndSolutions.manufacturing_focus.heading}
+        description={ProductsAndSolutions.manufacturing_focus.description}
+        items={ProductsAndSolutions.manufacturing_focus.items}
+      />
 
-      {/* 3. Interactive Equipment & Product Directory with Live Search & Filter Tabs */}
-      <ProductsDirectory products={ProductsAndSolutions.catalog_products} />
+      {/* 3. Four Core Product Line Cards (Dynamic from Database or fallback) */}
+      <Suspense fallback={<ContentLoader kind="products" />}>
+        <DynamicBusinessLines centeredHeader={true} />
+      </Suspense>
 
       {/* 4. RFQ Specification Guidelines — What to Submit with Your RFQ */}
       <RFQRequirementsGuide
@@ -39,7 +46,7 @@ export default function ProductsPage() {
         categories={ProductsAndSolutions.rfq_guidelines.categories}
       />
 
-      {/* 4. 6-Step Engineering & Delivery Workflow — From Drawing to Dispatch */}
+      {/* 5. 6-Step Engineering & Delivery Workflow — From Drawing to Dispatch */}
       <ProductsWorkflowSection
         eyebrow={ProductsAndSolutions.workflow.eyebrow}
         heading={ProductsAndSolutions.workflow.heading}
@@ -47,10 +54,10 @@ export default function ProductsPage() {
         steps={ProductsAndSolutions.workflow.steps}
       />
 
-      {/* 5. Technical FAQs — Non-fabricated Engineering Answers */}
+      {/* 6. Technical FAQs — Non-fabricated Engineering Answers */}
       <ProductsFAQSection faqs={ProductsAndSolutions.faqs} />
 
-      {/* 6. Final Quote Request & Drawing Submission CTA */}
+      {/* 7. Final Quote Request & Drawing Submission CTA */}
       <ProductsCTA
         eyebrow={ProductsAndSolutions.cta_section.eyebrow}
         heading={ProductsAndSolutions.cta_section.heading}

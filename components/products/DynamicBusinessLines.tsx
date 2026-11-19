@@ -1,7 +1,13 @@
 import BusinessLinesSection from "@/components/home/BusinessLinesSection";
 import { getPublishedProducts } from "@/lib/products";
 
-export default async function DynamicBusinessLines() {
+interface DynamicBusinessLinesProps {
+  centeredHeader?: boolean;
+}
+
+export default async function DynamicBusinessLines({
+  centeredHeader = false,
+}: DynamicBusinessLinesProps = {}) {
   const categories = await getPublishedProducts({ fallbackOnError: true });
   const products = categories.length > 0 ? categories.map((category) => ({
     name: category.name, slug: category.slug, headline: category.tagline,
@@ -10,5 +16,5 @@ export default async function DynamicBusinessLines() {
     types: category.children.map((child) => child.name), key_specs: category.keyBenefits,
   })) : undefined;
 
-  return <BusinessLinesSection products={products} />;
+  return <BusinessLinesSection products={products} centeredHeader={centeredHeader} />;
 }

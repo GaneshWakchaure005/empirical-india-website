@@ -16,6 +16,7 @@ import productsData, {
 
 interface BusinessLinesSectionProps {
   products?: readonly ProductCategory[];
+  centeredHeader?: boolean;
 }
 
 const containerVariants = {
@@ -41,6 +42,7 @@ const cardVariants = {
 
 export default function BusinessLinesSection({
   products = productsData,
+  centeredHeader = false,
 }: BusinessLinesSectionProps) {
   return (
     <section
@@ -65,13 +67,17 @@ export default function BusinessLinesSection({
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
         <motion.div
-          className="mb-10 flex flex-col gap-5 sm:mb-12 lg:flex-row lg:items-end lg:justify-between"
+          className={
+            centeredHeader
+              ? "mb-10 sm:mb-14 text-center max-w-3xl mx-auto"
+              : "mb-10 flex flex-col gap-5 sm:mb-12 lg:flex-row lg:items-end lg:justify-between"
+          }
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <div className="max-w-2xl ">
+          <div className={centeredHeader ? "max-w-3xl mx-auto" : "max-w-2xl"}>
             <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-navy-700 sm:text-[11px]">
               <Layers3 size={14} aria-hidden="true" />
               Manufacturing Verticals
@@ -79,20 +85,20 @@ export default function BusinessLinesSection({
 
             <h2
               id="business-lines-heading"
-              className="max-w-xl text-3xl font-extrabold leading-tight tracking-tight text-steel-900 sm:text-4xl lg:text-[46px]"
+              className={`text-3xl font-extrabold leading-tight tracking-tight text-steel-900 sm:text-4xl lg:text-[46px] ${
+                centeredHeader ? "mx-auto" : "max-w-xl"
+              }`}
             >
               Our Products{" "}
               <span className="text-navy-700">And Solutions</span>
             </h2>
 
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-steel-500 sm:text-base">
-              Precision-engineered machinery and metal products designed
-              around your manufacturing processes, application requirements,
-              and production goals.
+            <p className={`mt-4 text-sm leading-7 text-steel-500 sm:text-base ${
+              centeredHeader ? "max-w-2xl mx-auto" : "max-w-2xl"
+            }`}>
+              Explore products and solutions of Empirical India. We manufacture custom roll forming machines, rollers for roll forming, precision roll formed products, and modular metal pallets designed for your production requirements.
             </p>
           </div>
-
-        
         </motion.div>
 
         {/* Product cards */}

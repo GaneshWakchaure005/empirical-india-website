@@ -66,11 +66,11 @@ export const siteSEO = {
     products: {
       path: "/products",
       title:
-        "Roll Forming Machines & Industrial Metal Products | Empirical India",
+        "Roll Forming Machines, Roll Formed Products & Pallets | Empirical India",
       description:
-        "Explore custom roll-forming lines, modular metal pallets, trolley-bag tubes and solar structure products from Empirical India in Nashik, Maharashtra.",
+        "Explore products and solutions of Empirical India. We manufacture custom roll forming machines, roll formed products, rollers for roll forming, and modular metal pallets in Nashik, India.",
       h1:
-        "Industrial Machinery & Metal Products",
+        "Explore Products and Solutions of Empirical India",
     },
 
     industries: {
